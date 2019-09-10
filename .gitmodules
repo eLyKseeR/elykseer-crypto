@@ -1,0 +1,12 @@
+[submodule "ext/gitalk"]
+	path = ext/gitalk
+	url = https://github.com/CodiePP/gitalk.git
+[submodule "ext/cryptopp"]
+	path = ext/cryptopp
+	url = https://github.com/weidai11/cryptopp.git
+[submodule "ext/sizebounded"]
+	path = ext/sizebounded
+	url = https://github.com/CodiePP/sizebounded.git
+[submodule "ext/prngsharp"]
+	path = ext/prngsharp
+	url = https://github.com/CodiePP/prngsharp.git

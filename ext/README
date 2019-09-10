@@ -1,0 +1,48 @@
+External Dependencies
+=====================
+
+the content of the 'ext/' directory:
+
+  cryptopp
+  gitalk/
+  prngsharp/
+  sizebounded/
+
+
+gitalk
+======
+
+license: BSD3
+
+https://github.com/CodiePP/gitalk.git
+
+
+sizebounded
+===========
+
+license: BSD3
+
+https://github.com/CodiePP/sizebounded.git
+
+
+prngsharp
+=========
+
+license: MIT
+
+https://github.com/CodiePP/prngsharp.git
+
+
+Crypto++
+========
+
+license: Boost Software License 1.0
+
+https://github.com/weidai11/cryptopp.git
+
+on OSX build with env. var. set:
+
+> export USER_CXXFLAGS="-mmacosx-version-min=10.12"
+> ./cryptest.sh fast
+
+
