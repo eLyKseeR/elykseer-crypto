@@ -9,14 +9,14 @@ base library that provides cryptographic functions to elykseer implementations
 
 | algo | C++ | C# | Haskell |  
 | ---- | ---- | ---- | ---- |  
-| AES | [√](../src/cpp/aes.hpp.md) | [?](../src/csharp/aes.cs.md) | [?](../src/haskell/Aes.hs.md) |  
-| MD5 | [√](../src/cpp/md5.hpp.md) | [?](../src/csharp/md5.cs.md) | [?](../src/haskell/Md5.hs.md) |  
-| SHA256 | [√](../src/cpp/sha256.hpp.md) | [?](../src/csharp/sha256.cs.md) | [?](../src/haskell/Sha256.hs.md) |  
-| KEY | [√](../src/cpp/key.hpp.md) | [?](../src/csharp/key.cs.md) | [?](../src/haskell/Key.hs.md) |  
-| KEY128 | [√](../src/cpp/key128.hpp.md) | [?](../src/csharp/key128.cs.md) | [?](../src/haskell/Key128.hs.md) |  
-| KEY256 | [√](../src/cpp/key256.hpp.md) | [?](../src/csharp/key256.cs.md) | [?](../src/haskell/Key256.hs.md) |  
-| Random | [√](../src/cpp/random.hpp.md) | [?](../src/csharp/random.cs.md) | [?](../src/haskell/Random.hs.md) |  
-| RandomList | [√](../src/cpp/randlist.hpp.md) | [?](../src/csharp/randlist.cs.md) | [?](../src/haskell/RandList.hs.md) |  
+| AES | [√](src/cpp/aes.hpp.md) | [?](src/csharp/Aes.cs.md) | [?](src/haskell/Aes.hs.md) |  
+| MD5 | [√](src/cpp/md5.hpp.md) | [?](src/csharp/Md5.cs.md) | [?](src/haskell/Md5.hs.md) |  
+| SHA256 | [√](src/cpp/sha256.hpp.md) | [?](src/csharp/Sha256.cs.md) | [?](src/haskell/Sha256.hs.md) |  
+| KEY | [√](src/cpp/key.hpp.md) | [?](src/csharp/Key.cs.md) | [?](src/haskell/Key.hs.md) |  
+| KEY128 | [√](src/cpp/key128.hpp.md) | [?](src/csharp/Key128.cs.md) | [?](src/haskell/Key128.hs.md) |  
+| KEY256 | [√](src/cpp/key256.hpp.md) | [?](src/csharp/Key256.cs.md) | [?](src/haskell/Key256.hs.md) |  
+| Random | [√](src/cpp/random.hpp.md) | [?](src/csharp/Random.cs.md) | [?](src/haskell/Random.hs.md) |  
+| RandomList | [√](src/cpp/randlist.hpp.md) | [?](src/csharp/RandList.cs.md) | [?](src/haskell/RandList.hs.md) |  
 
 
 # copyright
