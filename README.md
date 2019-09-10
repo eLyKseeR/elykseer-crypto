@@ -3,9 +3,9 @@ base library that provides cryptographic functions to elykseer implementations
 
 ## language bindings
 
-[`C++`](../src/cpp)  the library is written in C++  
-[`C#`/`F#`](../src/csharp)   _csharp_ / _.NET_ language bindings  
-[`Haskell`](../src/haskell) _Haskell_ language bindings  
+[`C++`](src/cpp)  the library is written in C++  
+[`C#`/`F#`](src/csharp)   _csharp_ / _.NET_ language bindings  
+[`Haskell`](src/haskell) _Haskell_ language bindings  
 
 | algo | C++ | C# | Haskell |  
 | ---- | ---- | ---- | ---- |  
