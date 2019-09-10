@@ -1,0 +1,9 @@
+
+*.hpp.md linguist-language=C++
+*.cpp.md linguist-language=C++
+
+*.cs.md linguist-language=Csharp
+*.fs.md linguist-language=Fsharp
+*.hs.md linguist-language=Haskell
+
+
