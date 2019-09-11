@@ -1,6 +1,17 @@
 # elykseer-crypto
 base library that provides cryptographic functions to elykseer implementations
 
+## compilation
+
+* initialise submodules
+
+> `git submodule init`
+
+* clone or update submodules
+
+> `git submodule update --remote`
+
+
 ## language bindings
 
 [`C++`](src/cpp)  the library is written in C++  
