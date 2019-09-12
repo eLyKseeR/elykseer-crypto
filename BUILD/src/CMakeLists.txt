@@ -22,13 +22,9 @@ add_library (${PROJECT_NAME}_${CMAKE_BUILD_TYPE} SHARED
 	${SRCS}
 )
 
-add_library (${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s STATIC
-	${SRCS}
-)
-
 set_target_properties(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PROPERTIES
-                      VERSION ${elykseer-cpp_VERSION_STRING}
-                      SOVERSION ${elykseer-cpp_VERSION_MAJOR})
+                      VERSION ${elykseer-crypto_VERSION_STRING}
+                      SOVERSION ${elykseer-crypto_VERSION_MAJOR})
 
 if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
 	add_library (${PROJECT_NAME}_p${CMAKE_BUILD_TYPE} STATIC
@@ -45,12 +41,6 @@ endif()
 
 
 target_link_libraries (${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
-	${libs}
-	${Boost_LIBRARIES}
-  ${CRYPTO_LIBS}
-)
-
-target_link_libraries (${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s
 	${libs}
 	${Boost_LIBRARIES}
   ${CRYPTO_LIBS}
