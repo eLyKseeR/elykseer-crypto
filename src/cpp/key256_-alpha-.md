@@ -9,6 +9,8 @@
 #include "sizebounded/sizebounded.hpp"
 #include "sizebounded/sizebounded.ipp"
 
+#include <cstring>
+
 namespace lxr {
 
 struct Key256::pimpl {

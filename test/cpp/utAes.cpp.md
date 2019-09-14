@@ -14,6 +14,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstring>
 ````
 
 # Test suite: utAes
@@ -149,7 +150,48 @@ BOOST_AUTO_TEST_CASE( large_encrypt_then_decrypt )
 }
 ```
 
+## Test case in C: encrypt then decrypt a small buffer
+```cpp
+BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
+{
+  const unsigned char msg[] = "all my precious data are save, so I will sleep fine!";
+  unsigned char buf[lxr::Aes::datasz];
+
+  lxr::Key256 * _k = mk_Key256();
+  lxr::Key128 * _iv = mk_Key128();
+  lxr::AesEncrypt * _aesenc = mk_AesEncrypt(_k, _iv);
+  int mlen = std::strlen((const char*)msg);
+  int lenc = 0;
+  try {
+    memcpy(buf, msg, mlen);
+    lenc = proc_AesEncrypt(_aesenc, mlen, buf);
+  } catch (std::exception & e) {
+    std::clog << "exception " << e.what() << std::endl;
+  }
+  // std::clog << "encrypted " << lenc << " bytes." << std::endl;
+  lenc += fin_AesEncrypt(_aesenc, lxr::Aes::datasz, buf);
+  // std::clog << "finished: " << lenc << " bytes." << std::endl;
+  delete _aesenc;
+
+  // decrypt and compare to original message
+  lxr::AesDecrypt * _aesdec = mk_AesDecrypt(_k, _iv);
+  int ldec = 0;
+  ldec = proc_AesDecrypt(_aesdec, lenc, buf);
+  ldec += fin_AesDecrypt(_aesdec, lxr::Aes::datasz, buf);
+  delete _aesdec;
+
+  char *hex = tohex_Key128(_iv);
+  // std::clog << "iv used: " << hex << std::endl;
+  delete hex;
+  delete _k; delete _iv;
+
+  std::string msg1((const char*)msg, mlen);
+  std::string msg2((const char*)buf, ldec);
+
+  BOOST_CHECK_EQUAL(msg1, msg2);
+}
+```
+
 ```cpp
 BOOST_AUTO_TEST_SUITE_END()
 ```
-

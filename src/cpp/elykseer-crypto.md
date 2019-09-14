@@ -11,6 +11,10 @@ A C++ implementation of eLyKseeR cryptographic functions (https://github.com/eLy
 
 [lxr-crypto.hpp](lxr-crypto.hpp.md)
 
+## C bindings
+
+[C bindings](lxr-cbindings.hpp.md)
+
 ## Md5
 
 Checksum calculation using MD5 algorithm.

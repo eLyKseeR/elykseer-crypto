@@ -21,6 +21,7 @@
 #endif
 
 #include <iostream>
+#include <cstring>
 
 namespace lxr {
 

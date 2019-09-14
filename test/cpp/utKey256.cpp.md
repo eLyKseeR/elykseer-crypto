@@ -48,6 +48,30 @@ BOOST_AUTO_TEST_CASE( restore_key_from_string_representation )
 }
 ```
 
+## Test case in C: verify that key is random
+```cpp
+BOOST_AUTO_TEST_CASE( c_new_key_is_random )
+{
+    lxr::Key256 *k1 = mk_Key256();
+    lxr::Key256 *k2 = mk_Key256();
+	char *h1 = tohex_Key256(k1);
+	char *h2 = tohex_Key256(k2);
+	BOOST_CHECK(strcmp(h1, h2) != 0);
+	delete h1; delete h2;
+	delete k1; delete k2;
+}
+```
+
+## Test case in C: key length is 256 bits
+```cpp
+BOOST_AUTO_TEST_CASE( c_key_length )
+{
+    lxr::Key256 *k = mk_Key256();
+	BOOST_CHECK_EQUAL(len_Key256(k), 256);
+	delete k;
+}
+```
+
 ```cpp
 BOOST_AUTO_TEST_SUITE_END()
 ```

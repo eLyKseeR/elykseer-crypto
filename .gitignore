@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# mac subtleties
+._*
+.DS_Store
 
 BUILD/CMakeCache.txt
 BUILD/CMakeFiles/

@@ -31,7 +31,7 @@ module Aes =
 
 */
 
-# class Aes
+## class Aes
 
 // implementations exist for [OpenSSL](aes_openssl.cpp.md) 
 // and [Crypto++](aes_cryptopp.cpp.md)
@@ -58,7 +58,7 @@ module Aes =
 
 };
 
-# class AesDecrypt : public Aes
+## class AesDecrypt : public Aes
 
 {
 
@@ -82,7 +82,7 @@ module Aes =
 
 };
 
-# class AesEncrypt : public Aes
+## class AesEncrypt : public Aes
 
 {
 
@@ -105,6 +105,32 @@ module Aes =
 >AesEncrypt & operator=(AesEncrypt const &) = delete;
 
 };
+
+
 ```cpp
 } // namespace
 ```
+
+# // C binding interface
+```cpp
+#include "lxr/lxr-cbindings.hpp"
+```
+
+extern "C" EXPORT
+lxr::AesEncrypt* [mk_AesEncrypt](aes_cbindings.cpp.md)(lxr::Key256 * k, lxr::Key128 * iv);
+
+extern "C" EXPORT
+int [proc_AesEncrypt](aes_cbindings.cpp.md)(lxr::AesEncrypt * cl, int inlen, unsigned char * inoutbuf);
+
+extern "C" EXPORT
+int [fin_AesEncrypt](aes_cbindings.cpp.md)(lxr::AesEncrypt * cl, int outlen, unsigned char * outbuf);
+
+extern "C" EXPORT
+lxr::AesDecrypt* [mk_AesDecrypt](aes_cbindings.cpp.md)(lxr::Key256 * k, lxr::Key128 * iv);
+
+extern "C" EXPORT
+int [proc_AesDecrypt](aes_cbindings.cpp.md)(lxr::AesDecrypt * cl, int inlen, unsigned char * inoutbuf);
+
+extern "C" EXPORT
+int [fin_AesDecrypt](aes_cbindings.cpp.md)(lxr::AesDecrypt * cl, int outlen, unsigned char * outbuf);
+

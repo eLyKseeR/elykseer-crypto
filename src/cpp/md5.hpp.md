@@ -63,3 +63,11 @@ namespace [lxr](namespace.list) {
 ```cpp
 } // namespace
 ```
+
+# // C binding interface
+```cpp
+#include "lxr/lxr-cbindings.hpp"
+```
+
+extern "C" EXPORT
+lxr::Key128* [hash_Md5](md5_cbindings.cpp.md)(int len, const char *);

@@ -23,8 +23,6 @@ BOOST_AUTO_TEST_SUITE( utKey128 )
 BOOST_AUTO_TEST_CASE( new_key_is_random )
 {
     lxr::Key128 k1, k2;
-	//BOOST_CHECK_EQUAL(k1.toHex(), "abcdef0987654321");
-	//BOOST_CHECK_EQUAL(k2.toHex(), "abcdef0987654321");
 	BOOST_CHECK(k1.toHex() != k2.toHex());
 }
 ```
@@ -35,6 +33,30 @@ BOOST_AUTO_TEST_CASE( key_length )
 {
     lxr::Key128 k;
 	BOOST_CHECK_EQUAL(k.toHex().size(), 128 / 8 * 2);
+}
+```
+
+## Test case in C: verify that key is random
+```cpp
+BOOST_AUTO_TEST_CASE( c_new_key_is_random )
+{
+    lxr::Key128 *k1 = mk_Key128();
+    lxr::Key128 *k2 = mk_Key128();
+	char *h1 = tohex_Key128(k1);
+	char *h2 = tohex_Key128(k2);
+	BOOST_CHECK(strcmp(h1, h2) != 0);
+	delete h1; delete h2;
+	delete k1; delete k2;
+}
+```
+
+## Test case in C: key length is 128 bits
+```cpp
+BOOST_AUTO_TEST_CASE( c_key_length )
+{
+    lxr::Key128 *k = mk_Key128();
+	BOOST_CHECK_EQUAL(len_Key128(k), 128);
+	delete k;
 }
 ```
 
