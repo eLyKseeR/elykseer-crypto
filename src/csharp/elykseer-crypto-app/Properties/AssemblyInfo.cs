@@ -4,16 +4,14 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("elykseer-crypto-cs")]
+[assembly: AssemblyTitle("elykseer-crypto-app")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("eLyKseeR")]
-[assembly: AssemblyCopyright("2019 Alexander Diemand")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyMetadata("license", "GNU General Public License v3")]
-[assembly: AssemblyMetadata("license-url", "http://www.gnu.org/licenses/gpl-3.0.txt")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
 // The form "{Major}.{Minor}.*" will automatically update the build and revision,

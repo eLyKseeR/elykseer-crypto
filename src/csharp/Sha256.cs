@@ -5,7 +5,7 @@ namespace lxr
 {
     public class Sha256
     {
-        [DllImport("elykseer-crypto.dll", CharSet = CharSet.Ansi)]
+        [DllImport("elykseer-crypto", CharSet = CharSet.Ansi)]
         static extern IntPtr mk_Sha256();
 
         public IntPtr cptr { get; set; } = IntPtr.Zero;

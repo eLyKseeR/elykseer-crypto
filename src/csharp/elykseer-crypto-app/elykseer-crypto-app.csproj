@@ -3,13 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FF4C7A40-6669-4B5D-B19E-054198B98F79}</ProjectGuid>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <RootNamespace>elykseercryptocs</RootNamespace>
-    <AssemblyName>elykseer-crypto-cs</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <ProjectGuid>{D70C9216-4DCF-44F5-8A84-9750B0C4B0D4}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>elykseercryptoapp</RootNamespace>
+    <AssemblyName>elykseer-crypto-app</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -19,26 +17,27 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ExternalConsole>true</ExternalConsole>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AesEncrypt.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Key128.cs" />
-    <Compile Include="Key256.cs" />
-    <Compile Include="AesDecrypt.cs" />
-    <Compile Include="Md5.cs" />
-    <Compile Include="Sha256.cs" />
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="elykseer-crypto.dll.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\elykseer-crypto-cs.csproj">
+      <Project>{FF4C7A40-6669-4B5D-B19E-054198B98F79}</Project>
+      <Name>elykseer-crypto-cs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
