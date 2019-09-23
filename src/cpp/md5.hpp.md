@@ -70,4 +70,4 @@ namespace [lxr](namespace.list) {
 ```
 
 extern "C" EXPORT
-lxr::Key128* [hash_Md5](md5_cbindings.cpp.md)(int len, const char *);
+CKey128 [hash_Md5](md5_cbindings.cpp.md)(int len, const char *);

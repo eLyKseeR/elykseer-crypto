@@ -4,21 +4,24 @@ declared in [Key256](key256.hpp.md)
 #include "lxr/lxr-cbindings.hpp"
 
 extern "C" EXPORT
-lxr::Key256* mk_Key256()
-{ return new lxr::Key256(); }
+CKey256 mk_Key256()
+{ auto k = new lxr::Key256();
+  CKey256 v; v.ptr = k;
+  return v;
+}
 
 extern "C" EXPORT
-int len_Key256(lxr::Key256* k)
-{ return k->length(); }
+int len_Key256(CKey256 k)
+{ return k.ptr->length(); }
 
 extern "C" EXPORT
-char* bytes_Key256(lxr::Key256* k)
-{ const unsigned char *b = k->bytes();
-  return strdup((const char*)b); }
+char* bytes_Key256(CKey256 k)
+{ const unsigned char *b = k.ptr->bytes();
+  return (char*)b; }
 
 extern "C" EXPORT
-char* tohex_Key256(lxr::Key256* k)
-{ auto h = k->toHex();
-  return strdup(h.c_str()); }
+char* tohex_Key256(CKey256 k)
+{ auto h = k.ptr->toHex();
+  return (char*)h.c_str(); }
 
 ```

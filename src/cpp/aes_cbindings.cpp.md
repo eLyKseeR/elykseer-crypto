@@ -4,8 +4,8 @@ declared in [Aes](aes.hpp.md)
 #include "lxr/lxr-cbindings.hpp"
 
 extern "C" EXPORT
-lxr::AesEncrypt* mk_AesEncrypt(lxr::Key256 *k, lxr::Key128 *iv)
-{ return new lxr::AesEncrypt(*k, *iv); }
+lxr::AesEncrypt* mk_AesEncrypt(CKey256 k, CKey128 iv)
+{ return new lxr::AesEncrypt(*k.ptr, *iv.ptr); }
 
 extern "C" EXPORT
 int proc_AesEncrypt(lxr::AesEncrypt *cl, int inlen, unsigned char *inoutbuf)
@@ -27,8 +27,8 @@ int fin_AesEncrypt(lxr::AesEncrypt *cl, int outlen, unsigned char *outbuf)
 }
 
 extern "C" EXPORT
-lxr::AesDecrypt* mk_AesDecrypt(lxr::Key256 *k, lxr::Key128 *iv)
-{ return new lxr::AesDecrypt(*k, *iv); }
+lxr::AesDecrypt* mk_AesDecrypt(CKey256 k, CKey128 iv)
+{ return new lxr::AesDecrypt(*k.ptr, *iv.ptr); }
 
 extern "C" EXPORT
 int proc_AesDecrypt(lxr::AesDecrypt *cl, int inlen, unsigned char *inoutbuf)

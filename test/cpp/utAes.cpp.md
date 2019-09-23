@@ -157,8 +157,8 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
   const unsigned char msg[] = "all my precious data are save, so I will sleep fine!";
   unsigned char buf[lxr::Aes::datasz];
 
-  lxr::Key256 * _k = mk_Key256();
-  lxr::Key128 * _iv = mk_Key128();
+  CKey256 _k = mk_Key256();
+  CKey128 _iv = mk_Key128();
   lxr::AesEncrypt * _aesenc = mk_AesEncrypt(_k, _iv);
   int mlen = std::strlen((const char*)msg);
   int lenc = 0;
@@ -182,8 +182,6 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
 
   char *hex = tohex_Key128(_iv);
   // std::clog << "iv used: " << hex << std::endl;
-  delete hex;
-  delete _k; delete _iv;
 
   std::string msg1((const char*)msg, mlen);
   std::string msg2((const char*)buf, ldec);

@@ -40,13 +40,12 @@ BOOST_AUTO_TEST_CASE( key_length )
 ```cpp
 BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 {
-    lxr::Key128 *k1 = mk_Key128();
-    lxr::Key128 *k2 = mk_Key128();
+    CKey128 k1 = mk_Key128();
+    CKey128 k2 = mk_Key128();
 	char *h1 = tohex_Key128(k1);
 	char *h2 = tohex_Key128(k2);
+  std::clog << "h1 / h2 " << h1 << " " << h2 << std::endl;
 	BOOST_CHECK(strcmp(h1, h2) != 0);
-	delete h1; delete h2;
-	delete k1; delete k2;
 }
 ```
 
@@ -54,9 +53,8 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 ```cpp
 BOOST_AUTO_TEST_CASE( c_key_length )
 {
-    lxr::Key128 *k = mk_Key128();
+    CKey128 k = mk_Key128();
 	BOOST_CHECK_EQUAL(len_Key128(k), 128);
-	delete k;
 }
 ```
 

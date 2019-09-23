@@ -10,7 +10,7 @@ namespace lxr
         [DllImport("elykseer-crypto", CharSet = CharSet.Ansi)]
         static extern int len_Key256(IntPtr cl);
         [DllImport("elykseer-crypto", CharSet = CharSet.Ansi)]
-        static extern string bytes_Key256(IntPtr cl);
+        static extern byte[] bytes_Key256(IntPtr cl);
         [DllImport("elykseer-crypto", CharSet = CharSet.Ansi)]
         static extern string tohex_Key256(IntPtr cl);
 
@@ -21,17 +21,21 @@ namespace lxr
             cptr = mk_Key256();
         }
 
-        int length()
+        public int length()
         {
             return len_Key256(cptr);
         }
 
-        string bytes()
+        public byte[] bytes()
         {
-            return bytes_Key256(cptr);
+            byte[] bs = bytes_Key256(cptr);
+            int l = 256 / 8;
+            var newbs = new byte[l];
+            for (int i = 0; i < l; i++) { newbs[i] = bs[i]; }
+            return newbs;
         }
 
-        string tohex()
+        public string tohex()
         {
             return tohex_Key256(cptr);
         }

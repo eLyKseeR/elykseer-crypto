@@ -11,7 +11,7 @@ namespace lxr
         static extern int len_Key128(IntPtr cl);
         [DllImport("elykseer-crypto", CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.LPStr)]
-        static extern string bytes_Key128(IntPtr cl);
+        static extern byte[] bytes_Key128(IntPtr cl);
         [DllImport("elykseer-crypto", CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.LPStr)]
         static extern string tohex_Key128(IntPtr cl);
@@ -32,9 +32,13 @@ namespace lxr
             return len_Key128(cptr);
         }
 
-        public string bytes()
+        public byte[] bytes()
         {
-            return bytes_Key128(cptr);
+            byte[] bs = bytes_Key128(cptr);
+            int l = 128 / 8;
+            var newbs = new byte[l];
+            for (int i=0; i<l; i++) { newbs[i] = bs[i]; }
+            return newbs;
         }
 
         public string tohex()

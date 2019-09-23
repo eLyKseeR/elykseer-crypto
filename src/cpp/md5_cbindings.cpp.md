@@ -4,10 +4,19 @@ declared in [Md5](md5.hpp.md)
 #include "lxr/lxr-cbindings.hpp"
 
 extern "C" EXPORT
-lxr::Key128* hash_Md5(int len, const char * inbuf)
+CKey128 hash_Md5(int len, const char * inbuf)
 {
-    lxr::Key128 k = lxr::Md5::hash(inbuf, len);
-    return new lxr::Key128(k);
+    auto k = lxr::Md5::hash(inbuf, len);
+    CKey128 ck; ck.ptr = new lxr::Key128(k);
+    return ck;
+}
+
+extern "C" EXPORT
+char* shash_Md5(int len, const char * inbuf)
+{
+    auto k = lxr::Md5::hash(inbuf, len);
+    CKey128 ck; ck.ptr = new lxr::Key128(k);
+    return tohex_Key128(ck);
 }
 
 ```

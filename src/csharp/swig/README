@@ -1,0 +1,10 @@
+swig -csharp md5.i
+
+
+gcc -o liblxr.so -shared -fpic md5_wrap.c -L ../../../BUILD/src/ -lelykseer-crypto_Debug
+
+
+csc -out:runme.exe *.cs
+
+mono runme.exe
+

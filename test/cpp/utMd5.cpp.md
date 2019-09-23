@@ -35,10 +35,9 @@ BOOST_AUTO_TEST_CASE( c_message_digest )
 {
 	const char* msg = "the cleartext message, I am.";
 	const char* md5 = "9cf9e8974fa9d1151de1daf6983a3e71";
-	lxr::Key128 *k = hash_Md5(std::strlen(msg), msg);
+	CKey128 k = hash_Md5(std::strlen(msg), msg);
 	char *h = tohex_Key128(k);
 	BOOST_CHECK_EQUAL(h, md5);
-	delete h; delete k;
 }
 ```
 
