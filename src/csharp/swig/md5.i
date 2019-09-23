@@ -1,9 +1,15 @@
 
-%module lxr
+%module Md5
+
+%import "key128.i"
+
 %{
-  extern char* shash_Md5(int, char*);
+  typedef int CKey128;
+
+  CKey128* hash_Md5(int, char*);
 %}
 
+#include "lxr/key128.hpp";
 
-extern char* shash_Md5(int, char*);
+CKey128* hash_Md5(int, char*);
 

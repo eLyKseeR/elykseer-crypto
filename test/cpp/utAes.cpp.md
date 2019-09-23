@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE( small_encrypt_then_decrypt )
 
 ## Test case: encrypt then decrypt a large buffer
 ```cpp
-  
+
 std::string encrypt_decrypt_test(std::string const & part, int counter)
 {
   std::string msg;
@@ -157,9 +157,9 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
   const unsigned char msg[] = "all my precious data are save, so I will sleep fine!";
   unsigned char buf[lxr::Aes::datasz];
 
-  CKey256 _k = mk_Key256();
-  CKey128 _iv = mk_Key128();
-  lxr::AesEncrypt * _aesenc = mk_AesEncrypt(_k, _iv);
+  CKey256 *_k = mk_Key256();
+  CKey128 *_iv = mk_Key128();
+  CAesEncrypt * _aesenc = mk_AesEncrypt(_k, _iv);
   int mlen = std::strlen((const char*)msg);
   int lenc = 0;
   try {
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
   delete _aesenc;
 
   // decrypt and compare to original message
-  lxr::AesDecrypt * _aesdec = mk_AesDecrypt(_k, _iv);
+  CAesDecrypt * _aesdec = mk_AesDecrypt(_k, _iv);
   int ldec = 0;
   ldec = proc_AesDecrypt(_aesdec, lenc, buf);
   ldec += fin_AesDecrypt(_aesdec, lxr::Aes::datasz, buf);

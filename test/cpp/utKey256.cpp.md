@@ -52,11 +52,12 @@ BOOST_AUTO_TEST_CASE( restore_key_from_string_representation )
 ```cpp
 BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 {
-    CKey256 k1 = mk_Key256();
-    CKey256 k2 = mk_Key256();
+    CKey256 *k1 = mk_Key256();
+    CKey256 *k2 = mk_Key256();
 	char *h1 = tohex_Key256(k1);
 	char *h2 = tohex_Key256(k2);
 	BOOST_CHECK(strcmp(h1, h2) != 0);
+	delete k1; delete k2;
 }
 ```
 
@@ -64,8 +65,9 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 ```cpp
 BOOST_AUTO_TEST_CASE( c_key_length )
 {
-    CKey256 k = mk_Key256();
+    CKey256 * k = mk_Key256();
 	BOOST_CHECK_EQUAL(len_Key256(k), 256);
+	delete k;
 }
 ```
 

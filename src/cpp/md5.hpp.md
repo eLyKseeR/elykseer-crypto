@@ -19,14 +19,14 @@ namespace [lxr](namespace.list) {
 ```fsharp
 
 
-    module Md5 = 
-    
+    module Md5 =
+
         val hash_string : string -> Key128.t
         (** compute hash value MD5 on input string *)
-    
+
         val hash_bytes : byte array -> Key128.t
         (** compute hash value MD5 on input bytes *)
-    
+
         val hash_file : string -> Key128.t
         (** compute hash over file content with given file path *)
 ```
@@ -35,7 +35,7 @@ namespace [lxr](namespace.list) {
 
 # class Md5
 
-// implementations exist for [OpenSSL](md5_openssl.cpp.md) 
+// implementations exist for [OpenSSL](md5_openssl.cpp.md)
 // and [Crypto++](md5_cryptopp.cpp.md)
 
 {
@@ -70,4 +70,4 @@ namespace [lxr](namespace.list) {
 ```
 
 extern "C" EXPORT
-CKey128 [hash_Md5](md5_cbindings.cpp.md)(int len, const char *);
+CKey128* [hash_Md5](md5_cbindings.cpp.md)(int len, const char *);

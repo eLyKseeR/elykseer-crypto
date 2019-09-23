@@ -4,19 +4,19 @@ declared in [Sha256](sha256.hpp.md)
 #include "lxr/lxr-cbindings.hpp"
 
 extern "C" EXPORT
-CKey256 hash_Sha256(int len, const char * inbuf)
+CKey256* hash_Sha256(int len, const char * inbuf)
 {
-    lxr::Key256 k = lxr::Sha256::hash(inbuf, len);
-    CKey256 v; v.ptr = new lxr::Key256(k);
-    return v;
+    auto h = lxr::Sha256::hash(inbuf, len);
+    CKey256 * r = new CKey256; r->ptr = new lxr::Key256(h);
+    return r;
 }
 
 extern "C" EXPORT
-CKey256 filehash_Sha256(const char * fp)
+CKey256* filehash_Sha256(const char * fp)
 {
-    lxr::Key256 k = lxr::Sha256::hash(boost::filesystem::path(fp));
-    CKey256 v; v.ptr = new lxr::Key256(k);
-    return v;
+    auto h = lxr::Sha256::hash(boost::filesystem::path(fp));
+    CKey256 * r = new CKey256; r->ptr = new lxr::Key256(h);
+    return r;
 }
 
 ```

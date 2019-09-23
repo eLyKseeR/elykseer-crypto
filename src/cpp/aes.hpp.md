@@ -33,7 +33,7 @@ module Aes =
 
 ## class Aes
 
-// implementations exist for [OpenSSL](aes_openssl.cpp.md) 
+// implementations exist for [OpenSSL](aes_openssl.cpp.md)
 // and [Crypto++](aes_cryptopp.cpp.md)
 
 {
@@ -116,21 +116,29 @@ module Aes =
 #include "lxr/lxr-cbindings.hpp"
 ```
 
-extern "C" EXPORT
-lxr::AesEncrypt* [mk_AesEncrypt](aes_cbindings.cpp.md)(CKey256 k, CKey128 iv);
+struct CAesEncrypt {
+   void * ptr;
+};
 
 extern "C" EXPORT
-int [proc_AesEncrypt](aes_cbindings.cpp.md)(lxr::AesEncrypt * cl, int inlen, unsigned char * inoutbuf);
+CAesEncrypt* [mk_AesEncrypt](aes_cbindings.cpp.md)(CKey256 * k, CKey128 * iv);
 
 extern "C" EXPORT
-int [fin_AesEncrypt](aes_cbindings.cpp.md)(lxr::AesEncrypt * cl, int outlen, unsigned char * outbuf);
+int [proc_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, int inlen, unsigned char * inoutbuf);
 
 extern "C" EXPORT
-lxr::AesDecrypt* [mk_AesDecrypt](aes_cbindings.cpp.md)(CKey256 k, CKey128 iv);
+int [fin_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, int outlen, unsigned char * outbuf);
+
+struct CAesDecrypt {
+   void * ptr;
+};
 
 extern "C" EXPORT
-int [proc_AesDecrypt](aes_cbindings.cpp.md)(lxr::AesDecrypt * cl, int inlen, unsigned char * inoutbuf);
+CAesDecrypt* [mk_AesDecrypt](aes_cbindings.cpp.md)(CKey256 * k, CKey128 * iv);
 
 extern "C" EXPORT
-int [fin_AesDecrypt](aes_cbindings.cpp.md)(lxr::AesDecrypt * cl, int outlen, unsigned char * outbuf);
+int [proc_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, int inlen, unsigned char * inoutbuf);
+
+extern "C" EXPORT
+int [fin_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, int outlen, unsigned char * outbuf);
 
