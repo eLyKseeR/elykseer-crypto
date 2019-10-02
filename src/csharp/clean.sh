@@ -1,5 +1,7 @@
 #!/bin/sh
 
+rm *.o
+
 rm  Aes.cs \
     AesPINVOKE.cs \
     Key128.cs \
@@ -21,5 +23,5 @@ rm  Aes.cs \
     output.mlpd \
     sha256_wrap.c \
 
-rm elykseer-crypto-cs.dll libelykseer-crypto-cs.osx.1.0.1.dylib runme.exe
+#rm elykseer-crypto-cs.dll libelykseer-crypto-cs.osx.1.0.1.dylib runme.exe
 
