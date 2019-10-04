@@ -44,8 +44,8 @@ endif()
 
 
 target_link_libraries (${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
-	${libs}
-	${Boost_LIBRARIES}
-  ${CRYPTO_LIBS}
+    ${libs}
+    ${Boost_LIBRARIES}
+    ${CRYPTO_LIBS}
 )
 

@@ -4,24 +4,25 @@ declared in [Key128](key128.hpp.md)
 #include "lxr/lxr-cbindings.hpp"
 
 extern "C" EXPORT
-CKey128 mk_Key128()
+CKey128* mk_Key128()
 { auto k = new lxr::Key128();
-  CKey128 v; v.ptr = k;
-  return v;
+  CKey128 * r = new CKey128;
+  r->ptr = k;
+  return r;
 }
 
 extern "C" EXPORT
-int len_Key128(CKey128 k)
-{ return k.ptr->length(); }
+int len_Key128(CKey128 * k)
+{ return ((lxr::Key128*)k->ptr)->length(); }
 
 extern "C" EXPORT
-char* bytes_Key128(CKey128 k)
-{ const unsigned char *b = k.ptr->bytes();
+char* bytes_Key128(CKey128 * k)
+{ const unsigned char *b = ((lxr::Key128*)k->ptr)->bytes();
   return (char*)b; }
 
 extern "C" EXPORT
-char* tohex_Key128(CKey128 k)
-{ auto h = k.ptr->toHex();
-  return (char*)h.c_str(); }
+char* tohex_Key128(CKey128 * k)
+{ auto h = ((lxr::Key128*)k->ptr)->toHex();
+  return strdup(h.c_str()); }
 
 ```

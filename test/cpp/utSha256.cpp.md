@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE( c_message_digest )
 {
 	const char* msg = "the cleartext message, I am.";
 	const char* sha256 = "b27cd6b9a45d9aaa28c2319f33721ea5e8531b978a25b9c52993b75d5e90ff96";
-  CKey256 k = hash_Sha256(std::strlen(msg), msg);
+  CKey256 * k = hash_Sha256(std::strlen(msg), msg);
 	char *h = tohex_Key256(k);
 	BOOST_CHECK_EQUAL(h, sha256);
 }
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE( c_file_checksum )
 #else
 #error Where are we?
 #endif
-  CKey256 k = filehash_Sha256(fp);
+  CKey256 * k = filehash_Sha256(fp);
   char *h = tohex_Key256(k);
   BOOST_CHECK_EQUAL(h, sha256);
 }
