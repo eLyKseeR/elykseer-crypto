@@ -19,7 +19,10 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 file(GLOB SRCS *.cpp)
 
 add_library (${PROJECT_NAME}_${CMAKE_BUILD_TYPE} SHARED
-	${SRCS}
+  ${SRCS}
+)
+add_library (${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s STATIC
+  ${SRCS}
 )
 
 set_target_properties(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PROPERTIES
