@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProjectGuid>{051096F3-6123-41AE-9C2F-6AA00E6669C4}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\src\csharp\aes.i">
+      <Link>aes.i</Link>
+    </None>
+    <None Include="..\src\csharp\md5.i">
+      <Link>md5.i</Link>
+    </None>
+    <None Include="..\src\csharp\key128.i">
+      <Link>key128.i</Link>
+    </None>
+    <None Include="..\src\csharp\key256.i">
+      <Link>key256.i</Link>
+    </None>
+    <None Include="..\src\csharp\runme.cs">
+      <Link>runme.cs</Link>
+    </None>
+    <None Include="..\src\csharp\sha256.i">
+      <Link>sha256.i</Link>
+    </None>
+  </ItemGroup>
+</Project>

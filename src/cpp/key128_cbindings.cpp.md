@@ -12,6 +12,16 @@ CKey128* mk_Key128()
 }
 
 extern "C" EXPORT
+void release_Key128(CKey128 * k)
+{ if (k) {
+    if (k->ptr) {
+        delete (lxr::Key128*)k->ptr;
+    }
+    delete k;
+  }
+}
+
+extern "C" EXPORT
 int len_Key128(CKey128 * k)
 { return ((lxr::Key128*)k->ptr)->length(); }
 
@@ -24,5 +34,15 @@ extern "C" EXPORT
 char* tohex_Key128(CKey128 * k)
 { auto h = ((lxr::Key128*)k->ptr)->toHex();
   return strdup(h.c_str()); }
+
+extern "C" EXPORT
+CKey128* fromhex_Key128(const char * s)
+{ auto k = new lxr::Key128();
+  std::string h = std::string(s, k->length()*2/8);
+  k->fromHex(h);
+  CKey128 * r = new CKey128;
+  r->ptr = k;
+  return r;
+}
 
 ```

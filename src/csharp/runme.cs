@@ -18,8 +18,13 @@ public class runme {
 
     static void Main() {
          var m = "HELLO WORLD";
-         var h = lxr.Md5.hash_Md5(m.Length, m);
-         Console.WriteLine(lxr.Key128.tohex_Key128(h));
+         var md5 = lxr.Md5.hash_Md5(m.Length, m);
+         var hk1 = lxr.Key128.tohex_Key128(md5);
+         var k2 = lxr.Key128.fromhex_Key128("361fadf1c712e812d198c4cab5712a79");
+		 var hk2 = lxr.Key128.tohex_Key128(k2);
+ 		 Console.WriteLine("{0} == {1} : {2}", hk1, hk2, hk1==hk2);
+         lxr.Key128.release_Key128(md5);
+         lxr.Key128.release_Key128(k2);
          Console.WriteLine(lxr.Key256.tohex_Key256(lxr.Key256.mk_Key256()));
          var h2 = lxr.Sha256.filehash_Sha256("libelykseer-crypto-cs.so");
          Console.WriteLine(lxr.Key256.tohex_Key256(h2));
@@ -56,16 +61,22 @@ public class runme {
             Console.WriteLine("{0} : {1}", proc, str);
          }
 
-         aMillionKeys ();
-     }
-  private static void aMillionKeys ()
+         // cleanup
+         lxr.Key128.release_Key128(iv);
+		 lxr.Key256.release_Key256(k);
+
+		aMillionKeys ();
+	}
+	private static void aMillionKeys ()
   {
     for (int i = 0; i < 100000; i++) {
          var k = lxr.Key256.mk_Key256();
          var h = lxr.Key256.tohex_Key256(k);
          Console.WriteLine("{0} ", h);
-    }
-    Console.WriteLine("done");
+		 lxr.Key256.release_Key256(k);
+
+		}
+		Console.WriteLine("done");
   }
 
  }

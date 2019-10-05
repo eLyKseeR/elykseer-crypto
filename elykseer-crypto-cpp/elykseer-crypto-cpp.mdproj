@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Default</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProjectGuid>{FF203FCC-FA6B-44C3-B18E-7F0B44EAD16B}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Default|AnyCPU' ">
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\src\cpp\aes.hpp.md">
+      <Link>src\aes.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\aes_-alpha-.md">
+      <Link>src\aes_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\aes_cbindings.cpp.md">
+      <Link>src\aes_cbindings.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\aes_cryptopp.cpp.md">
+      <Link>src\aes_cryptopp.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\aes_functions.cpp.md">
+      <Link>src\aes_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\aes_-omega-.md">
+      <Link>src\aes_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\aes_openssl.cpp.md">
+      <Link>src\aes_openssl.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\elykseer-crypto.md">
+      <Link>src\elykseer-crypto.md</Link>
+    </None>
+    <None Include="..\src\cpp\key.hpp.md">
+      <Link>src\key.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key_-alpha-.md">
+      <Link>src\key_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\key_ctor.cpp.md">
+      <Link>src\key_ctor.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key_functions.cpp.md">
+      <Link>src\key_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key_-omega-.md">
+      <Link>src\key_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\key128.hpp.md">
+      <Link>src\key128.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key128_-alpha-.md">
+      <Link>src\key128_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\key128_cbindings.cpp.md">
+      <Link>src\key128_cbindings.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key128_ctor.cpp.md">
+      <Link>src\key128_ctor.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key128_functions.cpp.md">
+      <Link>src\key128_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key128_-omega-.md">
+      <Link>src\key128_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\key256.hpp.md">
+      <Link>src\key256.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key256_-alpha-.md">
+      <Link>src\key256_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\key256_cbindings.cpp.md">
+      <Link>src\key256_cbindings.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key256_ctor.cpp.md">
+      <Link>src\key256_ctor.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key256_functions.cpp.md">
+      <Link>src\key256_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\key256_-omega-.md">
+      <Link>src\key256_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\lxr-cbindings.hpp.md">
+      <Link>src\lxr-cbindings.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\lxr-crypto.hpp.md">
+      <Link>src\lxr-crypto.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\md5.hpp.md">
+      <Link>src\md5.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\md5_-alpha-.md">
+      <Link>src\md5_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\md5_cbindings.cpp.md">
+      <Link>src\md5_cbindings.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\md5_cryptopp.cpp.md">
+      <Link>src\md5_cryptopp.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\md5_functions.cpp.md">
+      <Link>src\md5_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\md5_-omega-.md">
+      <Link>src\md5_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\md5_openssl.cpp.md">
+      <Link>src\md5_openssl.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\randlist.hpp.md">
+      <Link>src\randlist.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\randlist_-alpha-.md">
+      <Link>src\randlist_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\randlist_functions.cpp.md">
+      <Link>src\randlist_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\randlist_-omega-.md">
+      <Link>src\randlist_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\random.hpp.md">
+      <Link>src\random.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\random_-alpha-.md">
+      <Link>src\random_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\random_ctor.cpp.md">
+      <Link>src\random_ctor.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\random_functions.cpp.md">
+      <Link>src\random_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\random_-omega-.md">
+      <Link>src\random_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\sha256.hpp.md">
+      <Link>src\sha256.hpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\sha256_-alpha-.md">
+      <Link>src\sha256_-alpha-.md</Link>
+    </None>
+    <None Include="..\src\cpp\sha256_cbindings.cpp.md">
+      <Link>src\sha256_cbindings.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\sha256_cryptopp.cpp.md">
+      <Link>src\sha256_cryptopp.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\sha256_functions.cpp.md">
+      <Link>src\sha256_functions.cpp.md</Link>
+    </None>
+    <None Include="..\src\cpp\sha256_-omega-.md">
+      <Link>src\sha256_-omega-.md</Link>
+    </None>
+    <None Include="..\src\cpp\sha256_openssl.cpp.md">
+      <Link>src\sha256_openssl.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\elykseer-crypto-ut.md">
+      <Link>test\elykseer-crypto-ut.md</Link>
+    </None>
+    <None Include="..\test\cpp\utSha256.cpp.md">
+      <Link>test\utSha256.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\utAes.cpp.md">
+      <Link>test\utAes.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\utKey128.cpp.md">
+      <Link>test\utKey128.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\utKey256.cpp.md">
+      <Link>test\utKey256.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\utMain.cpp.md">
+      <Link>test\utMain.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\utMd5.cpp.md">
+      <Link>test\utMd5.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\utRandList.cpp.md">
+      <Link>test\utRandList.cpp.md</Link>
+    </None>
+    <None Include="..\test\cpp\utRandom.cpp.md">
+      <Link>test\utRandom.cpp.md</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="test\" />
+  </ItemGroup>
+</Project>

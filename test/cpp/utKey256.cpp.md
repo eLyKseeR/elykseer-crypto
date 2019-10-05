@@ -23,8 +23,6 @@ BOOST_AUTO_TEST_SUITE( utKey256 )
 BOOST_AUTO_TEST_CASE( new_key_is_random )
 {
     lxr::Key256 k1, k2;
-	//BOOST_CHECK_EQUAL(k1.toHex(), "abcdef0987654321");
-	//BOOST_CHECK_EQUAL(k2.toHex(), "abcdef0987654321");
 	BOOST_CHECK(k1.toHex() != k2.toHex());
 }
 ```
@@ -57,7 +55,8 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 	char *h1 = tohex_Key256(k1);
 	char *h2 = tohex_Key256(k2);
 	BOOST_CHECK(strcmp(h1, h2) != 0);
-	delete k1; delete k2;
+	release_Key256(k1); release_Key256(k2);
+    free(h1); free(h2);
 }
 ```
 
@@ -67,7 +66,23 @@ BOOST_AUTO_TEST_CASE( c_key_length )
 {
     CKey256 * k = mk_Key256();
 	BOOST_CHECK_EQUAL(len_Key256(k), 256);
-	delete k;
+	release_Key256(k);
+}
+```
+
+## Test case in C: bytes(fromhex(tohex(k)))==bytes(k)
+```cpp
+BOOST_AUTO_TEST_CASE( c_fromhex_regenerates_key )
+{
+    CKey256 *k1 = mk_Key256();
+    char *h1 = tohex_Key256(k1);
+    CKey256 *k2 = fromhex_Key256(h1);
+    char *h2 = tohex_Key256(k2);
+    std::string b1 = std::string(h1, len_Key256(k1)*2/8);
+    std::string b2 = std::string(h2, len_Key256(k2)*2/8);
+    BOOST_CHECK_EQUAL(b1, b2);
+    release_Key256(k1); release_Key256(k2);
+    free(h1); free(h2);
 }
 ```
 
