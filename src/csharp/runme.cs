@@ -2,18 +2,24 @@ using System;
 using System.Text;
 
 public class runme {
-    public static byte[] EncodeToBytes(string str, int len)
+	public static byte[] SubArray(byte[] bytesin, int start, int len)
+	{
+		byte[] bytes = new byte[len];
+		System.Buffer.BlockCopy(bytesin, start, bytes, 0, len);
+		return bytes;
+	}
+	public static byte[] EncodeToBytes(string str)
     {
-        byte[] bytes = new byte[len * sizeof(char)];
-        System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
-        return bytes;
+        return Encoding.UTF8.GetBytes(str);
     }
 
     public static string DecodeToString(byte[] bytes, int start, int len)
     {
-        char[] chars = new char[len / sizeof(char)];
+        byte[] chars = new byte[len];
+        //char[] chars = new char[len / sizeof(char)];
         System.Buffer.BlockCopy(bytes, start, chars, 0, len);
-        return new string(chars);
+        //return new string(chars);
+        return Encoding.UTF8.GetString(chars);
     }
 
     static void Main() {
@@ -21,62 +27,95 @@ public class runme {
          var md5 = lxr.Md5.hash_Md5(m.Length, m);
          var hk1 = lxr.Key128.tohex_Key128(md5);
          var k2 = lxr.Key128.fromhex_Key128("361fadf1c712e812d198c4cab5712a79");
-		 var hk2 = lxr.Key128.tohex_Key128(k2);
- 		 Console.WriteLine("{0} == {1} : {2}", hk1, hk2, hk1==hk2);
+         var hk2 = lxr.Key128.tohex_Key128(k2);
+         Console.WriteLine("{0} == {1} : {2}", hk1, hk2, hk1==hk2);
          lxr.Key128.release_Key128(md5);
          lxr.Key128.release_Key128(k2);
          Console.WriteLine(lxr.Key256.tohex_Key256(lxr.Key256.mk_Key256()));
          var h2 = lxr.Sha256.filehash_Sha256("libelykseer-crypto-cs.so");
          Console.WriteLine(lxr.Key256.tohex_Key256(h2));
+ 		 lxr.Key256.release_Key256(h2);
 
-         var k = lxr.Key256.mk_Key256();
+
+		 var k = lxr.Key256.mk_Key256();
          var iv = lxr.Key128.mk_Key128();
          var AesEnc = lxr.Aes.mk_AesEncrypt(k, iv);
-         char[] chars = new char[1024];
-         string str = new string(chars);
-         var tencr = new byte[256];
+         uint totenc = 0;
+		 byte[] str = EncodeToBytes("0123456789");
+		 for (var i = 0; i < 20; i++) {
+			int proc = lxr.Aes.proc_AesEncrypt(AesEnc, (uint)str.Length, str);
+			if (proc > 0)
+			{
+				totenc += (uint)proc;
+				Console.WriteLine("encrypted: {0}", proc);
+			} else
+			{
+				Console.WriteLine("error while encrypting!");
+			}
+         }
+         int fenc = lxr.Aes.fin_AesEncrypt(AesEnc);
+         if (fenc > 0) {
+           Console.WriteLine("encrypted (fin): {0}", fenc);
+           totenc += (uint)fenc;
+         }
+		 //var cipher = lxr.Aes.copy_AesEncrypt(AesEnc, totenc);
+		 byte[] cipher = new byte[lxr.Aes.datasz];
+		 byte[] partialcipher;
+         uint copied = lxr.Aes.copy_AesEncrypt(AesEnc, totenc, out partialcipher);
+         if (copied > 0)
+		 {
+			System.Buffer.BlockCopy(partialcipher, 0, cipher, 0, (int)copied);
+			Console.WriteLine("cipher: {0} <> {1} <> {2} ..", cipher[0], cipher[1], cipher[2]);
+		 }
+		 lxr.Aes.release_AesEncrypt(AesEnc);
+
+		 var AesDec = lxr.Aes.mk_AesDecrypt(k, iv);
+         uint totdec = 0;
          for (var i = 0; i < 20; i++) {
-            str = "0123456789";
-            var proc = lxr.Aes.proc_AesEncrypt(AesEnc, 10, str);
-            var bencr = EncodeToBytes(str, proc);
-            for (var j = 0; j < bencr.Length; j++) {
-               tencr[i*10+j] = bencr[j];
-            }
+            int proc = lxr.Aes.proc_AesDecrypt(AesDec, 12, SubArray(cipher, i * 12, 12));
+			if (proc > 0)
+			{
+				totdec += (uint)proc;
+				Console.WriteLine("decrypted: {0}", proc);
+			}
+			else
+			{
+				Console.WriteLine("error while decrypting!");
+			}
          }
-         str = "0123456789";
-         var finc = lxr.Aes.fin_AesEncrypt(AesEnc, 10, str);
-         if (finc > 0) {
-           var finb = EncodeToBytes(str, finc);
-           for (var j = 0; j < finb.Length; j++) {
-               tencr[20*10+j] = finb[j];
-           }
-         }
+		 int fdec = lxr.Aes.fin_AesDecrypt(AesDec);
+         if (fdec > 0) {
+			Console.WriteLine("decrypted (fin): {0}", fdec);
+			totdec += (uint)fdec;
+		}
+		Console.WriteLine("encrypted: {0}  decrypted: {1}", totenc, totdec);
+        byte[] decrypted = new byte[lxr.Aes.datasz];
+		uint restored = lxr.Aes.copy_AesDecrypt(AesDec, totdec, out partialcipher);
+		if (restored > 0)
+		{
+			System.Buffer.BlockCopy(partialcipher, 0, decrypted, 0, (int)restored);
+			Console.WriteLine("decrypted: {0} <> {1} <> {2} ..", decrypted[0], decrypted[1], decrypted[2]);
+			Console.WriteLine("{0}", DecodeToString(decrypted, 0, (int)totenc));
+		}
+		lxr.Aes.release_AesDecrypt(AesDec);
 
-         var AesDec = lxr.Aes.mk_AesDecrypt(k, iv);
-         var tdecr = new byte[256];
-         str = new string(chars);
-         for (var i = 0; i < 20; i++) {
-            str = DecodeToString(tencr, i*12, 12);
-            var proc = lxr.Aes.proc_AesDecrypt(AesDec, 12, str);
-            Console.WriteLine("{0} : {1}", proc, str);
-         }
+		// cleanup
+		lxr.Key128.release_Key128(iv);
+        lxr.Key256.release_Key256(k);
 
-         // cleanup
-         lxr.Key128.release_Key128(iv);
-		 lxr.Key256.release_Key256(k);
+         //aMillionKeys ();
+  }
 
-		aMillionKeys ();
-	}
-	private static void aMillionKeys ()
+  private static void aMillionKeys ()
   {
     for (int i = 0; i < 100000; i++) {
          var k = lxr.Key256.mk_Key256();
          var h = lxr.Key256.tohex_Key256(k);
          Console.WriteLine("{0} ", h);
-		 lxr.Key256.release_Key256(k);
+         lxr.Key256.release_Key256(k);
 
-		}
-		Console.WriteLine("done");
+    }
+    Console.WriteLine("done");
   }
 
  }

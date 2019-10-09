@@ -165,20 +165,29 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
   try {
     memcpy(buf, msg, mlen);
     lenc = proc_AesEncrypt(_aesenc, mlen, buf);
+    if (lenc > 0) {
+      memcpy(buf, _aesenc->buf, lenc);
+    }
   } catch (std::exception & e) {
     std::clog << "exception " << e.what() << std::endl;
   }
-  // std::clog << "encrypted " << lenc << " bytes." << std::endl;
-  lenc += fin_AesEncrypt(_aesenc, lxr::Aes::datasz, buf);
-  // std::clog << "finished: " << lenc << " bytes." << std::endl;
-  delete _aesenc;
+  int flenc = fin_AesEncrypt(_aesenc);
+  lenc += flenc;
+  //std::clog << "encrypted " << lenc << " bytes." << std::endl;
+  //std::clog << "finished: " << flenc << " bytes." << std::endl;
+  memcpy(buf, _aesenc->buf, _aesenc->lastpos); // copy ciphertext into buffer
+  release_AesEncrypt(_aesenc);
 
   // decrypt and compare to original message
   CAesDecrypt * _aesdec = mk_AesDecrypt(_k, _iv);
   int ldec = 0;
   ldec = proc_AesDecrypt(_aesdec, lenc, buf);
-  ldec += fin_AesDecrypt(_aesdec, lxr::Aes::datasz, buf);
-  delete _aesdec;
+  if (ldec > 0) {
+      memcpy(buf, _aesenc->buf, lenc);
+  }
+  int fldec = fin_AesDecrypt(_aesdec);
+  ldec += fldec;
+  release_AesDecrypt(_aesdec);
 
   char *hex = tohex_Key128(_iv);
   // std::clog << "iv used: " << hex << std::endl;

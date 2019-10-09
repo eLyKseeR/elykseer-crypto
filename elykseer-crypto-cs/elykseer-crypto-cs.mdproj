@@ -28,5 +28,11 @@
     <None Include="..\src\csharp\sha256.i">
       <Link>sha256.i</Link>
     </None>
+    <None Include="..\src\csharp\elykseer-crypto-cs.dll">
+      <Link>elykseer-crypto-cs.dll</Link>
+    </None>
+    <None Include="..\src\csharp\Aes.cs">
+      <Link>Aes.cs</Link>
+    </None>
   </ItemGroup>
 </Project>

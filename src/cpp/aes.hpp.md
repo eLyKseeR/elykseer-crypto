@@ -42,7 +42,7 @@ module Aes =
 
 >virtual ~Aes();
 
->static constexpr int datasz { 1024*4 };
+>static constexpr unsigned int datasz { 1024*4 };
 
 >virtual int [process](aes_functions.cpp.md)(int inlen, sizebounded&lt;unsigned char, Aes::datasz&gt; & inoutbuf) = 0;
 
@@ -118,27 +118,48 @@ module Aes =
 
 struct CAesEncrypt {
    void * ptr;
+   unsigned int lastpos;
+   unsigned char buf[lxr::Aes::datasz];
 };
 
 extern "C" EXPORT
 CAesEncrypt* [mk_AesEncrypt](aes_cbindings.cpp.md)(CKey256 * k, CKey128 * iv);
 
 extern "C" EXPORT
-int [proc_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, int inlen, unsigned char * inoutbuf);
+void [release_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl);
 
 extern "C" EXPORT
-int [fin_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, int outlen, unsigned char * outbuf);
+int [proc_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, unsigned int inlen, unsigned char const *);
+
+extern "C" EXPORT
+int [fin_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl);
+
+extern "C" EXPORT
+unsigned int [len_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl);
+
+extern "C" EXPORT
+unsigned int [copy_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, unsigned int outlen, unsigned char *);
 
 struct CAesDecrypt {
    void * ptr;
+   unsigned int lastpos;
+   unsigned char buf[lxr::Aes::datasz];
 };
 
 extern "C" EXPORT
 CAesDecrypt* [mk_AesDecrypt](aes_cbindings.cpp.md)(CKey256 * k, CKey128 * iv);
 
 extern "C" EXPORT
-int [proc_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, int inlen, unsigned char * inoutbuf);
+void [release_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl);
 
 extern "C" EXPORT
-int [fin_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, int outlen, unsigned char * outbuf);
+int [proc_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, unsigned int inlen, unsigned char const *);
 
+extern "C" EXPORT
+int [fin_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl);
+
+extern "C" EXPORT
+unsigned int [len_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl);
+
+extern "C" EXPORT
+unsigned int [copy_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, unsigned int outlen, unsigned char *);

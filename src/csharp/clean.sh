@@ -10,10 +10,7 @@ rm  Aes.cs \
     Key256PINVOKE.cs \
     Md5.cs \
     Md5PINVOKE.cs \
-    SWIGTYPE_p_CAesDecrypt.cs \
-    SWIGTYPE_p_CAesEncrypt.cs \
-    SWIGTYPE_p_CKey128.cs \
-    SWIGTYPE_p_CKey256.cs \
+    SWIGTYPE_p_*.cs \
     Sha256.cs \
     Sha256PINVOKE.cs \
     aes_wrap.c \

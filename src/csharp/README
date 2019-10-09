@@ -1,10 +1,3 @@
-preparation
-===========
-
-link generated headers to 'lxr/'
-
-> $ ln -s ../../../BUILD/src/lxr/ lxr
-
 
 compile
 =======
