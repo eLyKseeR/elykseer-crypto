@@ -12,6 +12,11 @@ CAesEncrypt* mk_AesEncrypt(CKey256 * k, CKey128 * iv)
 }
 
 extern "C" EXPORT
+unsigned int sz_AesEncrypt()
+{   return lxr::Aes::datasz;
+}
+
+extern "C" EXPORT
 void release_AesEncrypt(CAesEncrypt *cl)
 {
   if (cl) {
@@ -60,6 +65,11 @@ CAesDecrypt* mk_AesDecrypt(CKey256 * k, CKey128 * iv)
   CAesDecrypt *cl = new CAesDecrypt; cl->ptr = r;
   cl->lastpos = 0;
   return cl;
+}
+
+extern "C" EXPORT
+unsigned int sz_AesDecrypt()
+{   return lxr::Aes::datasz;
 }
 
 extern "C" EXPORT
