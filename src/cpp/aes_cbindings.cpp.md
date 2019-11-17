@@ -56,6 +56,11 @@ extern "C" EXPORT
 unsigned int copy_AesEncrypt(CAesEncrypt *cl, unsigned int outlen, unsigned char *outbuf)
 {   unsigned int copied = std::min(outlen, cl->lastpos);
     memcpy(outbuf, cl->buf, copied);
+    if (copied < cl->lastpos) {
+      // copied 'copied' bytes out; move from 'copied' to lastpos to front
+      memcpy(cl->buf, cl->buf + copied, cl->lastpos - copied);
+    }
+    cl->lastpos -= copied;
     return copied;
 }
 
@@ -112,6 +117,11 @@ extern "C" EXPORT
 unsigned int copy_AesDecrypt(CAesDecrypt *cl, unsigned int outlen, unsigned char *outbuf)
 {   unsigned int copied = std::min(outlen, cl->lastpos);
     memcpy(outbuf, cl->buf, copied);
+    if (copied < cl->lastpos) {
+      // copied 'copied' bytes out; move from 'copied' to lastpos to front
+      memcpy(cl->buf, cl->buf + copied, cl->lastpos - copied);
+    }
+    cl->lastpos -= copied;
     return copied;
 }
 
