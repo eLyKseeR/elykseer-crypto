@@ -140,6 +140,9 @@ unsigned int [len_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl);
 extern "C" EXPORT
 unsigned int [copy_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, unsigned int outlen, unsigned char *);
 
+extern "C" EXPORT
+unsigned int [sz_AesEncrypt](aes_cbindings.cpp.md)();
+
 struct CAesDecrypt {
    void * ptr;
    unsigned int lastpos;
@@ -163,3 +166,6 @@ unsigned int [len_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl);
 
 extern "C" EXPORT
 unsigned int [copy_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, unsigned int outlen, unsigned char *);
+
+extern "C" EXPORT
+unsigned int [sz_AesDecrypt](aes_cbindings.cpp.md)();

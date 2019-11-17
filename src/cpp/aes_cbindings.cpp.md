@@ -12,6 +12,11 @@ CAesEncrypt* mk_AesEncrypt(CKey256 * k, CKey128 * iv)
 }
 
 extern "C" EXPORT
+unsigned int sz_AesEncrypt()
+{   return lxr::Aes::datasz;
+}
+
+extern "C" EXPORT
 void release_AesEncrypt(CAesEncrypt *cl)
 {
   if (cl) {
@@ -51,6 +56,11 @@ extern "C" EXPORT
 unsigned int copy_AesEncrypt(CAesEncrypt *cl, unsigned int outlen, unsigned char *outbuf)
 {   unsigned int copied = std::min(outlen, cl->lastpos);
     memcpy(outbuf, cl->buf, copied);
+    if (copied < cl->lastpos) {
+      // copied 'copied' bytes out; move from 'copied' to lastpos to front
+      memcpy(cl->buf, cl->buf + copied, cl->lastpos - copied);
+    }
+    cl->lastpos -= copied;
     return copied;
 }
 
@@ -60,6 +70,11 @@ CAesDecrypt* mk_AesDecrypt(CKey256 * k, CKey128 * iv)
   CAesDecrypt *cl = new CAesDecrypt; cl->ptr = r;
   cl->lastpos = 0;
   return cl;
+}
+
+extern "C" EXPORT
+unsigned int sz_AesDecrypt()
+{   return lxr::Aes::datasz;
 }
 
 extern "C" EXPORT
@@ -102,6 +117,11 @@ extern "C" EXPORT
 unsigned int copy_AesDecrypt(CAesDecrypt *cl, unsigned int outlen, unsigned char *outbuf)
 {   unsigned int copied = std::min(outlen, cl->lastpos);
     memcpy(outbuf, cl->buf, copied);
+    if (copied < cl->lastpos) {
+      // copied 'copied' bytes out; move from 'copied' to lastpos to front
+      memcpy(cl->buf, cl->buf + copied, cl->lastpos - copied);
+    }
+    cl->lastpos -= copied;
     return copied;
 }
 
