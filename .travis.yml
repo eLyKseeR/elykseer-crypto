@@ -5,11 +5,12 @@ addons:
     - cmake
     - pandoc
     - html2text
+    - libboost-all-dev
 
 language: cpp
 
 install: skip
 script:
   - cd ext; ./build.sh; cd ..
-  - cd BUILD; ./mk_cpp.sh; make; cd ..
+  - cd BUILD; ./mk_cpp.sh; cmake . ; make; cd ..
 
