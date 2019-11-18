@@ -3,6 +3,8 @@ addons:
   apt:
     packages:
     - cmake
+    - pandoc
+    - html2text
 
 language: cpp
 
