@@ -1,0 +1,13 @@
+dist: bionic
+addons:
+  apt:
+    packages:
+    - cmake
+
+language: cpp
+
+install: skip
+script:
+  - cd ext; ./build.sh; cd ..
+  - cd BUILD; ./mk_cpp.sh; make; cd ..
+
