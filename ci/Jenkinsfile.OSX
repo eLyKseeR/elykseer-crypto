@@ -5,14 +5,17 @@ pipeline {
             steps {
                 sh 'cd BUILD; ./mk_cpp.sh'
             }
+        }
         stage('cmake') {
             steps {
                 sh 'cd BUILD; cmake .'
             }
+        }
         stage('compile') {
             steps {
                 sh 'cd BUILD; make'
             }
+        }
         stage('unit tests') {
             steps {
                 sh 'cd BUILD; ./ut.sh'
