@@ -1,6 +1,17 @@
 pipeline {
     agent any
     stages {
+        stage('init dependencies') {
+            steps {
+                sh 'git submodule update --remote'
+            }
+        }
+        stage('build dependencies') {
+            steps {
+                sh 'cd ext/prngsharp; ./build.OSX.jenkins.sh'
+                sh 'cd ext/cryptopp; make -f GNUmakefile'
+            }
+        }
         stage('mk cpp') {
             steps {
                 sh 'cd BUILD; ./mk_cpp.sh'
