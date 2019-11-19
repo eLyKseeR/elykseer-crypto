@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    stages {
+        stage('init dependencies') {
+            steps {
+                sh 'git submodule update --init --remote'
+            }
+        }
+        stage('build dependencies') {
+            steps {
+                sh 'cd ext/prngsharp; ./build.Linux.jenkins.sh'
+                sh 'cd ext/cryptopp; make -f GNUmakefile'
+            }
+        }
+        stage('mk cpp') {
+            steps {
+                sh 'cd BUILD; ./mk_cpp.sh'
+            }
+        }
+        stage('cmake') {
+            steps {
+                sh 'cd BUILD; cmake .'
+            }
+        }
+        stage('compile') {
+            steps {
+                sh 'cd BUILD; make'
+            }
+        }
+        stage('unit tests') {
+            steps {
+                sh 'cd BUILD; ./ut.sh'
+            }
+        }
+    }
+}
