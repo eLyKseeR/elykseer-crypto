@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('init dependencies') {
             steps {
-                sh 'git submodule update --remote'
+                sh 'git submodule update --init --remote'
             }
         }
         stage('build dependencies') {
