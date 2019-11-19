@@ -62,6 +62,8 @@ set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -fPIC -g")
 # OS dependent
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12.0")
+  include_directories(/usr/local/opt/zlib/include)
+  link_directories(/usr/local/opt/zlib/lib)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # other external tools

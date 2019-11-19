@@ -1,0 +1,14 @@
+#!/bin/sh
+
+set -e
+
+cd BUILD
+
+./mk_cpp.sh
+
+cmake .
+
+make
+
+./ut.sh
+
