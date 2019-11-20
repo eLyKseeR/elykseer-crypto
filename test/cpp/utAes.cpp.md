@@ -162,35 +162,40 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
   CAesEncrypt * _aesenc = mk_AesEncrypt(_k, _iv);
   int mlen = std::strlen((const char*)msg);
   int lenc = 0;
+  int copied = 0;
   try {
-    memcpy(buf, msg, mlen);
-    lenc = proc_AesEncrypt(_aesenc, mlen, buf);
-    if (lenc > 0) {
-      memcpy(buf, _aesenc->buf, lenc);
-    }
+      memcpy(buf, msg, mlen);
+      lenc = proc_AesEncrypt(_aesenc, mlen, buf);
+      if (lenc > 0) {
+          copied += copy_AesEncrypt(_aesenc, lenc, buf);
+      }
   } catch (std::exception & e) {
-    std::clog << "exception " << e.what() << std::endl;
+      std::clog << "exception " << e.what() << std::endl;
   }
   int flenc = fin_AesEncrypt(_aesenc);
-  lenc += flenc;
+  if (flenc > 0) {
+      lenc += flenc;
+      copied += copy_AesEncrypt(_aesenc, flenc, buf+copied);
+  }
   //std::clog << "encrypted " << lenc << " bytes." << std::endl;
   //std::clog << "finished: " << flenc << " bytes." << std::endl;
-  memcpy(buf, _aesenc->buf, _aesenc->lastpos); // copy ciphertext into buffer
+  memcpy(buf, _aesenc->buf, copied); // copy ciphertext into buffer
   release_AesEncrypt(_aesenc);
 
   // decrypt and compare to original message
   CAesDecrypt * _aesdec = mk_AesDecrypt(_k, _iv);
   int ldec = 0;
+  copied = 0;
   ldec = proc_AesDecrypt(_aesdec, lenc, buf);
   if (ldec > 0) {
-      memcpy(buf, _aesenc->buf, lenc);
+      copied += copy_AesDecrypt(_aesdec, ldec, buf);
   }
   int fldec = fin_AesDecrypt(_aesdec);
-  ldec += fldec;
+  if (fldec > 0) {
+      ldec += fldec;
+      copied += copy_AesDecrypt(_aesdec, fldec, buf+copied);
+  }
   release_AesDecrypt(_aesdec);
-
-  char *hex = tohex_Key128(_iv);
-  // std::clog << "iv used: " << hex << std::endl;
 
   std::string msg1((const char*)msg, mlen);
   std::string msg2((const char*)buf, ldec);
@@ -214,14 +219,14 @@ BOOST_AUTO_TEST_CASE( c_encrypt_decrypt_with_databuffers_sz )
   int lenc = 0;
   int copied = 0;
   try {
-    memcpy(buf, msg, mlen);
-    lenc = proc_AesEncrypt(_aesenc, mlen, buf);
-    if (lenc > 0) {
-      copied += copy_AesEncrypt(_aesenc, 12, buf);
-      copied += copy_AesEncrypt(_aesenc, lxr::Aes::datasz - 12, buf+copied);
-    }
+      memcpy(buf, msg, mlen);
+      lenc = proc_AesEncrypt(_aesenc, mlen, buf);
+      if (lenc > 0) {
+          copied += copy_AesEncrypt(_aesenc, 12, buf);
+          copied += copy_AesEncrypt(_aesenc, lxr::Aes::datasz - 12, buf+copied);
+      }
   } catch (std::exception & e) {
-    std::clog << "exception " << e.what() << std::endl;
+      std::clog << "exception " << e.what() << std::endl;
   }
   int flenc = fin_AesEncrypt(_aesenc);
   lenc += flenc;
@@ -237,7 +242,6 @@ BOOST_AUTO_TEST_CASE( c_encrypt_decrypt_with_databuffers_sz )
   copied = 0;
   ldec = proc_AesDecrypt(_aesdec, lenc, buf);
   if (ldec > 0) {
-      // memcpy(buf, _aesenc->buf, lenc);
       copied += copy_AesDecrypt(_aesdec, 17, buf);
       copied += copy_AesDecrypt(_aesdec, lxr::Aes::datasz - 17, buf+copied);
   }
