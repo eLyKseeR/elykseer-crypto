@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_SUITE( utKey128 )
 BOOST_AUTO_TEST_CASE( new_key_is_random )
 {
     lxr::Key128 k1, k2;
-	BOOST_CHECK(k1.toHex() != k2.toHex());
+    BOOST_CHECK(k1 != k2);
 }
 ```
 
