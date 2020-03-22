@@ -85,16 +85,3 @@ std::ostream & operator<<(std::ostream & os, Key const & k)
 }
 
 ```
-
-```cpp
-bool Key::operator==(Key const & k) const
-{
-  return toHex() == k.toHex();
-}
-
-bool Key::operator!=(Key const & k) const
-{
-  return ! operator==(k);
-}
-
-```

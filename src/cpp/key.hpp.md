@@ -48,10 +48,6 @@ module internal Key =
 
 >virtual void [fromBytes](key_functions.cpp.md)(unsigned char const*);
 
->bool [operator==](key_functions.cpp.md)(Key const &) const;
-
->bool [operator!=](key_functions.cpp.md)(Key const &) const;
-
 >protected:
 
 >Key() = default;
