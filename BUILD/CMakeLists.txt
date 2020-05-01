@@ -1,3 +1,9 @@
+# call: cmake .
+# on Linux/OSX to build the Makefiles
+#
+# on OSX: cmake -G Xcode .
+# to build the Xcode project files
+
 cmake_minimum_required(VERSION 3.5)
 
 #set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -8,7 +14,7 @@ ELSE()
 	SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release DebugProfile RelWithDebInfo MinSizeRel.")
 ENDIF()
 
-project(elykseer-crypto)
+project(elykseer-crypto CXX)
 
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
@@ -20,6 +26,10 @@ set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-
 set(USE_OPENSSL NO)
 set(USE_CRYPTOPP YES)
 
+#if(XCODE)
+#  set(CMAKE_CXX_COMPILER_WORKS TRUE)
+#  set(CMAKE_C_COMPILER_WORKS TRUE)
+#endif()
 
 # boost
 add_definitions( -DBOOST_ALL_DYN_LINK )

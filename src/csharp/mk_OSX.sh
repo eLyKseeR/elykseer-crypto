@@ -1,6 +1,9 @@
 #!/bin/sh
 
+# have Mono installed: brew install mono
 set -xe
+
+export MONO_GAC_PREFIX="/usr/local"
 
 DLLNAME=elykseer-crypto-cs
 NAMESPACE=lxr
