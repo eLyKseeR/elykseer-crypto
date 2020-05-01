@@ -14,21 +14,25 @@ pipeline {
         }
         stage('mk cpp') {
             steps {
+                sh 'which nix-shell > /dev/null && nix-shell'
                 sh 'cd BUILD; ./mk_cpp.sh'
             }
         }
         stage('cmake') {
             steps {
+                sh 'which nix-shell > /dev/null && nix-shell'
                 sh 'cd BUILD; cmake .'
             }
         }
         stage('compile') {
             steps {
+                sh 'which nix-shell > /dev/null && nix-shell'
                 sh 'cd BUILD; make'
             }
         }
         stage('unit tests') {
             steps {
+                sh 'which nix-shell > /dev/null && nix-shell'
                 sh 'cd BUILD; ./ut.sh'
             }
         }
