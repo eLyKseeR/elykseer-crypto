@@ -8,32 +8,27 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext/prngsharp; ./build.Linux.jenkins.sh'
-                sh 'cd ext/cryptopp; make -f GNUmakefile'
+                sh 'cd ext/prngsharp; ./build.Linux.jenkins.sh; cd ext/cryptopp; make -f GNUmakefile'
             }
         }
         stage('mk cpp') {
             steps {
-                sh 'which nix-shell > /dev/null && nix-shell'
-                sh 'cd BUILD; ./mk_cpp.sh'
+                sh 'which nix-shell > /dev/null && nix-shell; cd BUILD; ./mk_cpp.sh'
             }
         }
         stage('cmake') {
             steps {
-                sh 'which nix-shell > /dev/null && nix-shell'
-                sh 'cd BUILD; cmake .'
+                sh 'which nix-shell > /dev/null && nix-shell; cd BUILD; cmake .'
             }
         }
         stage('compile') {
             steps {
-                sh 'which nix-shell > /dev/null && nix-shell'
-                sh 'cd BUILD; make'
+                sh 'which nix-shell > /dev/null && nix-shell; cd BUILD; make'
             }
         }
         stage('unit tests') {
             steps {
-                sh 'which nix-shell > /dev/null && nix-shell'
-                sh 'cd BUILD; ./ut.sh'
+                sh 'which nix-shell > /dev/null && nix-shell; cd BUILD; ./ut.sh'
             }
         }
     }
