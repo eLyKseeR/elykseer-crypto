@@ -8,28 +8,28 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext/prngsharp; ./build.Linux.jenkins.sh'
-                sh 'cd ext/cryptopp; make -f GNUmakefile'
+                sh 'cd ext/prngsharp; ./build.Linux.jenkins.nix'
+                sh 'cd ext/cryptopp; nix-shell -p gcc --run "make -f GNUmakefile"'
             }
         }
         stage('mk cpp') {
             steps {
-                sh 'cd BUILD; ./mk_cpp.sh'
+                sh 'cd BUILD; nix-shell -p pandoc html2text --run "./mk_cpp.sh"'
             }
         }
         stage('cmake') {
             steps {
-                sh 'cd BUILD; cmake .'
+                sh 'cd BUILD; nix-shell -p cmake boost zlib --run "cmake ."'
             }
         }
         stage('compile') {
             steps {
-                sh 'cd BUILD; make'
+                sh 'cd BUILD; nix-shell -p cmake boost zlib --run make'
             }
         }
         stage('unit tests') {
             steps {
-                sh 'cd BUILD; ./ut.sh'
+                sh 'cd BUILD; nix-shell -p cmake boost zlib --run ./ut.sh'
             }
         }
     }

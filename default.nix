@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
     ];
 
     buildInputs = [
-        openssl
+        #openssl
         zlib
         boost
     ];
