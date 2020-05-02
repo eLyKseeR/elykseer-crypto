@@ -14,22 +14,22 @@ pipeline {
         }
         stage('mk cpp') {
             steps {
-                sh 'cd BUILD; nix-shell -p pandoc html2text --run "./mk_cpp.sh"'
+                sh 'cd BUILD; nix-shell -p gcc pandoc html2text --run "./mk_cpp.sh"'
             }
         }
         stage('cmake') {
             steps {
-                sh 'cd BUILD; nix-shell -p cmake boost zlib --run "cmake ."'
+                sh 'cd BUILD; nix-shell -p gcc cmake boost zlib --run "cmake ."'
             }
         }
         stage('compile') {
             steps {
-                sh 'cd BUILD; nix-shell -p cmake boost zlib --run make'
+                sh 'cd BUILD; nix-shell -p gcc cmake boost zlib --run make'
             }
         }
         stage('unit tests') {
             steps {
-                sh 'cd BUILD; nix-shell -p cmake boost zlib --run ./ut.sh'
+                sh 'cd BUILD; nix-shell -p gcc cmake boost zlib --run ./ut.sh'
             }
         }
     }
