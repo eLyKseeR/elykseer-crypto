@@ -11,6 +11,9 @@ stdenv.mkDerivation rec {
         git
         pandoc
         html2text
+        swig
+        gcc
+        clang
     ];
 
     buildInputs = [
