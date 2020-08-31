@@ -9,6 +9,16 @@ let h = _filehash_Sha256 (C_string "./elykseerTop") in
 _tohex_Key256 h |> Swig.get_string |> print_endline;
 _release_Key256 h;;
 
+open Lxr_Key128;;
+with_key128 print_endline;;
+
+open Lxr_Md5;;
+with_md5 "abc" print_endline;;
+
+open Lxr_Sha256;;
+with_sha256 "abcdefg" print_endline;;
+with_file_sha256 "/bin/sh" print_endline;;
+
 
 (*
 using System;
