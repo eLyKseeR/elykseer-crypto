@@ -1,16 +1,7 @@
-preparation
-===========
+#!/bin/sh
 
-nix-shell -p opam
+set -xe
 
-#( opam switch create ./ocaml-4.09.1 4.09.1 )
-
-eval $(opam env --switch=/data/Coding/c++/CodiePP/elykseer-crypto.git/src/ml/ocaml-4.09.1 --set-switch)
-
-
-
-compile
-=======
 
 DLLNAME=elykseer-crypto-ml
 
@@ -64,29 +55,4 @@ ocamlmktop -linkall -custom -o elykseerTop swig.cmo lxr_Key128.cmo lxr_Key256.cm
     -cclib ../../ext/prngsharp/libprngCpp_s.linux.1.0.5.a \
     -cclib ../../ext/cryptopp/libcryptopp.a \
     -cclib "-lz -lboost_contract -lboost_system -lstdc++"
-
-
-examples
-========
-
-open Lxr_Key128;;
-let p = _mk_Key128 C_void in
-_tohex_Key128 p |> Swig.get_string |> print_endline;
-_release_Key128 p;;
-
-open Lxr_Sha256;;
-open Lxr_Key256;;
-let h = _filehash_Sha256 (C_string "./elykseerTop") in
-_tohex_Key256 h |> Swig.get_string |> print_endline;
-_release_Key256 h;;
-
-open Lxr_Key128;;
-with_key128 print_endline;;
-
-open Lxr_Md5;;
-with_md5 "abc" print_endline;;
-
-open Lxr_Sha256;;
-with_sha256 "abcdefg" print_endline;;
-with_file_sha256 "/bin/sh" print_endline;;
 
