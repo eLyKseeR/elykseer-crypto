@@ -5,7 +5,7 @@ nix-shell -p opam
 
 #( opam switch create ./ocaml-4.09.1 4.09.1 )
 
-eval $(opam env --switch=/data/Coding/c++/CodiePP/elykseer-crypto.git/src/ml/ocaml-4.09.1 --set-switch)
+eval $(opam env --switch=`pwd`/ocaml-4.09.1 --set-switch)
 
 
 
