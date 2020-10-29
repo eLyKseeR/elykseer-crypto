@@ -14,6 +14,7 @@ stdenv.mkDerivation rec {
         swig
         gcc
         clang
+        opam m4
     ];
 
     buildInputs = [
