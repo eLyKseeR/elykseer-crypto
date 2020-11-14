@@ -15,7 +15,7 @@ Key128 Md5::hash(const char buffer[], int length)
     CryptoPP::Weak::MD5 hash;
     hash.CalculateDigest(digest, (unsigned char const *)buffer, length);
 
-    Key128 k;
+    Key128 k(true);
     k.fromBytes(digest);
     return k;
 }

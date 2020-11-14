@@ -15,7 +15,7 @@ Key256 Sha256::hash(const char buffer[], int length)
     CryptoPP::SHA256 hash;
     hash.CalculateDigest( digest, (const unsigned char*)buffer, length );
 
-    Key256 k;
+    Key256 k(true);
     k.fromBytes(digest);
     return k;
 }
@@ -25,7 +25,7 @@ Key256 Sha256::hash(boost::filesystem::path const & fpath)
     unsigned char digest[CryptoPP::SHA256::DIGESTSIZE];
     CryptoPP::SHA256 hash;
 
-    Key256 k;
+    Key256 k(true);
     unsigned char buf[1024];
     FILE *_f = fopen(fpath.c_str(), "r");
     if (_f) {

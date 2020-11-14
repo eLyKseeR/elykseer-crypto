@@ -13,7 +13,7 @@ Key256 Sha256::hash(const char buffer[], int length)
     unsigned char digest[SHA256_DIGEST_LENGTH];
     unsigned char *ret = SHA256((const unsigned char*)buffer, length, digest);
 
-    Key256 k;
+    Key256 k(true);
     k.fromBytes(digest);
     return k;
 }
@@ -24,7 +24,7 @@ Key256 Sha256::hash(boost::filesystem::path const & fpath)
     SHA256_CTX ctx;
     SHA256_Init(&ctx);
 
-    Key256 k;
+    Key256 k(true);
     unsigned char buf[1024];
     FILE *_f = fopen(fpath.c_str(), "r");
     if (_f) {
