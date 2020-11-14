@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE( key_length )
 ```cpp
 BOOST_AUTO_TEST_CASE( restore_key_from_string_representation )
 {
-	lxr::Key256 k1, k2;
+    lxr::Key256 k1, k2(true);
 	k2.fromHex(k1.toHex());
 	BOOST_CHECK_EQUAL(k1, k2);
 }

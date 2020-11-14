@@ -44,13 +44,13 @@ module internal Key =
 
 >virtual std::string [toHex](key_functions.cpp.md)() const;
 
->virtual void [fromHex](key_functions.cpp.md)(std::string const &);
-
->virtual void [fromBytes](key_functions.cpp.md)(unsigned char const*);
-
 >protected:
 
 >Key() = default;
+
+>virtual void [fromHex](key_functions.cpp.md)(std::string const &);
+
+>virtual void [fromBytes](key_functions.cpp.md)(unsigned char const*);
 
 >virtual void randomize() final;
 

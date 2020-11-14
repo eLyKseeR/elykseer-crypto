@@ -13,7 +13,7 @@ Key128 Md5::hash(const char buffer[], int length)
     unsigned char digest[MD5_DIGEST_LENGTH];
     unsigned char *ret = MD5((unsigned char const *)buffer, length, digest);
 
-    Key128 k;
+    Key128 k(true);
     k.fromBytes(digest);
     return k;
 }

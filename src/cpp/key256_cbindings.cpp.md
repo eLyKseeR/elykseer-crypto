@@ -5,7 +5,7 @@ declared in [Key256](key256.hpp.md)
 
 extern "C" EXPORT
 CKey256* mk_Key256()
-{ auto k = new lxr::Key256();
+{ auto k = new lxr::Key256;
   CKey256 * r = new CKey256;
   r->ptr = k;
   return r;
@@ -37,7 +37,7 @@ char* tohex_Key256(CKey256 * k)
 
 extern "C" EXPORT
 CKey256* fromhex_Key256(const char * s)
-{ auto k = new lxr::Key256();
+{ auto k = new lxr::Key256(true);
   std::string h = std::string(s, k->length()*2/8);
   k->fromHex(h);
   CKey256 * r = new CKey256;

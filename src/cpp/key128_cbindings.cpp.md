@@ -5,7 +5,7 @@ declared in [Key128](key128.hpp.md)
 
 extern "C" EXPORT
 CKey128* mk_Key128()
-{ auto k = new lxr::Key128();
+{ auto k = new lxr::Key128;
   CKey128 * r = new CKey128;
   r->ptr = k;
   return r;
@@ -37,7 +37,7 @@ char* tohex_Key128(CKey128 * k)
 
 extern "C" EXPORT
 CKey128* fromhex_Key128(const char * s)
-{ auto k = new lxr::Key128();
+{ auto k = new lxr::Key128(true);
   std::string h = std::string(s, k->length()*2/8);
   k->fromHex(h);
   CKey128 * r = new CKey128;
