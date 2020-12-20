@@ -10,6 +10,10 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    # Mac OS X specific code
    set(libs "dl" "z" "prngCpp_s.osx.1.0.5")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+  # specific code
+  set(libs "dl" "z" "prngCpp.freebsd.1.0.5")
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   # Linux specific code
   set(libs "dl" "z" "prngCpp_s.linux.1.0.5")

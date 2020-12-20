@@ -16,6 +16,15 @@
 on class [Sha256](../src/sha256.hpp.md)
 
 ```cpp
+#if defined(__linux__) || defined(__APPLE__)
+const std::string shacmd = "sha256sum ";
+#elif defined(__FreeBSD__)
+const std::string shacmd = "sha256 -q ";
+#endif
+
+```
+
+```cpp
 BOOST_AUTO_TEST_SUITE( utSha256 )
 ```
 ## Test case: compare message digest to known one
@@ -35,8 +44,8 @@ BOOST_AUTO_TEST_CASE( file_checksum )
   boost::filesystem::path fp = "/bin/sh";
   std::string sha256 = "";
 
-#if defined(__linux__) || defined(__APPLE__)
-  std::string cmd = "sha256sum "; cmd += fp.string();
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
+  std::string cmd = shacmd; cmd += fp.string();
   FILE* pipe = popen(cmd.c_str(), "r");
   if (pipe) {
     char buffer[128];
@@ -70,8 +79,8 @@ BOOST_AUTO_TEST_CASE( c_file_checksum )
   const char* fp = "/bin/sh";
   char sha256[65]; sha256[64]=0;
 
-#if defined(__linux__) || defined(__APPLE__)
-  std::string cmd = "sha256sum "; cmd += fp;
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)
+  std::string cmd = shacmd; cmd += fp;
   FILE* pipe = popen(cmd.c_str(), "r");
   if (pipe) {
     char buffer[128];
