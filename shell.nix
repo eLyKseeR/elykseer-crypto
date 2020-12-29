@@ -15,10 +15,11 @@ stdenv.mkDerivation rec {
         gcc
         clang
         opam m4
+        busybox
     ];
 
     buildInputs = [
-        #openssl
+        openssl
         zlib
         boost
     ];

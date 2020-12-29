@@ -10,9 +10,9 @@ Key256 Sha256::hash(std::string const & msg)
 
 Key256 Sha256::hash(const char buffer[], int length)
 {
-    assert(256/8 == CryptoPP::SHA256::DIGESTSIZE);
-    unsigned char digest[CryptoPP::SHA256::DIGESTSIZE];
-    CryptoPP::SHA256 hash;
+    assert(256/8 == CryptoPP::SHA3_256::DIGESTSIZE);
+    unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
+    CryptoPP::SHA3_256 hash;
     hash.CalculateDigest( digest, (const unsigned char*)buffer, length );
 
     Key256 k(true);
@@ -22,8 +22,8 @@ Key256 Sha256::hash(const char buffer[], int length)
 
 Key256 Sha256::hash(boost::filesystem::path const & fpath)
 {
-    unsigned char digest[CryptoPP::SHA256::DIGESTSIZE];
-    CryptoPP::SHA256 hash;
+    unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
+    CryptoPP::SHA3_256 hash;
 
     Key256 k(true);
     unsigned char buf[1024];
