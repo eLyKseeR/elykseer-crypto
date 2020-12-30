@@ -29,7 +29,7 @@ pipeline {
         }
         stage('unit tests') {
             steps {
-                sh 'cd BUILD; nix-shell -p gcc cmake boost zlib --run ./ut.sh'
+                sh 'cd BUILD; nix-shell -p gcc cmake boost zlib busybox --run ./ut.sh'
             }
         }
     }
