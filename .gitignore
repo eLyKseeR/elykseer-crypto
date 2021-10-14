@@ -42,3 +42,6 @@ BUILD/cmake_install.cmake
 BUILD/src
 BUILD/test
 
+
+.fake
+.ionide
