@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
     CKey128 *k2 = mk_Key128();
 	char *h1 = tohex_Key128(k1);
 	char *h2 = tohex_Key128(k2);
-	BOOST_CHECK(strcmp(h1, h2) != 0);
+	BOOST_CHECK(strncmp(h1, h2, 128/8*2) != 0);
     release_Key128(k1); release_Key128(k2);
     free(h1); free(h2);
 }

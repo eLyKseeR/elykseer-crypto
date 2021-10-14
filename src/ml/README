@@ -8,6 +8,8 @@ nix-shell -p opam
 eval $(opam env --switch=`pwd`/ocaml-4.09.1 --set-switch)
 
 
+requires libffi and `opam install ctypes ctypes-foreign`
+
 
 compile
 =======

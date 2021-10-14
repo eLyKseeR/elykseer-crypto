@@ -33,17 +33,17 @@ CFLAGS="-Wall -fPIC -O2 -I. -Iocaml-4.09.1/_opam/lib/ocaml -compatibility_versio
 #export CC=gcc
 #CFLAGS="-Wall -fPIC -O2 -I. -Iocaml-4.09.1/_opam/lib/ocaml "
 CFLAGS_dyn="${CFLAGS} ${LDFLAGS}"
-CFLAGS_s="${CFLAGS} ../../BUILD/src/libelykseer-crypto_Debug_s.a ../../ext/prngsharp/libprngCpp_s.linux.1.0.5.a ../../ext/cryptopp/libcryptopp.a -lz -lboost_contract -lboost_system"
+CFLAGS_s="${CFLAGS} ../../BUILD/src/libelykseer-crypto_Debug_s.a ../../ext/prngsharp/libprngCpp_s.osx.1.0.5.a ../../ext/cryptopp/libcryptopp.a -lz -lboost_contract -lboost_system"
 
 ## patch: int64 -> int64_t
-sed -i 's,#define SWIG_Int64_val(v) (\*((int64 \*) SWIG_Data_custom_val(v))),#define SWIG_Int64_val(v) (*((int64_t *) SWIG_Data_custom_val(v))),' *_wrap.c
-sed -i 's,CAMLextern int64 Int64_val(caml_value_t v);,CAMLextern int64_t Int64_val(caml_value_t v);,' *_wrap.c
+gsed -i 's,#define SWIG_Int64_val(v) (\*((int64 \*) SWIG_Data_custom_val(v))),#define SWIG_Int64_val(v) (*((int64_t *) SWIG_Data_custom_val(v))),' *_wrap.c
+gsed -i 's,CAMLextern int64 Int64_val(caml_value_t v);,CAMLextern int64_t Int64_val(caml_value_t v);,' *_wrap.c
 
 $CC ${CFLAGS} -c *_wrap.c
 ar r libwrap_all.a aes_wrap.o key128_wrap.o key256_wrap.o md5_wrap.o sha256_wrap.o
 ranlib libwrap_all.a
 
-$CXX -o lib${DLLNAME}.linux.${VERSION}.so -shared \
+$CXX -o lib${DLLNAME}.osx.${VERSION}.so -shared \
     *.o \
     ${CFLAGS_s}
 
@@ -52,7 +52,7 @@ $CXX -o lib${DLLNAME}.linux.${VERSION}.so -shared \
 ocamlmktop -linkall -custom -o elykseerTop swig.cmo lxr_Key128.cmo lxr_Key256.cmo lxr_Aes.cmo lxr_Md5.cmo lxr_Sha256.cmo \
     -cclib libwrap_all.a \
     -cclib ../../BUILD/src/libelykseer-crypto_Debug_s.a \
-    -cclib ../../ext/prngsharp/libprngCpp_s.linux.1.0.5.a \
+    -cclib ../../ext/prngsharp/libprngCpp_s.osx.1.0.5.a \
     -cclib ../../ext/cryptopp/libcryptopp.a \
     -cclib "-lz -lboost_contract -lboost_system -lstdc++"
 

@@ -21,7 +21,7 @@ unsigned int copy_AesEncrypt(CAesEncrypt*, unsigned int, unsigned char*);
 
 CAesDecrypt* mk_AesDecrypt(CKey256*, CKey128*);
 void release_AesDecrypt(CAesDecrypt*);
-unsigned int sz_AesEncrypt();
+unsigned int sz_AesDecrypt();
 int proc_AesDecrypt(CAesDecrypt*, unsigned int, unsigned char const*);
 int fin_AesDecrypt(CAesDecrypt*);
 unsigned int len_AesDecrypt(CAesDecrypt*);
