@@ -1,5 +1,7 @@
 # elykseer-crypto
-base library that provides cryptographic functions to elykseer implementations
+base library that provides cryptographic functions to _elykseer_ implementations
+
+[![Compilation and verification by unit tests](https://github.com/eLyKseeR/elykseer-crypto/actions/workflows/CI.yml/badge.svg)](https://github.com/eLyKseeR/elykseer-crypto/actions/workflows/CI.yml)
 
 ## compilation
 
