@@ -15,12 +15,14 @@ stdenv.mkDerivation rec {
         gcc
         clang
         opam m4
+        pkg-config
     ];
 
     buildInputs = [
         #openssl
         zlib
         boost
+        libffi
     ];
 
 }
