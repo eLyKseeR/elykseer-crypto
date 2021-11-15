@@ -12,7 +12,9 @@ set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_USE_MULTITHREADED ON)
 find_package( Boost 1.67.0 REQUIRED COMPONENTS system unit_test_framework contract)
-include_directories(${Boost_INCLUDE_DIRS})
+LINK_DIRECTORIES ( ${Boost_LIBRARY_DIRS} )
+INCLUDE_DIRECTORIES (${Boost_INCLUDE_DIRS})
+
 
 # mine
 include_directories(../src)
@@ -20,7 +22,7 @@ include_directories("${CMAKE_HOME_DIRECTORY}/../ext/prngsharp/src")
 
 # link external libraries
 link_directories("${CMAKE_HOME_DIRECTORY}/../ext/prngsharp")
-set(libs "dl" "z")
+#set(libs "dl" "z")
 
 file(GLOB SRCS ut*.cpp)
 

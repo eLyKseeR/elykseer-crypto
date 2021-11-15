@@ -4,7 +4,6 @@ declared in [Aes](aes.hpp.md)
 
 #if CRYPTOLIB == CRYPTOPP
 struct Aes::pimpl {
-    //pimpl() {};
     std::unique_ptr<CryptoPP::SymmetricCipher> _cipher;
     std::unique_ptr<CryptoPP::StreamTransformationFilter> _filter;
     int _len {0};
@@ -29,8 +28,8 @@ AesEncrypt::AesEncrypt(Key256 const & k, Key128 const & iv)
 {
     if (_pimpl) {
       _pimpl->_cipher.reset(new CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption);
-      _pimpl->_cipher.get()->SetKeyWithIV(k.bytes(), k.length()/8, iv.bytes());
-      _pimpl->_filter.reset(new CryptoPP::StreamTransformationFilter(*_pimpl->_cipher.get(), NULL, CryptoPP::BlockPaddingSchemeDef::NO_PADDING));
+      _pimpl->_cipher->SetKeyWithIV(k.bytes(), k.length()/8, iv.bytes());
+      _pimpl->_filter.reset(new CryptoPP::StreamTransformationFilter(*_pimpl->_cipher, NULL, CryptoPP::BlockPaddingSchemeDef::NO_PADDING));
     }
 }
 
@@ -39,13 +38,13 @@ int AesEncrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & ino
     if (! _pimpl->_filter) { return -1; }
 
     if (inlen > 0) {
-      _pimpl->_filter.get()->Put(inoutbuf.ptr(), inlen); }
+      _pimpl->_filter->Put(inoutbuf.ptr(), inlen); }
 
-    if (!_pimpl->_filter.get()->AnyRetrievable()) {
+    if (!_pimpl->_filter->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz);
-    len = _pimpl->_filter.get()->Get((unsigned char*)inoutbuf.ptr(), len);
+    size_t len = std::min(_pimpl->_filter->MaxRetrievable(), (unsigned long)Aes::datasz);
+    len = _pimpl->_filter->Get((unsigned char*)inoutbuf.ptr(), len);
 
     return len;
 }
@@ -53,13 +52,13 @@ int AesEncrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & ino
 int AesEncrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outbuf)
 {
     if (! _pimpl->_filter) { return -1; }
-    _pimpl->_filter.get()->MessageEnd();
+    _pimpl->_filter->MessageEnd();
 
-    if (!_pimpl->_filter.get()->AnyRetrievable()) {
+    if (!_pimpl->_filter->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
-    len = _pimpl->_filter.get()->Get((unsigned char*)outbuf.ptr() + inpos, len);
+    size_t len = std::min(_pimpl->_filter->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
+    len = _pimpl->_filter->Get((unsigned char*)outbuf.ptr() + inpos, len);
 
     return len;
 }
@@ -71,8 +70,8 @@ AesDecrypt::AesDecrypt(Key256 const & k, Key128 const & iv)
 {
     if (_pimpl) {
       _pimpl->_cipher.reset(new CryptoPP::CTR_Mode<CryptoPP::AES>::Decryption);
-      _pimpl->_cipher.get()->SetKeyWithIV(k.bytes(), k.length()/8, iv.bytes());
-      _pimpl->_filter.reset(new CryptoPP::StreamTransformationFilter(*_pimpl->_cipher.get(), NULL, CryptoPP::BlockPaddingSchemeDef::NO_PADDING));
+      _pimpl->_cipher->SetKeyWithIV(k.bytes(), k.length()/8, iv.bytes());
+      _pimpl->_filter.reset(new CryptoPP::StreamTransformationFilter(*_pimpl->_cipher, NULL, CryptoPP::BlockPaddingSchemeDef::NO_PADDING));
     }
 }
 
@@ -81,13 +80,13 @@ int AesDecrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & ino
     if (! _pimpl->_filter) { return -1; }
 
     if (inlen > 0) {
-      _pimpl->_filter.get()->Put(inoutbuf.ptr(), inlen); }
+      _pimpl->_filter->Put(inoutbuf.ptr(), inlen); }
 
-    if (!_pimpl->_filter.get()->AnyRetrievable()) {
+    if (!_pimpl->_filter->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz);
-    len = _pimpl->_filter.get()->Get((unsigned char*)inoutbuf.ptr(), len);
+    size_t len = std::min(_pimpl->_filter->MaxRetrievable(), (unsigned long)Aes::datasz);
+    len = _pimpl->_filter->Get((unsigned char*)inoutbuf.ptr(), len);
 
     return len;
 }
@@ -95,13 +94,13 @@ int AesDecrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & ino
 int AesDecrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outbuf)
 {
     if (! _pimpl->_filter) { return -1; }
-    _pimpl->_filter.get()->MessageEnd();
+    _pimpl->_filter->MessageEnd();
 
-    if (!_pimpl->_filter.get()->AnyRetrievable()) {
+    if (!_pimpl->_filter->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
-    len = _pimpl->_filter.get()->Get((unsigned char*)outbuf.ptr() + inpos, len);
+    size_t len = std::min(_pimpl->_filter->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
+    len = _pimpl->_filter->Get((unsigned char*)outbuf.ptr() + inpos, len);
 
     return len;
 }

@@ -16,12 +16,13 @@ stdenv.mkDerivation rec {
         clang
         opam m4
         busybox
+        perlPackages.DigestSHA3
     ];
 
     buildInputs = [
         openssl
         zlib
-        boost
+        boost172
     ];
 
 }

@@ -1,5 +1,6 @@
 # call: cmake .
 # on Linux/OSX to build the Makefiles
+# run with 'make VERBOSE=1' to get detailed output
 #
 # on OSX: cmake -G Xcode .
 # to build the Xcode project files
@@ -62,12 +63,9 @@ IF(USE_OPENSSL)
 ENDIF(USE_OPENSSL)
 
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -g -O1 -fPIC")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -g -fPIC")
-set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -fPIC -g")
-# clang also wants its own stdlib
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++ -g -O0")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -O0 -fPIC")
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # OS dependent
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
