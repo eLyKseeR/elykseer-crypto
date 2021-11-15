@@ -1,0 +1,42 @@
+---
+kind: pipeline
+type: ssh
+name: default
+
+server:
+  host:
+    from_secret: build_agent_host
+  user:
+    from_secret: build_agent_user
+  ssh_key:
+    from_secret: build_agent_key
+
+steps:
+- name: init dependencies
+  commands:
+    - git submodule update --init --remote
+- name: build prngsharp
+  commands:
+    - cd ext/prngsharp
+    - ./build.FreeBSD.jenkins.sh
+- name: build cryptopp
+  commands:
+    - cd ext/cryptopp
+    - gmake -f GNUmakefile -j2
+- name: mk cpp
+  commands:
+    - cd BUILD
+    - ./mk_cpp.sh
+- name: cmake
+  commands:
+    - cd BUILD
+    - cmake .
+- name: compile
+  commands:
+    - cd BUILD
+    - make -j2
+- name: unit tests
+  commands:
+    - cd BUILD
+    - ./ut.sh
+
