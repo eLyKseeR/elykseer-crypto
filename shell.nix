@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
         gcc
         clang
         opam m4
-        busybox
+        #busybox
     ];
 
     buildInputs = [
