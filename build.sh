@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-set -e
+set -xe
 
 git submodule update --init --remote
 cd ext/prngsharp; ./build.Linux.jenkins.sh
