@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
         clang
         opam m4
         #busybox
+        perl534Packages.DigestSHA3
     ];
 
     buildInputs = [
