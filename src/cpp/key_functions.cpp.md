@@ -13,9 +13,9 @@ int hex2int(unsigned char c) {
 }
 
 unsigned char char2hex(unsigned char c) {
-    if (c >= 0 && c <= 9) {
+    if (c <= 9) {
         return c + '0';
-    } else if (c >= 10 && c <= 16) {
+    } else if (c <= 16) {
         return c + 'a' - 10;
     } else {
         return '?';

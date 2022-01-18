@@ -15,6 +15,8 @@ stdenv.mkDerivation rec {
         gcc
         clang
         opam m4
+        global
+        cppcheck
         #busybox
         perl534Packages.DigestSHA3
     ];
