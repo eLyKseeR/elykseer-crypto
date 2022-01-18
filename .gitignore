@@ -45,3 +45,8 @@ BUILD/test
 
 .fake
 .ionide
+
+GPATH
+GRTAGS
+GTAGS
+
