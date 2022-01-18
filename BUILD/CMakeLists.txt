@@ -61,17 +61,36 @@ IF(USE_OPENSSL)
   set(CRYPTO_LIBS ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY})
 ENDIF(USE_OPENSSL)
 
+find_program(CPPCHECK NAMES cppcheck)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -g -O1 -fPIC")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -g -fPIC")
-set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -fPIC -g")
+if(CPPCHECK)
+    message(STATUS "Found: cppcheck")
+    add_custom_target(cppcheck
+        ${CPPCHECK}
+        -Uassert --std=c++17 --enable=all
+        ${CMAKE_SOURCE_DIR}/src/lxr/*.hpp
+        ${CMAKE_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_SOURCE_DIR}/test/*.cpp
+    )
+else()
+    message(STATUS "Looking for cppcheck - not found")
+    message(STATUS "  Build target 'cppcheck' will not be available.")
+endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z -g -O1 -fPIC")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -g -fPIC")
+#set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -fPIC -g")
 # clang also wants its own stdlib
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++ -g -O0")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -g -O0 -fPIC")
 
 # OS dependent
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12.0")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
   include_directories(/usr/local/opt/zlib/include)
   link_directories(/usr/local/opt/zlib/lib)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -79,7 +98,5 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # other external tools
 include_directories(../ext)
 
-
 add_subdirectory( src )
 add_subdirectory( test )
-

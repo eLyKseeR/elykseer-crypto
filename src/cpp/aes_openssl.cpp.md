@@ -6,7 +6,7 @@ declared in [Aes](aes.hpp.md)
 struct Aes::pimpl {
     pimpl() {};
     ~pimpl() { if (_ctx) { EVP_CIPHER_CTX_free(_ctx); _ctx = NULL; } };
-    EVP_CIPHER_CTX *_ctx;
+    EVP_CIPHER_CTX *_ctx {nullptr};
     int _len {0};
 };
 

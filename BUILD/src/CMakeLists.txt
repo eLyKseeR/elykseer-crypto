@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
 
 # search path for headers
 include_directories(".")
@@ -13,7 +13,7 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   # specific code
   set(libs "dl" "z" "prngCpp.freebsd.1.0.5")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   # Linux specific code
   set(libs "dl" "z" "prngCpp_s.linux.1.0.5")
