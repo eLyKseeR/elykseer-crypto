@@ -31,10 +31,12 @@ AesEncrypt::AesEncrypt(Key256 const & k, Key128 const & iv)
     : Aes()
 {
     if (_pimpl->_ctx) {
-        if (EVP_EncryptInit(_pimpl->_ctx, EVP_aes_256_cbc(), (const unsigned char *)k.bytes(), (const unsigned char *)iv.bytes()) != 1) {
-          std::clog << "failed to init encryption!" << std::endl;
-          //EVP_CIPHER_CTX_free(_pimpl->_ctx);
-          //_pimpl->_ctx = NULL;
+        if (EVP_EncryptInit(_pimpl->_ctx, EVP_aes_256_cbc(), (const unsigned char *)k.bytes(),
+                               (const unsigned char *)iv.bytes()) != 1)
+        {
+            EVP_CIPHER_CTX_free(_pimpl->_ctx);
+            _pimpl->_ctx = NULL;
+            std::clog << "failed to init encryption!" << std::endl;
         }
     }
 }
@@ -64,7 +66,7 @@ int AesEncrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outb
     if (! _pimpl->_ctx) { return -1; }
     int len = 0;
     unsigned char tbuf[Aes::datasz];
-    if (EVP_EncryptFinal_ex(_pimpl->_ctx, tbuf, &len) != 1) {
+    if (EVP_EncryptFinal(_pimpl->_ctx, tbuf, &len) != 1) {
          len = -1;
     }
     outbuf.transform([&inpos,&len,&tbuf](const int i, const char c)->char {
@@ -104,7 +106,7 @@ int AesDecrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outb
 {
     if (! _pimpl->_ctx) { return -1; }
     int len = 0;
-    if (EVP_DecryptFinal_ex(_pimpl->_ctx, (unsigned char*)outbuf.ptr()+inpos, &len) != 1) {
+    if (EVP_DecryptFinal(_pimpl->_ctx, (unsigned char*)outbuf.ptr()+inpos, &len) != 1) {
         len = -1;
     }
     EVP_CIPHER_CTX_free(_pimpl->_ctx);

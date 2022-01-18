@@ -27,15 +27,13 @@ Key256 Sha256::hash(boost::filesystem::path const & fpath)
 
     Key256 k(true);
     unsigned char buf[1024];
-    FILE *_f = fopen(fpath.c_str(), "r");
-    if (_f) {
-        while (!feof(_f)) {
-            int nread = fread(buf, 1, 1024, _f);
-            hash.Update(buf, nread);
-        }
-        hash.Final(digest);
-        k.fromBytes(digest);
+    boost::filesystem::ifstream infile(fpath);
+    while (infile.good()) {
+        infile.read((char*)buf, 1024);
+        hash.Update(buf, infile.gcount());
     }
+    hash.Final(digest);
+    k.fromBytes(digest);
     return k;
 }
 #endif

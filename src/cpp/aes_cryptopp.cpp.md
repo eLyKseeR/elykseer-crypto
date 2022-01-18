@@ -44,7 +44,7 @@ int AesEncrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & ino
     if (!_pimpl->_filter.get()->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz);
+    size_t len = std::min((unsigned long)_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz);
     len = _pimpl->_filter.get()->Get((unsigned char*)inoutbuf.ptr(), len);
 
     return len;
@@ -58,7 +58,7 @@ int AesEncrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outb
     if (!_pimpl->_filter.get()->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
+    size_t len = std::min((unsigned long)_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
     len = _pimpl->_filter.get()->Get((unsigned char*)outbuf.ptr() + inpos, len);
 
     return len;
@@ -86,7 +86,7 @@ int AesDecrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & ino
     if (!_pimpl->_filter.get()->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz);
+    size_t len = std::min((unsigned long)_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz);
     len = _pimpl->_filter.get()->Get((unsigned char*)inoutbuf.ptr(), len);
 
     return len;
@@ -100,7 +100,7 @@ int AesDecrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outb
     if (!_pimpl->_filter.get()->AnyRetrievable()) {
       return 0; }
 
-    size_t len = std::min(_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
+    size_t len = std::min((unsigned long)_pimpl->_filter.get()->MaxRetrievable(), (unsigned long)Aes::datasz - inpos);
     len = _pimpl->_filter.get()->Get((unsigned char*)outbuf.ptr() + inpos, len);
 
     return len;

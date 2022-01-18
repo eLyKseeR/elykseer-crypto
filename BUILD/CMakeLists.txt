@@ -73,9 +73,10 @@ if(CPPCHECK)
         ${CMAKE_SOURCE_DIR}/test/*.cpp
     )
 else()
-    message(STATUS "Looking for cppcheck - not found")
-    message(STATUS "  Build target 'cppcheck' will not be available.")
+    message(STATUS "Cppcheck - not found")
+    message(STATUS "  Build target 'cppcheck' not available.")
 endif()
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 

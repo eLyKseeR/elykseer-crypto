@@ -9,6 +9,7 @@
 #include "sizebounded/sizebounded.ipp"
 
 #if CRYPTOLIB == OPENSSL
+#error AES using OpenSSL needs a rework!
 #include "openssl/conf.h"
 #include "openssl/evp.h"
 #include "openssl/err.h"

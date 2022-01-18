@@ -11,30 +11,36 @@ Key256 Sha256::hash(std::string const & msg)
 Key256 Sha256::hash(const char buffer[], int length)
 {
     unsigned char digest[SHA256_DIGEST_LENGTH];
-    unsigned char *ret = SHA256((const unsigned char*)buffer, length, digest);
+    const EVP_MD *md = EVP_sha3_256();
+    EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+    EVP_DigestInit_ex(ctx, md, nullptr);
+
+    EVP_DigestUpdate(ctx, buffer, length);
+    EVP_DigestFinal_ex(ctx, digest, nullptr);
 
     Key256 k(true);
     k.fromBytes(digest);
+    EVP_MD_CTX_free(ctx);
     return k;
 }
 
 Key256 Sha256::hash(boost::filesystem::path const & fpath)
 {
     unsigned char digest[SHA256_DIGEST_LENGTH];
-    SHA256_CTX ctx;
-    SHA256_Init(&ctx);
+    const EVP_MD *md = EVP_sha3_256();
+    EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+    EVP_DigestInit_ex(ctx, md, nullptr);
 
     Key256 k(true);
     unsigned char buf[1024];
-    FILE *_f = fopen(fpath.c_str(), "r");
-    if (_f) {
-        while (!feof(_f)) {
-            int nread = fread(buf, 1, 1024, _f);
-            SHA256_Update(&ctx, buf, nread);
-        }
-        SHA256_Final(digest, &ctx);
-        k.fromBytes(digest);
+    boost::filesystem::ifstream infile(fpath);
+    while (infile.good()) {
+        infile.read((char*)buf, 1024);
+        EVP_DigestUpdate(ctx, buf, infile.gcount());
     }
+    EVP_DigestFinal_ex(ctx, digest, nullptr);
+    k.fromBytes(digest);
+    EVP_MD_CTX_free(ctx);
     return k;
 }
 #endif

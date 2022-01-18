@@ -45,8 +45,6 @@ module Random =
 
 >private:
 
-> std::unique_ptr&lt;prngCpp::MT19937&gt; _rng;
-
 >Random(Random const &) = delete;
 
 >Random & operator=(Random const &) = delete;

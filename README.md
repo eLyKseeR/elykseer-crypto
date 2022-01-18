@@ -34,7 +34,7 @@ base library that provides cryptographic functions to _elykseer_ implementations
 
 # copyright
 
-Copyright 2019-2021 by Alexander Diemand
+Copyright 2019 by Alexander Diemand
 
 # license
 
