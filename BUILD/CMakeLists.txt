@@ -94,6 +94,8 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
   include_directories(/usr/local/opt/zlib/include)
   link_directories(/usr/local/opt/zlib/lib)
+  include_directories(/opt/homebrew/opt/zlib/include)
+  link_directories(/opt/homebrew/opt/zlib/lib)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # other external tools

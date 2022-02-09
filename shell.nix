@@ -9,6 +9,7 @@ stdenv.mkDerivation rec {
     nativeBuildInputs = [
         cmake
         git
+        gnused
         pandoc
         html2text
         swig
@@ -26,6 +27,11 @@ stdenv.mkDerivation rec {
         zlib
         boost
     ];
+
+    shellHook = ''
+      echo 'eLyKseeR nixified environment'
+      export SED=sed
+    '';
 
 }
 

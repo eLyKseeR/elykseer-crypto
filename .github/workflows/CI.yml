@@ -30,7 +30,6 @@ jobs:
       shell: bash
       working-directory: ${{github.workspace}}/ext
       run: |
-        cd prngsharp; ./build.Linux.jenkins.sh
         cd ../cryptopp; make -f GNUmakefile
     - name: Prepare code
       shell: bash

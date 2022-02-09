@@ -8,7 +8,6 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext/prngsharp; ./build.FreeBSD.jenkins.sh'
                 sh 'cd ext/cryptopp; gmake -f GNUmakefile'
             }
         }

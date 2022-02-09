@@ -8,7 +8,6 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext/prngsharp; ./build.Linux.jenkins.nix'
                 sh 'cd ext/cryptopp; nix-shell -p gcc --run "make -f GNUmakefile"'
             }
         }

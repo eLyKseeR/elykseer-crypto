@@ -5,7 +5,6 @@ the content of the 'ext/' directory:
 
   cryptopp
   gitalk/
-  prngsharp/
   sizebounded/
 
 
@@ -23,14 +22,6 @@ sizebounded
 license: BSD3
 
 https://github.com/CodiePP/sizebounded.git
-
-
-prngsharp
-=========
-
-license: MIT
-
-https://github.com/CodiePP/prngsharp.git
 
 
 Crypto++

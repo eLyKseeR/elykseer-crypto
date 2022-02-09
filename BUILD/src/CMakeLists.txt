@@ -2,21 +2,19 @@ cmake_minimum_required(VERSION 3.5)
 
 # search path for headers
 include_directories(".")
-include_directories("${CMAKE_HOME_DIRECTORY}/../ext/prngsharp/src")
 
 # link external libraries
-link_directories("${CMAKE_HOME_DIRECTORY}/../ext/prngsharp/")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
    # Mac OS X specific code
-   set(libs "dl" "z" "prngCpp_s.osx.1.0.5")
+   set(libs "dl" "z")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   # specific code
-  set(libs "dl" "z" "prngCpp.freebsd.1.0.5")
+  set(libs "dl" "z")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   # Linux specific code
-  set(libs "dl" "z" "prngCpp_s.linux.1.0.5")
+  set(libs "dl" "z")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 # list of source files to be compiled
