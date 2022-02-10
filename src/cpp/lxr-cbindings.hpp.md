@@ -11,8 +11,9 @@
 #define EXPORT __declspec(dllexport)
 #define IMPORT __declspec(dllimport)
 
-#elif defined(__GNUC__)
+#elif defined(__GNUC__) || defined(__CLANG__)
 
+// try: protected | public (=default) | private
 #define EXPORT __attribute__((visibility("default")))
 #define IMPORT __attribute__((visibility("default")))
 
@@ -20,7 +21,7 @@
 
 #define EXPORT
 #define IMPORT
-#pragma warning undefined import/export attributes
+#error undefined import/export attributes
 
 #endif
 

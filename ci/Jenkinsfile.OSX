@@ -3,12 +3,11 @@ pipeline {
     stages {
         stage('init dependencies') {
             steps {
-                sh 'git submodule update --init --remote'
+                sh 'git submodule update --init'
             }
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext/prngsharp; ./build.OSX.jenkins.sh'
                 sh 'cd ext/cryptopp; make -f GNUmakefile'
             }
         }

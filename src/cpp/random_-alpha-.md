@@ -9,6 +9,12 @@
 
 #include <math.h>
 
+#if CRYPTOLIB == CRYPTOPP
+#include <cryptopp/osrng.h>
+#else
+#error not yet defined
+#endif
+
 namespace lxr {
 
 ````

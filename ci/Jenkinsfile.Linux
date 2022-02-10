@@ -8,7 +8,6 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext/prngsharp; ./build.Linux.jenkins.sh'
                 sh 'cd ext/cryptopp; make -f GNUmakefile'
             }
         }

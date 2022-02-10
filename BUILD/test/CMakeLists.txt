@@ -16,10 +16,8 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 # mine
 include_directories(../src)
-include_directories("${CMAKE_HOME_DIRECTORY}/../ext/prngsharp/src")
 
 # link external libraries
-link_directories("${CMAKE_HOME_DIRECTORY}/../ext/prngsharp")
 set(libs "dl" "z")
 
 file(GLOB SRCS ut*.cpp)

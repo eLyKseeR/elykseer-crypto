@@ -7,6 +7,3 @@
 [submodule "ext/sizebounded"]
 	path = ext/sizebounded
 	url = https://github.com/CodiePP/sizebounded.git
-[submodule "ext/prngsharp"]
-	path = ext/prngsharp
-	url = https://github.com/CodiePP/prngsharp.git

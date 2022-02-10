@@ -9,6 +9,8 @@
 
 #include "lxr/random.hpp"
 
+#include <cmath>
+
 namespace lxr {
 
 ````
