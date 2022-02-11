@@ -30,7 +30,7 @@ jobs:
       shell: bash
       working-directory: ${{github.workspace}}/ext
       run: |
-        cd ../cryptopp; make -f GNUmakefile
+        cd cryptopp; make -f GNUmakefile
     - name: Prepare code
       shell: bash
       working-directory: ${{github.workspace}}/BUILD
