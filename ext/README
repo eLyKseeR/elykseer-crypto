@@ -37,3 +37,11 @@ on OSX build with env. var. set:
 > ./cryptest.sh fast
 
 
+GPGme
+=====
+
+license: GNU Lesser General Public License (LGPL)
+         or the GNU General Public License (GPL)
+
+https://dev.gnupg.org/source/gpgme.git
+

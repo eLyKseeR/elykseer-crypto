@@ -21,6 +21,8 @@ elykseer-crypto library.
 
 [utAes](utAes.cpp.md) for class [Aes](../aes.hpp.md)
 
+[utGpg](utGpg.cpp.md) for class [Gpg](../gpg.hpp.md)
+
 
 ## main entry point
 

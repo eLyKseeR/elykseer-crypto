@@ -5,6 +5,8 @@
 ```cpp
 */
 
+#include <cassert>
+
 #include "lxr/md5.hpp"
 
 #if CRYPTOLIB == OPENSSL

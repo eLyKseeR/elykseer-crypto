@@ -5,6 +5,8 @@
 ```cpp
 */
 
+#include <cassert>
+
 #include "lxr/sha256.hpp"
 
 #if CRYPTOLIB == OPENSSL

@@ -49,3 +49,6 @@ Based on MT19937, a good pseudo random number generator.
 
 [Aes](aes.hpp.md)
 
+## PGP/GPG symmetric en-/decryption
+
+[GPG](gpg.hpp.md)

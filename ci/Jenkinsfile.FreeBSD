@@ -8,6 +8,7 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
+                sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test; make'
                 sh 'cd ext/cryptopp; gmake -f GNUmakefile'
             }
         }

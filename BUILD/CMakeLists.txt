@@ -26,10 +26,7 @@ set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-
 set(USE_OPENSSL NO)
 set(USE_CRYPTOPP YES)
 
-#if(XCODE)
-#  set(CMAKE_CXX_COMPILER_WORKS TRUE)
-#  set(CMAKE_C_COMPILER_WORKS TRUE)
-#endif()
+find_package(PkgConfig)
 
 # boost
 add_definitions( -DBOOST_ALL_DYN_LINK )
@@ -100,6 +97,14 @@ ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # other external tools
 include_directories(../ext)
+
+# GPGme
+include_directories(../ext/gpgme/src)
+add_library(libgpgme STATIC IMPORTED)
+SET_TARGET_PROPERTIES(libgpgme PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/../ext/gpgme/src/.libs/libgpgme.a)
+set(GPGME_LIBRARIES "libgpgme")
+pkg_check_modules(ASSUAN REQUIRED libassuan)
+pkg_check_modules(GPGerror REQUIRED gpg-error)
 
 add_subdirectory( src )
 add_subdirectory( test )
