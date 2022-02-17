@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE( message_digest )
 ```cpp
 BOOST_AUTO_TEST_CASE( file_checksum )
 {
-  std::filesystem::path fp = "/bin/sh";
+  boost::filesystem::path fp = "/bin/sh";
   std::string sha256 = "";
 
 #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__)

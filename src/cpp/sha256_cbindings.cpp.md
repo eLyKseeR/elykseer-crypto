@@ -14,7 +14,7 @@ CKey256* hash_Sha256(int len, const char * inbuf)
 extern "C" EXPORT
 CKey256* filehash_Sha256(const char * fp)
 {
-    auto h = lxr::Sha256::hash(std::filesystem::path(fp));
+    auto h = lxr::Sha256::hash(boost::filesystem::path(fp));
     CKey256 * r = new CKey256; r->ptr = new lxr::Key256(h);
     return r;
 }
