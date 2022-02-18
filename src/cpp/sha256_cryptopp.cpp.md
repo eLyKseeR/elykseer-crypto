@@ -20,14 +20,14 @@ Key256 Sha256::hash(const char buffer[], int length)
     return k;
 }
 
-Key256 Sha256::hash(std::filesystem::path const & fpath)
+Key256 Sha256::hash(boost::filesystem::path const & fpath)
 {
     unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
     CryptoPP::SHA3_256 hash;
 
     Key256 k(true);
     unsigned char buf[1024];
-    std::ifstream infile(fpath);
+    std::ifstream infile(fpath.native());
     while (infile.good()) {
         infile.read((char*)buf, 1024);
         hash.Update(buf, infile.gcount());

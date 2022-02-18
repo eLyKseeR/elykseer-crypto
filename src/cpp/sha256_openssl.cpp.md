@@ -24,7 +24,7 @@ Key256 Sha256::hash(const char buffer[], int length)
     return k;
 }
 
-Key256 Sha256::hash(std::filesystem::path const & fpath)
+Key256 Sha256::hash(boost::filesystem::path const & fpath)
 {
     unsigned char digest[SHA256_DIGEST_LENGTH];
     const EVP_MD *md = EVP_sha3_256();
@@ -33,7 +33,7 @@ Key256 Sha256::hash(std::filesystem::path const & fpath)
 
     Key256 k(true);
     unsigned char buf[1024];
-    std::filesystem::ifstream infile(fpath);
+    boost::filesystem::ifstream infile(fpath);
     while (infile.good()) {
         infile.read((char*)buf, 1024);
         EVP_DigestUpdate(ctx, buf, infile.gcount());
