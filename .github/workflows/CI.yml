@@ -23,7 +23,8 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt-get -y install cmake pandoc html2text libdigest-sha3-perl libboost-all-dev libboost-contract-dev libgpg-error-dev libassuan-dev swig gcc clang opam m4 busybox
+        sudo apt-get -y install cmake pandoc html2text libdigest-sha3-perl libboost-all-dev libboost-contract-dev libgpg-error-dev libassuan-dev swig gcc clang opam m4 busybox gnupg
+        gpg --keyserver hkp://keyserver.ubuntu.com --recv E2DFCA9AA83BA568AF39280999283F5327C5D38F
 
     - name: Update submodules
       run: git submodule update --init
