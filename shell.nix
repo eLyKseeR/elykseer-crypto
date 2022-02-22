@@ -16,10 +16,14 @@ stdenv.mkDerivation rec {
         gcc
         clang
         opam m4
-        global
+        #global
         cppcheck
         #busybox
         perl534Packages.DigestSHA3
+        pkg-config
+        autoconf automake libtool
+        libassuan libgpgerror
+        gnupg
     ];
 
     buildInputs = [

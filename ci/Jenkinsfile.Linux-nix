@@ -9,7 +9,7 @@ pipeline {
         stage('build dependencies') {
             steps {
                 sh 'cd ext/gpgme; nix-shell -p autoconf automake libtool m4 --run "./autogen.sh"'
-                sh 'cd ext/gpgme; nix-shell -p gcc libgpgerror libassuan --run "./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test; make"'
+                sh 'cd ext/gpgme; nix-shell -p gcc libgpgerror libassuan --run "./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic; make"'
                 sh 'cd ext/cryptopp; nix-shell -p gcc --run "make -f GNUmakefile"'
             }
         }
@@ -20,6 +20,7 @@ pipeline {
         }
         stage('cmake') {
             steps {
+                sh 'cd BUILD; rm -rf CMakeCache.txt CMakeFiles'
                 sh 'cd BUILD; nix-shell -p pkg-config libgpgerror libassuan gcc cmake boost zlib --run "cmake ."'
             }
         }

@@ -5,14 +5,13 @@ base library that provides cryptographic functions to _elykseer_ implementations
 
 ## compilation
 
-* initialise submodules
-
-> `git submodule init`
-
 * clone or update submodules
 
-> `git submodule update --remote`
+> `git submodule update --init
 
+* add PGP key (for testing)
+
+> gpg --recv-keys E2DFCA9AA83BA568AF39280999283F5327C5D38F
 
 ## language bindings
 
