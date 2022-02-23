@@ -25,7 +25,13 @@ namespace [lxr](namespace.list) {
 
 >virtual [~Gpg](gpg_ctor.cpp.md)();
 
->bool [exists_address](gpg_functions.cpp.md)(std::string const &) const;
+// can encrypt for address?
+
+>bool [has_public_key](gpg_functions.cpp.md)(std::string const &) const;
+
+// can decrypt for address?
+
+>bool [has_private_key](gpg_functions.cpp.md)(std::string const &) const;
 
 >std::optional&lt;std::string&gt; [encrypt_to_key](gpg_functions.cpp.md)(std::string const & fpr);
 

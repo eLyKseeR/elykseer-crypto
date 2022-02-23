@@ -5,7 +5,9 @@ declared in [Gpg](gpg.hpp.md)
 struct Gpg::pimpl {
     public:
     bool startup_gpgme();
-    bool has_public_key(std::string const &);
+    bool has_key(std::string const &fpr, bool private_key = false);
+    bool has_public_key(std::string const &fpr) { return has_key(fpr, false); };
+    bool has_private_key(std::string const &fpr) { return has_key(fpr, true); };
     std::optional<std::string> encrypt_to_key(std::string const & fpr);
     std::ostream& ostream() { oss.str() = ""; return oss; }
     bool good() { return oss.good(); }
@@ -13,10 +15,17 @@ struct Gpg::pimpl {
     private:
     gpgme_ctx_t ctx{nullptr};
     std::ostringstream oss;
-    std::optional<gpgme_key_t> find_key(std::string const &);
+    std::optional<gpgme_key_t> find_key(std::string const &fpr, bool private_key = false);
 };
 
+// define the following to get debugging output about the GPG engine and the keys found
+#undef DEBUG_OUTPUT
+
+#ifdef DEBUG_OUTPUT
 #define OUTPUT_GPGME_ERROR(err) std::clog << "gpgme error: " << err << "/" << gpgme_strerror(err) << std::endl;
+#else
+#define OUTPUT_GPGME_ERROR(err)
+#endif
 
 bool Gpg::pimpl::startup_gpgme() {
     gpgme_error_t err;
@@ -32,16 +41,20 @@ bool Gpg::pimpl::startup_gpgme() {
         err = gpgme_new (&ctx);
         if (err) { OUTPUT_GPGME_ERROR(err); return false; }
         gpgme_engine_info_t eng = gpgme_ctx_get_engine_info (ctx);
+#ifdef DEBUG_OUTPUT
         while (eng) {
             std::clog << "GPGme engine: " << eng->file_name << " " << eng->version << std::endl;
             eng = eng->next;
         }
+#endif
         const auto sender = gpgme_get_sender(ctx);
+#ifdef DEBUG_OUTPUT
         if (sender) {
             std::clog << "GPGme sender: " << sender << std::endl;
         } else {
             std::clog << "GPGme no sender." << std::endl;
         }
+#endif
     } catch (...) {
         std::clog << "gpgme exception!" << std::endl;
         return false;
@@ -50,12 +63,11 @@ bool Gpg::pimpl::startup_gpgme() {
     return true;
 }
 
-std::optional<gpgme_key_t> Gpg::pimpl::find_key(std::string const &addr) {
+std::optional<gpgme_key_t> Gpg::pimpl::find_key(std::string const &addr, bool private_key) {
     gpgme_error_t err;
     try {
         gpgme_key_t k{nullptr};
-        // gpgme_subkey_t sk;
-        err = gpgme_get_key(ctx, addr.c_str(), &k, false);
+        err = gpgme_get_key(ctx, addr.c_str(), &k, private_key);
         if (err) { OUTPUT_GPGME_ERROR(err); return {}; }
         return k;
     } catch (...) {
@@ -64,10 +76,11 @@ std::optional<gpgme_key_t> Gpg::pimpl::find_key(std::string const &addr) {
     return {};
 }
 
-bool Gpg::pimpl::has_public_key(std::string const &addr) {
-    auto k0 = find_key(addr);
+bool Gpg::pimpl::has_key(std::string const &addr, bool private_key) {
+    auto k0 = find_key(addr, private_key);
     gpgme_error_t err;
     if (k0) {
+#ifdef DEBUG_OUTPUT
         gpgme_key_t k = k0.value();;
         gpgme_subkey_t sk;
         sk = k->subkeys;
@@ -75,8 +88,11 @@ bool Gpg::pimpl::has_public_key(std::string const &addr) {
             std::clog << "GPGme subkey: " << sk->keyid << " " << sk->fpr << std::endl;
             sk = sk->next;
         }
+#endif
     } else {
+#ifdef DEBUG_OUTPUT
         std::clog << "no key found" << std::endl;
+#endif
         return false;
     }
 

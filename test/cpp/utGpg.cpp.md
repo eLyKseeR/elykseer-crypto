@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE( gpg_check_address_fail )
   const std::string addr = "02355D3AE5A849EA2FFC0E8887EFE7D9796875C2";
 
   lxr::Gpg gpg;
-  BOOST_CHECK(!gpg.exists_address(addr));
+  BOOST_CHECK(!gpg.has_public_key(addr));
 }
 
 BOOST_AUTO_TEST_CASE( gpg_check_address_succeed )
@@ -35,7 +35,15 @@ BOOST_AUTO_TEST_CASE( gpg_check_address_succeed )
   const std::string addr = "E2DFCA9AA83BA568AF39280999283F5327C5D38F";
 
   lxr::Gpg gpg;
-  BOOST_CHECK(gpg.exists_address(addr));
+  BOOST_CHECK(gpg.has_public_key(addr));
+}
+
+BOOST_AUTO_TEST_CASE( gpg_check_non_private_key )
+{
+  const std::string addr = "E2DFCA9AA83BA568AF39280999283F5327C5D38F";
+
+  lxr::Gpg gpg;
+  BOOST_TEST_WARN(!gpg.has_private_key(addr), "the archiving process should not have access to this private key.");
 }
 
 BOOST_AUTO_TEST_CASE( gpg_encrypt_stream )
