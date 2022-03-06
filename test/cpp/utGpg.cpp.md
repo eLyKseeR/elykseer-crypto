@@ -57,7 +57,6 @@ BOOST_AUTO_TEST_CASE( gpg_encrypt_string )
   lxr::Gpg gpg;
   auto s = gpg.encrypt_to_key(addr, "hello world.");
   BOOST_CHECK(s);
-  BOOST_CHECK(gpg.good());
 }
 
 BOOST_AUTO_TEST_CASE( gpg_encrypt_stream )
@@ -67,7 +66,6 @@ BOOST_AUTO_TEST_CASE( gpg_encrypt_stream )
   auto s = gpg.encrypt_to_key(addr);
   BOOST_CHECK(s);
   // if (s) { std::clog << s.value() << std::endl; }
-  BOOST_CHECK(gpg.good());
 }
 
 BOOST_AUTO_TEST_CASE( gpg_encrypt_stream2 )
@@ -83,7 +81,6 @@ BOOST_AUTO_TEST_CASE( gpg_encrypt_stream2 )
     fout << s.value();
     fout.close();
   }
-  BOOST_CHECK(gpg.good());
 }
 ```
 

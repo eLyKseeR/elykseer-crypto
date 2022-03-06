@@ -10,15 +10,14 @@ struct Gpg::pimpl {
     bool has_private_key(std::string const &fpr) { return has_key(fpr, true); };
     std::optional<std::string> encrypt_to_key(std::string const & fpr, std::string const & );
     std::optional<std::string> encrypt_to_key(std::string const & fpr);
-    std::ostream& ostream() { oss.reset(new std::ostrstream()); return *oss; }
+    std::ostream& ostream() { oss.reset(new std::ostringstream()); return *oss; }
     std::istream& istream() { return *iss; }
     bool decrypt_from_file(std::string const & fpath);
-    bool good() { return oss->good(); }
 
     private:
     gpgme_ctx_t ctx{nullptr};
-    std::unique_ptr<std::ostrstream> oss{new std::ostrstream()};
-    std::unique_ptr<std::istrstream> iss;
+    std::unique_ptr<std::ostringstream> oss;
+    std::unique_ptr<std::istringstream> iss;
     std::optional<gpgme_key_t> find_key(std::string const &fpr, bool private_key = false);
 };
 
@@ -144,17 +143,11 @@ std::optional<std::string> Gpg::pimpl::encrypt_to_key(std::string const & addr, 
 
     err = gpgme_data_seek(cipher, 0, SEEK_SET);
     if (err) { OUTPUT_GPGME_ERROR(err); return {}; }
-    constexpr int bufsz = 1024;
-    char buf[bufsz + 1];
-    std::string res{""};
-    int nread = 0;
-    while ((nread = gpgme_data_read(cipher, buf, bufsz)) > 0) {
-        res = res + std::string(buf, nread);
-    }
-
-    cleanup();
-
-    return res;
+    size_t mlen;
+    const char *mptr = gpgme_data_release_and_get_mem(cipher, &mlen);
+    gpgme_data_release(plain);
+    gpgme_release(ctx);
+    return std::string(mptr, mlen);
 }
 
 bool Gpg::pimpl::decrypt_from_file(std::string const &p_fp)
@@ -184,7 +177,7 @@ bool Gpg::pimpl::decrypt_from_file(std::string const &p_fp)
     gpgme_data_release(cipher);
     size_t mlen;
     const char *mptr = gpgme_data_release_and_get_mem(plain, &mlen);
-    iss.reset(new std::istrstream(mptr, mlen));
+    iss.reset(new std::istringstream(std::string(mptr, mlen)));
     return true;
 }
 
