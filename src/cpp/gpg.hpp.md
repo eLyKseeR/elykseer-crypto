@@ -35,11 +35,15 @@ namespace [lxr](namespace.list) {
 
 >std::optional&lt;std::string&gt; [encrypt_to_key](gpg_functions.cpp.md)(std::string const & fpr);
 
->std::ostream& [ostream](gpg_functions.cpp.md)();
+>std::optional&lt;std::string&gt; [encrypt_to_key](gpg_functions.cpp.md)(std::string const & fpr, std::string const & msg);
+
+>std::ostream&amp; [ostream](gpg_functions.cpp.md)();
+
+>std::istream&amp; [istream](gpg_functions.cpp.md)();
 
 >bool [good](gpg_functions.cpp.md)();
 
->//std::istream& [decrypt_from_file](gpg_functions.cpp.md)(std::string const & fpr);
+>bool [decrypt_from_file](gpg_functions.cpp.md)(std::string const & fpath);
 
 >private:
 
