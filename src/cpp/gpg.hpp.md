@@ -41,8 +41,6 @@ namespace [lxr](namespace.list) {
 
 >std::istream&amp; [istream](gpg_functions.cpp.md)();
 
->bool [good](gpg_functions.cpp.md)();
-
 >bool [decrypt_from_file](gpg_functions.cpp.md)(std::string const & fpath);
 
 >private:

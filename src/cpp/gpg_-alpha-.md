@@ -9,7 +9,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <strstream>
 #include <string>
 #include <locale.h>
 #include <gpgme.h>
