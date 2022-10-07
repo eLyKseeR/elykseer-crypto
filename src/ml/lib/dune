@@ -1,0 +1,37 @@
+(library
+ (name elykseer_crypto)
+ (public_name elykseer_crypto)
+ (preprocess
+  (pps ppx_optcomp))
+ (modules key128 key256 aes256)
+ (c_library_flags :standard -lstdc++
+          ../../../../BUILD/src/libelykseer-crypto_Debug_s.a
+          ../../../../ext/cryptopp/libcryptopp.a)
+ (foreign_stubs (language cxx) (flags :standard -I ../../../../../ext -I ../../../../../BUILD/src -std=c++17 -fno-exceptions)
+  (names key128 key256 aes256encrypt aes256decrypt))
+ ;(foreign_archives elykseer-crypto)
+ (libraries unix mlcpp_cstdio)
+)
+
+; (rule
+;  (targets ffi_lxr_generated.ml)
+;  (deps ../bindings/ffi_lxr_stubgen.exe)
+;  (action
+;   (with-stdout-to
+;    %{targets}
+;    (run %{deps} -ml)
+;   )
+;  )
+; )
+
+; (rule
+;  (targets ffi_lxr_generated_stub.c)
+;  (deps ../bindings/ffi_lxr_stubgen.exe)
+;  (action
+;   (with-stdout-to
+;    %{targets}
+;    (run %{deps} -c)
+;   )
+;  )
+; )
+
