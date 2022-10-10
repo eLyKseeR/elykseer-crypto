@@ -1,0 +1,24 @@
+(lang dune 3.4)
+
+(name elykseer_crypto)
+
+(generate_opam_files true)
+
+(source
+ (github eLyKseeR/elykseer-crypto))
+
+(authors "Alexander Diemand <codieplusplus@apax.net>")
+
+(maintainers "Alexander Diemand <codieplusplus@apax.net>")
+
+(license LICENSE)
+
+(documentation https://url/to/documentation)
+
+(package
+ (name elykseer_crypto)
+ (synopsis "eLyKseeR cryptography library")
+ (description "cryptography support for eLyKseeR")
+ (depends ocaml dune)
+ (tags
+  (topics "eLyKseeR cryptography" elykseer_crypto)))
