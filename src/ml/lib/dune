@@ -4,10 +4,10 @@
  (preprocess
   (pps ppx_optcomp))
  (no_dynlink)
- (modules key128 key256 aes256)
+ (modules key128 key256 aes256 random)
  (c_library_flags :standard -lstdc++)
  (foreign_stubs (language cxx) (flags :standard -I ../../../../../ext -I ../../../../../BUILD/src -std=c++17 -fno-exceptions)
-  (names key128 key256 aes256encrypt aes256decrypt))
+  (names key128 key256 aes256encrypt aes256decrypt random))
  (foreign_archives elykseer-crypto_cpp cryptopp)
  (libraries unix mlcpp_cstdio)
 )
