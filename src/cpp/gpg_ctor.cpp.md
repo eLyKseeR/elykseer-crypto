@@ -152,8 +152,8 @@ std::optional<std::string> Gpg::pimpl::encrypt_to_key(std::string const & addr, 
 
 bool Gpg::pimpl::decrypt_from_file(std::string const &p_fp)
 {
-    boost::filesystem::path _fp{p_fp};
-    if (! boost::filesystem::exists(_fp)) {
+    std::filesystem::path _fp{p_fp};
+    if (! std::filesystem::exists(_fp)) {
         return false;
     }
 

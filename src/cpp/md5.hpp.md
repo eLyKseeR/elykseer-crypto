@@ -7,7 +7,7 @@
 #pragma once
 
 #include "lxr/key128.hpp"
-#include "boost/filesystem.hpp"
+#include <filesystem>
 #include <functional>
 
 ````
@@ -46,7 +46,7 @@ namespace [lxr](namespace.list) {
 
 >static Key128 [hash](md5_functions.cpp.md)(const char[], int length);
 
->// static Key128 [hash](md5_functions.cpp.md)(boost::filesystem::path const &);
+>// static Key128 [hash](md5_functions.cpp.md)(std::filesystem::path const &);
 
 >protected:
 

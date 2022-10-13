@@ -20,7 +20,7 @@ Key256 Sha256::hash(const char buffer[], int length)
     return k;
 }
 
-Key256 Sha256::hash(boost::filesystem::path const & fpath)
+Key256 Sha256::hash(std::filesystem::path const & fpath)
 {
     unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
     CryptoPP::SHA3_256 hash;

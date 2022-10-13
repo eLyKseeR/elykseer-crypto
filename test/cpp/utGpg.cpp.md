@@ -8,11 +8,11 @@
 #include "lxr/gpg.hpp"
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <string>
 
-#include "boost/filesystem.hpp"
 ````
 
 # Test suite: utGpg
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE( gpg_encrypt_stream2 )
   auto s = gpg.encrypt_to_key(addr);
   BOOST_CHECK(s);
   if (s) {
-    auto const tmpd = boost::filesystem::temp_directory_path();
+    auto const tmpd = std::filesystem::temp_directory_path();
     std::ofstream fout; fout.open((tmpd / std::string("test.gpg")).native());
     fout << s.value();
     fout.close();
@@ -89,8 +89,8 @@ feel free to test it on your own.
 ```cpp
 BOOST_AUTO_TEST_CASE( gpg_decrypt_file, * boost::unit_test::disabled() )
 {
-  auto const tmpd = boost::filesystem::temp_directory_path();
-  BOOST_CHECK(boost::filesystem::exists(tmpd / "test.gpg"));
+  auto const tmpd = std::filesystem::temp_directory_path();
+  BOOST_CHECK(std::filesystem::exists(tmpd / "test.gpg"));
   lxr::Gpg gpg;
   BOOST_CHECK(gpg.decrypt_from_file((tmpd / "test.gpg").native()));
   char plain[256]; memset(plain, '\0', 256);
