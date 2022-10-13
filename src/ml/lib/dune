@@ -4,16 +4,18 @@
  (preprocess
   (pps ppx_optcomp))
  (no_dynlink)
- (modules key128 key256 aes256 random)
+ (modules key128 key256 aes256 random sha256)
  (c_library_flags :standard -lstdc++)
  (foreign_stubs (language cxx) (flags :standard -I ../../../../../ext -I ../../../../../BUILD/src -std=c++17 -fno-exceptions)
-  (names key128 key256 aes256encrypt aes256decrypt random))
+  (names key128 key256 aes256encrypt aes256decrypt random sha256))
  (foreign_archives elykseer-crypto_cpp cryptopp)
  (libraries unix mlcpp_cstdio)
 )
 
 ; copy the native libraries to the build directory and install them
-(rule 
+(rule
+  (deps ../../../BUILD/src/libelykseer-crypto_Debug_s.a
+        ../../../ext/cryptopp/libcryptopp.a)
   (targets libelykseer-crypto_cpp.a libcryptopp.a)
   (action
    (no-infer
