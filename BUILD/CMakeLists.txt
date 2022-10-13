@@ -81,7 +81,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # OS dependent
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "12.6")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0")
   include_directories(/usr/local/opt/zlib/include)
   link_directories(/usr/local/opt/zlib/lib)
   include_directories(/opt/homebrew/opt/zlib/include)
