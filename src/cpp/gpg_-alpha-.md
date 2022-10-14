@@ -9,11 +9,10 @@
 
 #include <iostream>
 #include <sstream>
+#include <filesystem>
 #include <string>
 #include <locale.h>
 #include <gpgme.h>
-
-#include "boost/filesystem.hpp"
 
 namespace lxr {
 

@@ -13,3 +13,8 @@
  (modules aes256)
  (flags :standard -cclib -lstdc++)
  (libraries unix elykseer_crypto mlcpp_cstdio))
+(executable
+ (name random)
+ (modules random)
+ (flags :standard -cclib -lstdc++)
+ (libraries unix elykseer_crypto))
