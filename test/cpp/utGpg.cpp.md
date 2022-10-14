@@ -20,7 +20,7 @@
 on class [Gpg](../src/gpg.hpp.md)
 
 ```cpp
-BOOST_AUTO_TEST_SUITE( utGpg )
+BOOST_AUTO_TEST_SUITE( utGpg, * boost::unit_test_framework::disabled() )
 ```
 
 set this to the fingerprint of a PGP key you own the private key.
