@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_SUITE( utAes )
 ```cpp
 BOOST_AUTO_TEST_CASE( small_encrypt_then_decrypt )
 {
-  const std::string msg = "all my precious data are save, so I will sleep fine!";
+  const std::string msg = "all my precious data are safe, so I will sleep fine!";
 
   lxr::Key256 _k;
   lxr::Key128 _iv;
