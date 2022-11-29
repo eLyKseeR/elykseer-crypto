@@ -3,16 +3,25 @@
  (modules key128)
  (flags :standard -cclib -lstdc++)
  (libraries unix elykseer_crypto))
+
 (executable
  (name key256)
  (modules key256)
  (flags :standard -cclib -lstdc++)
  (libraries unix elykseer_crypto))
+
 (executable
  (name aes256)
  (modules aes256)
  (flags :standard -cclib -lstdc++)
- (libraries unix elykseer_crypto mlcpp_cstdio))
+ (libraries unix elykseer_crypto mlcpp_cstdio mlcpp_filesystem))
+
+(executable
+ (name sha256)
+ (modules sha256)
+ (flags :standard -cclib -lstdc++)
+ (libraries unix elykseer_crypto mlcpp_cstdio mlcpp_filesystem))
+
 (executable
  (name random)
  (modules random)
