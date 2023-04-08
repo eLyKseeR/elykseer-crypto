@@ -1,0 +1,8 @@
+create libelykseer-crypto_d.a
+addlib libelykseer-crypto_Debug_s.a
+addlib ../../ext/win64/lib/libgpgme.a
+addlib ../../ext/win64/lib/libgpg-error.a
+addlib ../../ext/win64/lib/libassuan.a
+addlib ../../ext/win64/lib/libcryptopp.a
+save
+end
