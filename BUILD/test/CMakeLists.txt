@@ -15,12 +15,15 @@ file(GLOB SRCS ut*.cpp)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
+	add_library(libelykseer-crypto_s STATIC IMPORTED)
+	set_target_properties(libelykseer-crypto_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/src/libelykseer-crypto_d.a")
+
         add_executable ( ut${PROJECT_NAME}
           ${SRCS}
         )
 
         target_link_libraries ( ut${PROJECT_NAME}
-          elykseer-crypto_${CMAKE_BUILD_TYPE}
+          libelykseer-crypto_s
           ${libs}
           ${Boost_LIBRARIES}
           ${CRYPTO_LIBS}
