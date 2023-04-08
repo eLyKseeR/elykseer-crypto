@@ -16,6 +16,9 @@ ENDIF()
 
 project(elykseer-crypto CXX)
 
+message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
+message("CMAKE_SYSTEM: ${CMAKE_SYSTEM}")
+
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
 set (${PROJECT_NAME}_VERSION_MINOR 0)
@@ -29,14 +32,14 @@ set(USE_CRYPTOPP YES)
 find_package(PkgConfig)
 
 # boost
-add_definitions( -DBOOST_ALL_DYN_LINK )
-set(Boost_DEBUG OFF)
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_STATIC_RUNTIME OFF)
-set(Boost_USE_MULTITHREADED ON)
-find_package( Boost 1.70.0 REQUIRED COMPONENTS system contract )
-LINK_DIRECTORIES ( ${Boost_LIBRARY_DIRS} )
-INCLUDE_DIRECTORIES (${Boost_INCLUDE_DIRS})
+#add_definitions( -DBOOST_ALL_DYN_LINK )
+#set(Boost_DEBUG OFF)
+#set(Boost_USE_STATIC_LIBS OFF)
+#set(Boost_USE_STATIC_RUNTIME OFF)
+#set(Boost_USE_MULTITHREADED ON)
+#find_package( Boost 1.70.0 REQUIRED COMPONENTS system contract )
+#LINK_DIRECTORIES ( ${Boost_LIBRARY_DIRS} )
+#INCLUDE_DIRECTORIES (${Boost_INCLUDE_DIRS})
 
 # cryptography
 IF(USE_CRYPTOPP)
@@ -76,6 +79,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_LINKER_LANGUAGE "CXX")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -88,16 +92,27 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   link_directories(/opt/homebrew/opt/zlib/lib)
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  link_directories(../ext/win64/lib)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+
 # other external tools
 include_directories(../ext)
 
 # GPGme
-include_directories(../ext/gpgme/src)
-add_library(libgpgme STATIC IMPORTED)
-SET_TARGET_PROPERTIES(libgpgme PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/../ext/gpgme/src/.libs/libgpgme.a)
-set(GPGME_LIBRARIES "libgpgme")
+pkg_check_modules(GPGME REQUIRED gpgme)
 pkg_check_modules(ASSUAN REQUIRED libassuan)
 pkg_check_modules(GPGerror REQUIRED gpg-error)
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+include_directories(../ext/win64/include)
+add_library(libgpgme_s STATIC IMPORTED)
+add_library(libassuan_s STATIC IMPORTED)
+add_library(libgpg-error_s STATIC IMPORTED)
+SET_TARGET_PROPERTIES(libgpgme_s PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/../ext/win64/lib/libgpgme.a)
+SET_TARGET_PROPERTIES(libassuan_s PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/../ext/win64/lib/libassuan.a)
+SET_TARGET_PROPERTIES(libgpg-error_s PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/../ext/win64/lib/libgpg-error.a)
+set(GPG_LIBS "libgpgme_s" "libassuan_s" "libgpg-error_s")
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 add_subdirectory( src )
 add_subdirectory( test )

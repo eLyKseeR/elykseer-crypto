@@ -37,6 +37,8 @@ on OSX build with env. var. set:
 > ./cryptest.sh fast
 
 
+make install
+
 GPGme
 =====
 
@@ -44,4 +46,20 @@ license: GNU Lesser General Public License (LGPL)
          or the GNU General Public License (GPL)
 
 https://dev.gnupg.org/source/gpgme.git
+
+
+and its dependencies:
+
+export CPPFLAGS="-I$(pwd)/../win64/include"
+export LDFLAGS="-L$(pwd)/../win64/lib"
+
+libgpg-error
+	./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../win64 --enable-install-gpg-error-config
+libassuan
+	./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../win64
+gpgme
+	./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-libassuan-prefix=$(pwd)/../win64  --with-libgpg-error-prefix=$(pwd)/../win64  --prefix=$(pwd)/../win64
+
+
+(from https://gnupg.org/ftp/gcrypt/)
 
