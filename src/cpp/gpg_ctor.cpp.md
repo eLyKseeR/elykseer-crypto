@@ -159,7 +159,7 @@ bool Gpg::pimpl::decrypt_from_file(std::string const &p_fp)
 
     gpgme_error_t err;
     gpgme_data_t plain, cipher;
-    err = gpgme_data_new_from_file(&cipher, _fp.native().c_str(), 1);
+    err = gpgme_data_new_from_file(&cipher, _fp.string().c_str(), 1);
     if (err != GPG_ERR_NO_ERROR) { OUTPUT_GPGME_ERROR(err); return false; }
     err = gpgme_data_new(&plain);
     if (err != GPG_ERR_NO_ERROR) { OUTPUT_GPGME_ERROR(err); gpgme_data_release(cipher); return false; }

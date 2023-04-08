@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE( gpg_decrypt_file, * boost::unit_test::disabled() )
   auto const tmpd = std::filesystem::temp_directory_path();
   BOOST_CHECK(std::filesystem::exists(tmpd / "test.gpg"));
   lxr::Gpg gpg;
-  BOOST_CHECK(gpg.decrypt_from_file((tmpd / "test.gpg").native()));
+  BOOST_CHECK(gpg.decrypt_from_file((tmpd / "test.gpg").string()));
   char plain[256]; memset(plain, '\0', 256);
   gpg.istream().getline(plain, 256);
   BOOST_CHECK_EQUAL("hello world.", plain);

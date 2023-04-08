@@ -39,13 +39,14 @@ unsigned char const* Key::bytes() const
 
 std::string Key::toHex() const
 {
-    unsigned char buf[2 * length() / 8];
+    const int alen = this->length() * 2 / 8;
+    unsigned char buf[alen];
     map([&buf](const int i, const unsigned char c) {
         int cc = int2hex(c);
         buf[2*i] = (cc >> 8) & 0xff;
         buf[2*i+1] = cc & 0xff;
     });
-    return std::string((char*)buf, 2 * length() / 8);
+    return std::string((char*)buf, alen);
 }
 
 void Key::fromHex(std::string const &k)

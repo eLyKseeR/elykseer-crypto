@@ -27,7 +27,7 @@ Key256 Sha256::hash(std::filesystem::path const & fpath)
 
     Key256 k(true);
     unsigned char buf[1024];
-    std::ifstream infile(fpath.native());
+    std::ifstream infile(fpath.string());
     while (infile.good()) {
         infile.read((char*)buf, 1024);
         hash.Update(buf, infile.gcount());
