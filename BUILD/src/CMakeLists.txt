@@ -3,20 +3,6 @@ cmake_minimum_required(VERSION 3.5)
 # search path for headers
 include_directories(".")
 
-# link external libraries
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-   # Mac OS X specific code
-   set(libs "dl" "z")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-  # specific code
-  set(libs "dl" "z")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  # Linux specific code
-  set(libs "dl" "z")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-
 # list of source files to be compiled
 file(GLOB SRCS *.cpp)
 
@@ -37,6 +23,7 @@ ELSE()
   )
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
+# targets
 
 add_library (${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s STATIC
   ${SRCS}
@@ -49,8 +36,18 @@ ELSE()
 set(LIBRARY_NAME "lib${PROJECT_NAME}.a")
 ENDIF()
 
+file(WRITE "lib_${CMAKE_BUILD_TYPE}.mri"
+"create ${LIBRARY_NAME}\n\
+addlib ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a\n\
+addlib ../../ext/${PLATFORM}/lib/libgpgme.a\n\
+addlib ../../ext/${PLATFORM}/lib/libgpg-error.a\n\
+addlib ../../ext/${PLATFORM}/lib/libassuan.a\n\
+addlib ../../ext/${PLATFORM}/lib/libcryptopp.a\n\
+save\n\
+end")
+
 add_custom_command(OUTPUT ${LIBRARY_NAME}
-	COMMAND ${CMAKE_AR} -M <"lib_${CMAKE_BUILD_TYPE}.mri"
+	COMMAND ${SELECTED_AR} -M <"lib_${CMAKE_BUILD_TYPE}.mri"
 	DEPENDS ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s 
 	COMMENT "combining static libraries into ${LIBRARY_NAME}"
 )
@@ -71,9 +68,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
             ${Boost_LIBRARIES}
             ${CRYPTO_LIBS}
             ${GPG_LIBS}
-            #${GPGME_LIBRARIES}
-            #${ASSUAN_LIBRARIES}
-            #${GPGerror_LIBRARIES}
 	)
 endif()
 

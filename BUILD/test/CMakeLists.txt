@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-IF(DEFINED CMAKE_BUILD_TYPE)
-   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release DebugProfile RelWithDebInfo MinSizeRel.")
-ELSE()
-   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release DebugProfile RelWithDebInfo MinSizeRel.")
-ENDIF()
-
 # boost
 set(Boost_DEBUG OFF)
 set(Boost_USE_STATIC_LIBS OFF)
@@ -16,9 +10,6 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 # mine
 include_directories(../src)
-
-# link external libraries
-set(libs "dl" "z")
 
 file(GLOB SRCS ut*.cpp)
 

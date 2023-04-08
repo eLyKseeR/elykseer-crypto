@@ -39,6 +39,9 @@ on OSX build with env. var. set:
 
 make install
 
+on Darwin:
+PREFIX="../darwin" make install
+
 GPGme
 =====
 
