@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
         html2text
         swig
         gcc
-        clang
+        #clang
         opam m4
         #global
         cppcheck
@@ -35,6 +35,8 @@ stdenv.mkDerivation rec {
     shellHook = ''
       echo 'eLyKseeR nixified environment'
       export SED=sed
+      export CC=gcc
+      export CXX=g++
     '';
 
 }
