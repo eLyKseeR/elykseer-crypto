@@ -69,5 +69,5 @@ namespace [lxr](namespace.list) {
 #include "lxr/lxr-cbindings.hpp"
 ```
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 CKey128* [hash_Md5](md5_cbindings.cpp.md)(int len, const char *);

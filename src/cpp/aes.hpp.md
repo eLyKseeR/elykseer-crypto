@@ -122,25 +122,25 @@ struct CAesEncrypt {
    unsigned char buf[lxr::Aes::datasz];
 };
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 CAesEncrypt* [mk_AesEncrypt](aes_cbindings.cpp.md)(CKey256 * k, CKey128 * iv);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 void [release_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 int [proc_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, unsigned int inlen, unsigned char const *);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 int [fin_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 unsigned int [len_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 unsigned int [copy_AesEncrypt](aes_cbindings.cpp.md)(CAesEncrypt * cl, unsigned int outlen, unsigned char *);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 unsigned int [sz_AesEncrypt](aes_cbindings.cpp.md)();
 
 struct CAesDecrypt {
@@ -149,23 +149,23 @@ struct CAesDecrypt {
    unsigned char buf[lxr::Aes::datasz];
 };
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 CAesDecrypt* [mk_AesDecrypt](aes_cbindings.cpp.md)(CKey256 * k, CKey128 * iv);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 void [release_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 int [proc_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, unsigned int inlen, unsigned char const *);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 int [fin_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 unsigned int [len_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 unsigned int [copy_AesDecrypt](aes_cbindings.cpp.md)(CAesDecrypt * cl, unsigned int outlen, unsigned char *);
 
-extern "C" EXPORT
+extern `"C"` EXPORT
 unsigned int [sz_AesDecrypt](aes_cbindings.cpp.md)();

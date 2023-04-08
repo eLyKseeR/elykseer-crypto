@@ -35,7 +35,7 @@ value cpp_string_sha256(value vs)
 {
     CAMLparam1(vs);
     const char *s = String_val(vs);
-    const int len = string_length(vs);
+    const int len = caml_string_length(vs);
     auto k = lxr::Sha256::hash(s, len);
     CAMLreturn(caml_copy_string(k.toHex().c_str()));
 }
