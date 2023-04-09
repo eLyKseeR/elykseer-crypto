@@ -17,7 +17,8 @@
 #define EXPORT __attribute__((visibility("default")))
 #define IMPORT __attribute__((visibility("default")))
 
-# define ATTRIBUTE_NO_SANITIZE_ADDRESS __attribute__((no_sanitize_address))
+#define ATTRIBUTE_NO_SANITIZE_ADDRESS __attribute__((no_sanitize_address))
+
 #else
 
 #define EXPORT
