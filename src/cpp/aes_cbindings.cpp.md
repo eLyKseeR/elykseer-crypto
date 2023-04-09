@@ -52,6 +52,7 @@ unsigned int len_AesEncrypt(CAesEncrypt *cl)
 {   return cl->lastpos;
 }
 
+ATTRIBUTE_NO_SANITIZE_ADDRESS
 extern "C" EXPORT
 unsigned int copy_AesEncrypt(CAesEncrypt *cl, unsigned int outlen, unsigned char *outbuf)
 {   unsigned int copied = std::min(outlen, cl->lastpos);
@@ -113,6 +114,7 @@ unsigned int len_AesDecrypt(CAesDecrypt *cl)
 {   return cl->lastpos;
 }
 
+ATTRIBUTE_NO_SANITIZE_ADDRESS
 extern "C" EXPORT
 unsigned int copy_AesDecrypt(CAesDecrypt *cl, unsigned int outlen, unsigned char *outbuf)
 {   unsigned int copied = std::min(outlen, cl->lastpos);

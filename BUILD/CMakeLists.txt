@@ -27,6 +27,8 @@ set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-
 set(USE_OPENSSL NO)
 set(USE_CRYPTOPP YES)
 
+option(RUN_ADDRESS_SANITIZER "using Clang you can turn on address sanitizer in Debug")
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_LINKER_LANGUAGE "CXX")
@@ -45,6 +47,8 @@ IF(CPPCHECK)
         ${CMAKE_SOURCE_DIR}/src/lxr/*.hpp
         ${CMAKE_SOURCE_DIR}/src/*.cpp
         ${CMAKE_SOURCE_DIR}/test/*.cpp
+        -I ${CMAKE_SOURCE_DIR}/../ext
+        -I /opt/homebrew/include
     )
 ELSE()
     message(STATUS "Cppcheck - not found")
@@ -123,6 +127,17 @@ SET_TARGET_PROPERTIES(libgpgme_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRE
 SET_TARGET_PROPERTIES(libassuan_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${PLATFORM}/lib/libassuan.a")
 SET_TARGET_PROPERTIES(libgpg-error_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${PLATFORM}/lib/libgpg-error.a")
 set(GPG_LIBS "libgpgme_s" "libassuan_s" "libgpg-error_s")
+
+# address sanitizer
+IF(RUN_ADDRESS_SANITIZER)
+  IF(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	  IF(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang|Clang")
+		  message("enabling address sanitizer on compiler ${CMAKE_CXX_COMPILER_ID}")
+		  add_compile_options(-fsanitize=address)
+		  add_link_options(-fsanitize=address)
+	  ENDIF(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  ENDIF(${CMAKE_BUILD_TYPE} MATCHES "Debug")
+ENDIF(RUN_ADDRESS_SANITIZER)
 
 add_subdirectory( src )
 add_subdirectory( test )

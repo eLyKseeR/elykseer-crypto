@@ -14,9 +14,6 @@ rm -rf CMakeCache.txt CMakeFiles src/CMakeFiles test/CMakeFiles
 
 set -e
 
-#export CC=gcc
-#export CXX=g++
-
 # prepare source code
 ./mk_cpp.sh
 

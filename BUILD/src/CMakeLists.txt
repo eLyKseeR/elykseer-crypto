@@ -36,7 +36,14 @@ ELSE()
 set(LIBRARY_NAME "lib${PROJECT_NAME}.a")
 ENDIF()
 
-file(WRITE "lib_${CMAKE_BUILD_TYPE}.mri"
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  add_custom_command(OUTPUT ${LIBRARY_NAME}
+        COMMAND libtool -static -o ${LIBRARY_NAME} ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a ../../ext/${PLATFORM}/lib/libgpgme.a ../../ext/${PLATFORM}/lib/libgpg-error.a ../../ext/${PLATFORM}/lib/libassuan.a ../../ext/${PLATFORM}/lib/libcryptopp.a
+        DEPENDS ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s 
+        COMMENT "combining static libraries into ${LIBRARY_NAME}"
+  )
+ELSE()
+  file(WRITE "lib_${CMAKE_BUILD_TYPE}.mri"
 "create ${LIBRARY_NAME}\n\
 addlib ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a\n\
 addlib ../../ext/${PLATFORM}/lib/libgpgme.a\n\
@@ -46,11 +53,12 @@ addlib ../../ext/${PLATFORM}/lib/libcryptopp.a\n\
 save\n\
 end")
 
-add_custom_command(OUTPUT ${LIBRARY_NAME}
+  add_custom_command(OUTPUT ${LIBRARY_NAME}
 	COMMAND ${SELECTED_AR} -M <"lib_${CMAKE_BUILD_TYPE}.mri"
 	DEPENDS ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s 
 	COMMENT "combining static libraries into ${LIBRARY_NAME}"
-)
+  )
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 add_custom_target(static_lib ALL
 	DEPENDS ${LIBRARY_NAME}

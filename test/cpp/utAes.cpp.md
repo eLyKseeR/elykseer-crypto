@@ -209,54 +209,76 @@ data buffers to pass data in and out are of different size
 ```cpp
 BOOST_AUTO_TEST_CASE( c_encrypt_decrypt_with_databuffers_sz )
 {
-  const unsigned char msg[] = "all my precious data are save, so I will sleep fine!";
-  unsigned char buf[lxr::Aes::datasz];
+  const unsigned char msg[] = "all my precious data are save, so I will sleep fine!"
+                              "02345678901234567890123456789012345678901234567891"
+                              "01234567890134567890123456789012345678901234567892"
+                              "01234567890123456789012456789012345678901234567893"
+                              "01234567890123456789012345678901235678901234567894"
+                              "01234567890123456789012345678901234567890123467895"
+                              "01234567891234567890123456789012345678901234567890"
+                              "01234567890123456789012345678903456789012345678912"
+                              "01234567890123456789012345690123456789012345678978"
+                              "01234567890123456789012567890123456789012345678934"
+                              "01234567890123678901234567890123456789012345678945"
+                              "01234567890123456789012345678901234567890123456789";
+  unsigned char bufin[lxr::Aes::datasz];
+  unsigned char bufout[lxr::Aes::datasz];
 
   CKey256 *_k = mk_Key256();
   CKey128 *_iv = mk_Key128();
   CAesEncrypt * _aesenc = mk_AesEncrypt(_k, _iv);
-  int mlen = std::strlen((const char*)msg);
+  int mlen = std::min((unsigned long)lxr::Aes::datasz, sizeof(msg));
   int lenc = 0;
   int copied = 0;
   try {
-      memcpy(buf, msg, mlen);
-      lenc = proc_AesEncrypt(_aesenc, mlen, buf);
+      memcpy(bufin, msg, mlen);
+      lenc = proc_AesEncrypt(_aesenc, mlen, bufin);
       if (lenc > 0) {
-          copied += copy_AesEncrypt(_aesenc, 12, buf);
-          copied += copy_AesEncrypt(_aesenc, lxr::Aes::datasz - 12, buf+copied);
+          copied += copy_AesEncrypt(_aesenc, 12, bufout);
+          copied += copy_AesEncrypt(_aesenc, lxr::Aes::datasz - 12, bufout+copied);
+      } else {
+          throw "encryption error: proc_AesEncrypt";
       }
   } catch (std::exception & e) {
       std::clog << "exception " << e.what() << std::endl;
   }
   int flenc = fin_AesEncrypt(_aesenc);
+  if (flenc < 0) { throw "encryption error: fin_AesEncrypt"; }
   lenc += flenc;
-  copied += copy_AesEncrypt(_aesenc, lxr::Aes::datasz - copied, buf+copied);
+  copied += copy_AesEncrypt(_aesenc, lxr::Aes::datasz - copied, bufout+copied);
   // std::clog << "encrypted " << lenc << " bytes." << std::endl;
   // std::clog << "finished: " << flenc << " bytes." << std::endl;
   // std::clog << "copied: " << copied << " bytes." << std::endl;
   release_AesEncrypt(_aesenc);
 
+  std::string msg1((const char*)msg, mlen);
+  std::string msg2((const char*)bufout, lenc);
+  BOOST_CHECK_NE(msg1, msg2);
+
   // decrypt and compare to original message
+  memset(bufin, '.', lxr::Aes::datasz);
   CAesDecrypt * _aesdec = mk_AesDecrypt(_k, _iv);
   int ldec = 0;
   copied = 0;
-  ldec = proc_AesDecrypt(_aesdec, lenc, buf);
+  ldec = proc_AesDecrypt(_aesdec, lenc, bufout);
   if (ldec > 0) {
-      copied += copy_AesDecrypt(_aesdec, 17, buf);
-      copied += copy_AesDecrypt(_aesdec, lxr::Aes::datasz - 17, buf+copied);
+      copied += copy_AesDecrypt(_aesdec, 17, bufin);
+      copied += copy_AesDecrypt(_aesdec, lxr::Aes::datasz - 17, bufin+copied);
+  } else {
+      throw "decryption error: proc_AesDecrypt";
   }
   int fldec = fin_AesDecrypt(_aesdec);
+  if (fldec < 0) { throw "decryption error: proc_AesDecrypt"; }
   ldec += fldec;
-  copied += copy_AesDecrypt(_aesdec, lxr::Aes::datasz - copied, buf+copied);
+  copied += copy_AesDecrypt(_aesdec, lxr::Aes::datasz - copied, bufin+copied);
   // std::clog << "decrypted " << ldec << " bytes." << std::endl;
   // std::clog << "finished: " << fldec << " bytes." << std::endl;
   // std::clog << "copied: " << copied << " bytes." << std::endl;
   release_AesDecrypt(_aesdec);
 
-  std::string msg1((const char*)msg, mlen);
-  std::string msg2((const char*)buf, ldec);
+  std::string msg3((const char*)bufin, ldec);
 
-  BOOST_CHECK_EQUAL(msg1, msg2);
+  BOOST_CHECK_EQUAL(msg1, msg3);
 }
 ```
 
