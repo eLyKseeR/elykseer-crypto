@@ -79,4 +79,13 @@ if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
 	)
 endif()
 
-
+# packaging
+install(TARGETS ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s LIBRARY DESTINATION lib)
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+message("not packaging dynamic library on ${CMAKE_SYSTEM_NAME}")
+ELSE()
+install(TARGETS ${PROJECT_NAME}_${CMAKE_BUILD_TYPE} LIBRARY DESTINATION lib)
+ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+install(FILES ${LIBRARY_NAME} DESTINATION lib)
+file(GLOB HDRS lxr/*.hpp)
+install(FILES ${HDRS} DESTINATION include/lxr/)
