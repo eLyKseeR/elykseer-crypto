@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt-get -y install cmake pandoc html2text libdigest-sha3-perl libboost-all-dev libboost-contract-dev libgpg-error-dev libassuan-dev swig gcc clang opam m4 busybox gnupg
+          sudo apt-get -y install cmake pandoc html2text libdigest-sha3-perl libboost-all-dev libboost-contract-dev libgpg-error-dev libassuan-dev libgpgme-dev swig gcc clang opam m4 busybox gnupg
           gpg --keyserver hkp://keyserver.ubuntu.com --recv E2DFCA9AA83BA568AF39280999283F5327C5D38F
 
       - name: Update submodules
@@ -33,10 +33,9 @@ jobs:
         shell: bash
         working-directory: ${{github.workspace}}/ext
         run: |
-          cd cryptopp; make -f GNUmakefile
-          cd ../gpgme; ./autogen.sh
-          ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic
-          make
+          cd cryptopp
+          make -f GNUmakefile
+
       - name: Prepare code
         shell: bash
         working-directory: ${{github.workspace}}/BUILD
