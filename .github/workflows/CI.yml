@@ -41,6 +41,9 @@ jobs:
         run: |
           cd cryptopp
           make -f GNUmakefile
+          mkdir ../linux
+          PREFIX="../linux" make install
+          ls ../linux
 
       - name: Prepare code
         shell: bash
