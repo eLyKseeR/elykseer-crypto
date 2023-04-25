@@ -58,7 +58,6 @@ jobs:
         shell: bash
         working-directory: ${{github.workspace}}/BUILD
         run: |
-          ls -l ${HOME}/bin/
           export PATH=${HOME}/bin:$PATH
           mkdir -p src/lxr
           ./mk_cpp.sh
