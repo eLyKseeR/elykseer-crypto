@@ -29,7 +29,7 @@ jobs:
           cd html2text.git
           ./configure && make
           mkdir ~/bin/
-          cp html2texst ~/bin/
+          cp html2text ~/bin/
           echo "export PATH=\${HOME}/bin:\$PATH" >> ~/.bashrc
 
       - name: Update submodules
