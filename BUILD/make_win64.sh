@@ -28,6 +28,7 @@ export PKG_CONFIG_PATH=$(pwd)/../ext/win64/lib/pkgconfig:$PKG_CONFIG_PATH
 MODE=Release
 cmake --fresh -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${MODE} .
 cmake --build .
+make package
 
 # show output
 ls -l src/libelykseer-crypto*.a

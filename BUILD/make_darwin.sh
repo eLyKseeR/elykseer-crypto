@@ -21,10 +21,11 @@ set -e
 export PKG_CONFIG_PATH=$(pwd)/../ext/darwin/lib/pkgconfig:$PKG_CONFIG_PATH
 
 # compile in Debug | Release mode
-MODE=Debug
-#MODE=Release
+#MODE=Debug
+MODE=Release
 cmake --fresh -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=${MODE} .
 cmake --build .
+make package
 
 # show output
 ls -l src/libelykseer-crypto*.a
