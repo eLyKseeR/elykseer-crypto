@@ -23,8 +23,14 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt-get -y install cmake pandoc html2text libdigest-sha3-perl libboost-all-dev libboost-contract-dev libgpg-error-dev libassuan-dev libgpgme-dev swig gcc clang opam m4 busybox gnupg
+          sudo apt-get -y install git cmake pandoc libdigest-sha3-perl libboost-all-dev libboost-contract-dev libgpg-error-dev libassuan-dev libgpgme-dev swig gcc clang opam m4 busybox gnupg
           gpg --keyserver hkp://keyserver.ubuntu.com --recv E2DFCA9AA83BA568AF39280999283F5327C5D38F
+          git clone https://github.com/grobian/html2text.git html2text.git
+          cd html2text.git
+          ./configure && make
+          mkdir ~/bin/
+          cp html2texst ~/bin/
+          echo "export PATH=\${HOME}/bin:\$PATH" >> ~/.bashrc
 
       - name: Update submodules
         run: git submodule update --init
