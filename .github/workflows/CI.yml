@@ -43,7 +43,16 @@ jobs:
           make -f GNUmakefile
           mkdir ../linux
           PREFIX="../linux" make install
-          ls ../linux
+          cd ../libgpg-error
+          ./configure --enable-static --disable-shared  --disable-doc --enable-install-gpg-error-config --prefix=$(pwd)/../linux
+          make && make install
+          cd ../libassuan
+          ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../linux
+          make && make install
+          cd ../gpgme
+          ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-libassuan-prefix=$(pwd)/../linux  --with-libgpg-error-prefix=$(pwd)/../linux  --prefix=$(pwd)/../linux
+          make && make install
+          ls ../linux/*
 
       - name: Prepare code
         shell: bash
