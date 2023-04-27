@@ -10,3 +10,9 @@
 [submodule "ext/gpgme"]
 	path = ext/gpgme
 	url = https://dev.gnupg.org/source/gpgme.git
+[submodule "ext/libgpg-error"]
+	path = ext/libgpg-error
+	url = https://dev.gnupg.org/source/libgpg-error.git
+[submodule "ext/libassuan"]
+	path = ext/libassuan
+	url = https://dev.gnupg.org/source/libassuan.git
