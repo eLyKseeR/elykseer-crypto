@@ -44,6 +44,12 @@ BUILD/src
 BUILD/test
 BUILD/*.build/
 BUILD/*.xcodeproj/
+BUILD/CPackConfig.cmake
+BUILD/CPackSourceConfig.cmake
+BUILD/Testing/
+BUILD/_CPack_Packages/
+BUILD/elykseer-crypto_*.tar.gz
+BUILD/install_manifest.txt
 
 .fake
 .ionide
@@ -56,4 +62,6 @@ GTAGS
 .vs
 
 ext/win64/
+ext/darwin/
+ext/linux/
 
