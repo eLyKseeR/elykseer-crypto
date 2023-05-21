@@ -10,6 +10,7 @@ pipeline {
         stage('init dependencies') {
             steps {
                 sh 'git submodule update --init'
+		sh 'echo $PKG_CONFIG_PATH'
             }
         }
         stage('build dependencies') {
