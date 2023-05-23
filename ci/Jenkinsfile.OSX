@@ -43,10 +43,5 @@ pipeline {
                 sh 'cd BUILD; ./ut.sh'
             }
         }
-        stage('package') {
-            steps {
-                sh 'cd BUILD; cpack'
-            }
-        }
     }
 }
