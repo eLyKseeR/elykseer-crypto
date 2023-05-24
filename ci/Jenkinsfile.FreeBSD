@@ -15,10 +15,10 @@ pipeline {
         stage('build dependencies') {
             steps {
                 sh 'cd ext; mkdir -vp freebsd'
-                sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../freebsd --enable-install-gpg-error-config; make; make install'
-                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../freebsd; make; make install'
-                sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../freebsd  --with-libgpg-error-prefix=$(pwd)/../freebsd  --prefix=$(pwd)/../freebsd; make; make install'
-                sh 'cd ext/cryptopp; make -f GNUmakefile; PREFIX="../freebsd" make -f GNUmakefile install'
+                sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../freebsd --enable-install-gpg-error-config; gmake; gmake install'
+                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../freebsd --with-libgpg-error-prefix=$(pwd)/../freebsd; gmake; gmake install'
+                sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../freebsd  --with-libgpg-error-prefix=$(pwd)/../freebsd  --prefix=$(pwd)/../freebsd; gmake; gmake install'
+                sh 'cd ext/cryptopp; gmake -f GNUmakefile; PREFIX="../freebsd" gmake -f GNUmakefile install'
             }
         }
         stage('mk cpp') {
