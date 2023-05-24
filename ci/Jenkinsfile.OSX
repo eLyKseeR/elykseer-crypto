@@ -10,37 +10,36 @@ pipeline {
         stage('init dependencies') {
             steps {
                 sh 'git submodule update --init'
-		sh 'echo $PKG_CONFIG_PATH'
             }
         }
         stage('build dependencies') {
             steps {
-	        sh 'cd ext; mkdir -vp darwin'
-		sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../darwin --enable-install-gpg-error-config; make; make install'
-		sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../darwin; make; make install'
+                sh 'cd ext; mkdir -vp darwin'
+                sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../darwin --enable-install-gpg-error-config; make; make install'
+                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../darwin; make; make install'
                 sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../darwin  --with-libgpg-error-prefix=$(pwd)/../darwin  --prefix=$(pwd)/../darwin; make; make install'
                 sh 'cd ext/cryptopp; make -f GNUmakefile; PREFIX="../darwin" make -f GNUmakefile install'
             }
         }
         stage('mk cpp') {
             steps {
-                sh 'cd BUILD; ./mk_cpp.sh'
+                sh 'cd build; ./mk_cpp.sh'
             }
         }
         stage('cmake') {
             steps {
-                sh 'cd BUILD; rm -rf CMakeCache.txt CMakeFiles'
-                sh 'cd BUILD; cmake -DCMAKE_BUILD_TYPE=Debug .'
+                sh 'cd build; rm -rf CMakeCache.txt CMakeFiles'
+                sh 'cd build; cmake -DCMAKE_BUILD_TYPE=Debug .'
             }
         }
         stage('compile') {
             steps {
-                sh 'cd BUILD; make'
+                sh 'cd build; make'
             }
         }
         stage('unit tests') {
             steps {
-                sh 'cd BUILD; ./ut.sh'
+                sh 'cd build; ./ut.sh'
             }
         }
     }

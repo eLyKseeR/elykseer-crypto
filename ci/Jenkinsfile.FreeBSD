@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        PKG_CONFIG_PATH = """${sh(
+	        returnStdout: true,
+	        script: 'echo "$(pwd)/ext/freebsd/lib/pkgconfig:${PKG_CONFIG_PATH}"'
+	     )}"""
+    }
     stages {
         stage('init dependencies') {
             steps {
@@ -8,29 +14,32 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic; gmake'
-                sh 'cd ext/cryptopp; gmake -f GNUmakefile'
+                sh 'cd ext; mkdir -vp freebsd'
+                sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../freebsd --enable-install-gpg-error-config; make; make install'
+                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../freebsd; make; make install'
+                sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../freebsd  --with-libgpg-error-prefix=$(pwd)/../freebsd  --prefix=$(pwd)/../freebsd; make; make install'
+                sh 'cd ext/cryptopp; make -f GNUmakefile; PREFIX="../freebsd" make -f GNUmakefile install'
             }
         }
         stage('mk cpp') {
             steps {
-                sh 'cd BUILD; ./mk_cpp.sh'
+                sh 'cd build; ./mk_cpp.sh'
             }
         }
         stage('cmake') {
             steps {
-                sh 'cd BUILD; rm -rf CMakeCache.txt CMakeFiles'
-                sh 'cd BUILD; cmake .'
+                sh 'cd build; rm -rf CMakeCache.txt CMakeFiles'
+                sh 'cd build; cmake -DCMAKE_BUILD_TYPE=Debug .'
             }
         }
         stage('compile') {
             steps {
-                sh 'cd BUILD; gmake'
+                sh 'cd build; gmake'
             }
         }
         stage('unit tests') {
             steps {
-                sh 'cd BUILD; ./ut.sh'
+                sh 'cd build; ./ut.sh'
             }
         }
     }
