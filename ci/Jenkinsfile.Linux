@@ -15,8 +15,8 @@ pipeline {
         stage('build dependencies') {
             steps {
                 sh 'cd ext; mkdir -vp linux'
-                sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../linux --enable-install-gpg-error-config; make; make install'
-                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../linux --with-libgpg-error-prefix=$(pwd)/../linux; make; make install'
+                sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared --disable-doc --with-pic --prefix=$(pwd)/../linux --enable-install-gpg-error-config; make; make install'
+                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared --disable-doc --with-pic --prefix=$(pwd)/../linux --with-libgpg-error-prefix=$(pwd)/../linux; make; make install'
                 sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../linux  --with-libgpg-error-prefix=$(pwd)/../linux  --prefix=$(pwd)/../linux; make; make install'
                 sh 'cd ext/cryptopp; make -f GNUmakefile; PREFIX="../linux" make -f GNUmakefile install'
             }
