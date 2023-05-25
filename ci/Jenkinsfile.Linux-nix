@@ -5,10 +5,6 @@ pipeline {
 	        returnStdout: true,
 	        script: 'echo "$(pwd)/ext/linux/lib/pkgconfig:${PKG_CONFIG_PATH_FOR_TARGET}"'
 	     )}"""
-        PATH = """${sh(
-	        returnStdout: true,
-	        script: 'echo "${HOME}/.local/bin:${PATH}"'
-	     )}"""
     }
     stages {
         stage('init dependencies') {
@@ -19,8 +15,8 @@ pipeline {
         stage('build dependencies') {
             steps {
                 sh 'cd ext; mkdir -vp linux'
-                sh 'cd ext/libgpg-error; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared --with-pic --disable-doc --prefix=$(pwd)/../linux --enable-install-gpg-error-config; make; make install"'
-                sh 'cd ext/libassuan; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --with-pic --prefix=$(pwd)/../linux --with-libgpg-error-prefix=$(pwd)/../linux; make; make install"'
+                sh 'cd ext/libgpg-error; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../linux --enable-install-gpg-error-config; make; make install"'
+                sh 'cd ext/libassuan; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../linux --with-libgpg-error-prefix=$(pwd)/../linux; make; make install"'
                 sh 'cd ext/gpgme; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../linux  --with-libgpg-error-prefix=$(pwd)/../linux  --prefix=$(pwd)/../linux; make; make install"'
                 sh 'cd ext/cryptopp; nix-shell -p gcc --run "make -f GNUmakefile; PREFIX="../linux" make -f GNUmakefile install"'
             }
