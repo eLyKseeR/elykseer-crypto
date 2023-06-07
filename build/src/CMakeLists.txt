@@ -38,7 +38,7 @@ ENDIF()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_custom_command(OUTPUT ${LIBRARY_NAME}
-        COMMAND libtool -static -o ${LIBRARY_NAME} ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a ../../ext/${PLATFORM}/lib/libgpgme.a ../../ext/${PLATFORM}/lib/libgpg-error.a ../../ext/${PLATFORM}/lib/libassuan.a ../../ext/${PLATFORM}/lib/libcryptopp.a
+    COMMAND libtool -static -o ${LIBRARY_NAME} ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a ../../ext/${EXT_PATH}/lib/libgpgme.a ../../ext/${EXT_PATH}/lib/libgpg-error.a ../../ext/${EXT_PATH}/lib/libassuan.a ../../ext/${EXT_PATH}/lib/libcryptopp.a
         DEPENDS ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s 
         COMMENT "combining static libraries into ${LIBRARY_NAME}"
   )
@@ -46,10 +46,10 @@ ELSE()
   file(WRITE "lib_${CMAKE_BUILD_TYPE}.mri"
 "create ${LIBRARY_NAME}\n\
 addlib ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a\n\
-addlib ../../ext/${PLATFORM}/lib/libgpgme.a\n\
-addlib ../../ext/${PLATFORM}/lib/libgpg-error.a\n\
-addlib ../../ext/${PLATFORM}/lib/libassuan.a\n\
-addlib ../../ext/${PLATFORM}/lib/libcryptopp.a\n\
+addlib ../../ext/${EXT_PATH}/lib/libgpgme.a\n\
+addlib ../../ext/${EXT_PATH}/lib/libgpg-error.a\n\
+addlib ../../ext/${EXT_PATH}/lib/libassuan.a\n\
+addlib ../../ext/${EXT_PATH}/lib/libcryptopp.a\n\
 save\n\
 end")
 

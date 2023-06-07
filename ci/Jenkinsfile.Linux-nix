@@ -14,11 +14,7 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext; mkdir -vp linux'
-                sh 'cd ext/libgpg-error; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --with-pic --prefix=$(pwd)/../linux --enable-install-gpg-error-config; make; make install"'
-                sh 'cd ext/libassuan; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --with-pic --prefix=$(pwd)/../linux --with-libgpg-error-prefix=$(pwd)/../linux; make; make install"'
-                sh 'cd ext/gpgme; nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../linux  --with-libgpg-error-prefix=$(pwd)/../linux  --prefix=$(pwd)/../linux; make; make install"'
-                sh 'cd ext/cryptopp; nix-shell -p gcc --run "make -f GNUmakefile; PREFIX="../linux" make -f GNUmakefile install"'
+                sh 'nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "make -C ext"'
             }
         }
         stage('mk cpp') {
@@ -28,8 +24,7 @@ pipeline {
         }
         stage('cmake') {
             steps {
-                sh 'cd build; rm -rf CMakeCache.txt CMakeFiles'
-                sh 'cd build; nix-shell -p pkg-config gcc cmake boost zlib --run "cmake -DCMAKE_BUILD_TYPE=Debug ."'
+                sh 'cd build; nix-shell -p pkg-config gcc cmake boost zlib --run "cmake --fresh -DCMAKE_BUILD_TYPE=Debug ."'
             }
         }
         stage('compile') {
