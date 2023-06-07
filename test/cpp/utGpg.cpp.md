@@ -90,9 +90,11 @@ feel free to test it on your own.
 BOOST_AUTO_TEST_CASE( gpg_decrypt_file, * boost::unit_test::disabled() )
 {
   auto const tmpd = std::filesystem::temp_directory_path();
-  BOOST_CHECK(std::filesystem::exists(tmpd / "test.gpg"));
+  auto const fpath = tmpd / "test.gpg";
+  // std::clog << "gpg encrypted file path: " << fpath << std::endl;
+  BOOST_CHECK(std::filesystem::exists(fpath));
   lxr::Gpg gpg;
-  BOOST_CHECK(gpg.decrypt_from_file((tmpd / "test.gpg").string()));
+  BOOST_CHECK(gpg.decrypt_from_file(fpath.string()));
   char plain[256]; memset(plain, '\0', 256);
   gpg.istream().getline(plain, 256);
   BOOST_CHECK_EQUAL("hello world.", plain);

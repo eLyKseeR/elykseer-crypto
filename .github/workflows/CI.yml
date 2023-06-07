@@ -33,12 +33,8 @@ jobs:
     - name: Build dependencies
       shell: bash
       working-directory: ${{github.workspace}}/ext
-      run: |
-        mkdir -vp linux
-        cd libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared --disable-doc --with-pic --prefix=$(pwd)/../linux --enable-install-gpg-error-config; make; make install
-        cd ../libassuan; ./autogen.sh; ./configure --enable-static --disable-shared --disable-doc --with-pic --prefix=$(pwd)/../linux --with-libgpg-error-prefix=$(pwd)/../linux; make; make install
-        cd ../gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../linux  --with-libgpg-error-prefix=$(pwd)/../linux  --prefix=$(pwd)/../linux; make; make install
-        cd ../cryptopp; make -f GNUmakefile; PREFIX="../linux" make -f GNUmakefile install
+      run: make
+
     - name: Prepare code
       shell: bash
       working-directory: ${{github.workspace}}/build

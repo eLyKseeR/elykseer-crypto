@@ -14,11 +14,7 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext; mkdir -vp darwin'
-                sh 'cd ext/libgpg-error; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../darwin --enable-install-gpg-error-config; make; make install'
-                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --prefix=$(pwd)/../darwin; make; make install'
-                sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../darwin  --with-libgpg-error-prefix=$(pwd)/../darwin  --prefix=$(pwd)/../darwin; make; make install'
-                sh 'cd ext/cryptopp; make -f GNUmakefile; PREFIX="../darwin" make -f GNUmakefile install'
+                sh 'make -C ext'
             }
         }
         stage('mk cpp') {
@@ -28,8 +24,7 @@ pipeline {
         }
         stage('cmake') {
             steps {
-                sh 'cd build; rm -rf CMakeCache.txt CMakeFiles'
-                sh 'cd build; cmake -DCMAKE_BUILD_TYPE=Debug .'
+                sh 'cd build; cmake --fresh -DCMAKE_BUILD_TYPE=Debug .'
             }
         }
         stage('compile') {

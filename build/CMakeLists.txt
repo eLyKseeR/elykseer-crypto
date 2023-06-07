@@ -1,8 +1,3 @@
-# call: cmake .
-# on Linux/OSX to build the Makefiles
-#
-# on OSX: cmake -G Xcode .
-# to build the Xcode project files
 
 cmake_minimum_required(VERSION 3.5)
 
@@ -15,6 +10,7 @@ ENDIF()
 project(elykseer-crypto CXX)
 
 message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
+message("CMAKE_HOST_SYSTEM_PROCESSOR: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
 message("CMAKE_SYSTEM: ${CMAKE_SYSTEM}")
 
 # The version number.
@@ -44,9 +40,9 @@ IF(CPPCHECK)
     add_custom_target(cppcheck
         ${CPPCHECK}
         -Uassert --std=c++17 --enable=all
-        ${CMAKE_SOURCE_DIR}/src/lxr/*.hpp
-        ${CMAKE_SOURCE_DIR}/src/*.cpp
-        ${CMAKE_SOURCE_DIR}/test/*.cpp
+        ${CMAKE_SOURCE_DIR}/build/src/lxr/*.hpp
+        ${CMAKE_SOURCE_DIR}/build/src/*.cpp
+        ${CMAKE_SOURCE_DIR}/build/test/*.cpp
         -I ${CMAKE_SOURCE_DIR}/../ext
         -I /opt/homebrew/include
     )
@@ -55,53 +51,53 @@ ELSE()
     message(STATUS "  Build target 'cppcheck' not available.")
 ENDIF()
 
-set(PLATFORM "unk")
+set(EXT_PATH ${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR})
 set(SELECTED_AR ${CMAKE_AR})
 set(LIB_PREFIX "")
 
 # OS dependent
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(PLATFORM "darwin")
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
   include_directories(/usr/local/opt/zlib/include)
   link_directories(/usr/local/opt/zlib/lib)
+  link_directories(/usr/local/lib)
   include_directories(/opt/homebrew/opt/zlib/include)
   link_directories(/opt/homebrew/opt/zlib/lib)
+  link_directories(/opt/homebrew/lib)
   set(SELECTED_AR "/opt/homebrew/opt/binutils/bin/ar")
   set(LIB_PREFIX "lib")
-  set(libs "dl" "z")
+  set(libs "dl" "z" "intl")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+  set(EXT_PATH ${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR})
   set(PLATFORM "win64")
   set(LIB_PREFIX "lib")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-  set(PLATFORM "freebsd")
   set(SELECTED_AR "/usr/local/bin/ar")
   set(LIB_PREFIX "lib")
   set(libs "dl" "z")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  set(PLATFORM "linux")
   set(LIB_PREFIX "lib")
   set(libs "dl" "z")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 
 # other external tools
-include_directories(../ext)
-link_directories("../ext/${PLATFORM}/lib")
-include_directories("../ext/${PLATFORM}/include")
+include_directories(../ext/)
+include_directories(../ext/${EXT_PATH}/include)
+link_directories("../ext/${EXT_PATH}/lib")
 
 # cryptography
 IF(USE_CRYPTOPP)
   add_definitions( -DCRYPTOPP )
   add_definitions( -DCRYPTOLIB=CRYPTOPP )
   add_library(libcryptopp_s STATIC IMPORTED)
-  SET_TARGET_PROPERTIES(libcryptopp_s PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/../ext/${PLATFORM}/lib/libcryptopp.a)
+  SET_TARGET_PROPERTIES(libcryptopp_s PROPERTIES IMPORTED_LOCATION ${CMAKE_HOME_DIRECTORY}/../ext/${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR}/lib/libcryptopp.a)
   set(CRYPTO_LIBS "libcryptopp_s")
 ENDIF(USE_CRYPTOPP)
 
@@ -117,15 +113,15 @@ IF(USE_OPENSSL)
 ENDIF(USE_OPENSSL)
 
 # GPGme
-pkg_check_modules(GPGME REQUIRED gpgme)
-pkg_check_modules(ASSUAN REQUIRED libassuan)
-pkg_check_modules(GPGerror REQUIRED gpg-error)
+#pkg_check_modules(GPGME REQUIRED gpgme)
+#pkg_check_modules(ASSUAN REQUIRED libassuan)
+#pkg_check_modules(GPGerror REQUIRED gpg-error)
 add_library(libgpgme_s STATIC IMPORTED)
 add_library(libassuan_s STATIC IMPORTED)
 add_library(libgpg-error_s STATIC IMPORTED)
-SET_TARGET_PROPERTIES(libgpgme_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${PLATFORM}/lib/libgpgme.a")
-SET_TARGET_PROPERTIES(libassuan_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${PLATFORM}/lib/libassuan.a")
-SET_TARGET_PROPERTIES(libgpg-error_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${PLATFORM}/lib/libgpg-error.a")
+SET_TARGET_PROPERTIES(libgpgme_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR}/lib/libgpgme.a")
+SET_TARGET_PROPERTIES(libassuan_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR}/lib/libassuan.a")
+SET_TARGET_PROPERTIES(libgpg-error_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/../ext/${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR}/lib/libgpg-error.a")
 set(GPG_LIBS "libgpgme_s" "libassuan_s" "libgpg-error_s")
 
 # address sanitizer

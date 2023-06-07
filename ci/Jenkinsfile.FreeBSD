@@ -14,11 +14,7 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'cd ext; mkdir -vp freebsd'
-                sh 'cd ext/libgpg-error; ./autogen.sh; CFLAGS="-fPIC" CXXFLAGS="-fPIC" ./configure --enable-static --disable-shared  --disable-doc --with-pic --prefix=$(pwd)/../freebsd --enable-install-gpg-error-config; gmake; gmake install'
-                sh 'cd ext/libassuan; ./autogen.sh; ./configure --enable-static --disable-shared  --disable-doc --with-pic --prefix=$(pwd)/../freebsd --with-libgpg-error-prefix=$(pwd)/../freebsd; gmake; gmake install'
-                sh 'cd ext/gpgme; ./autogen.sh; ./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --with-pic --with-libassuan-prefix=$(pwd)/../freebsd  --with-libgpg-error-prefix=$(pwd)/../freebsd  --prefix=$(pwd)/../freebsd; gmake; gmake install'
-                sh 'cd ext/cryptopp; gmake -f GNUmakefile; PREFIX="../freebsd" gmake -f GNUmakefile install'
+                sh 'gmake -C ext'
             }
         }
         stage('mk cpp') {
@@ -28,8 +24,7 @@ pipeline {
         }
         stage('cmake') {
             steps {
-                sh 'cd build; rm -rf CMakeCache.txt CMakeFiles'
-                sh 'cd build; cmake -DCMAKE_BUILD_TYPE=Debug .'
+                sh 'cd build; cmake --fresh -DCMAKE_BUILD_TYPE=Debug .'
             }
         }
         stage('compile') {
