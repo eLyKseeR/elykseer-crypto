@@ -25,13 +25,13 @@ clean:
 	ls -l $(TARGETDIR)
 
 release: makedirs
-	export CMAKE_BUILD_TYPE="Release"; \
-	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH}; \
+	export CMAKE_BUILD_TYPE="Release" \
+	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH} \
 	$(MAKE) make_exts
 
 debug: makedirs
-	export CMAKE_BUILD_TYPE="Debug"; \
-	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH}; \
+	export CMAKE_BUILD_TYPE="Debug" \
+	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH} \
 	$(MAKE) make_exts
 
 makedirs: $(CCACHE_DIR) $(TARGETDIR)
@@ -49,8 +49,8 @@ $(fset_libgpg_error):
 	cd ./libgpg-error; \
 	./autogen.sh; \
 	./configure --enable-static --disable-shared  --disable-doc --with-pic --prefix=${TARGETDIR} --enable-install-gpg-error-config; \
-	make; \
-	make install
+	$(MAKE); \
+	$(MAKE) install
 
 fset_libassuan := $(TARGETDIR)/include/assuan.h $(TARGETDIR)/lib/libassuan.a
 make_libassuan: $(fset_libassuan)
@@ -59,8 +59,8 @@ $(fset_libassuan):
 	cd ./libassuan; \
 	./autogen.sh; \
 	./configure --enable-static --disable-shared  --disable-doc --with-pic --prefix=${TARGETDIR} --with-libgpg-error-prefix=${TARGETDIR}; \
-	make; \
-	make install
+	$(MAKE); \
+	$(MAKE) install
 
 fset_gpgme := $(TARGETDIR)/include/gpgme.h $(TARGETDIR)/lib/libgpgme.a
 make_gpgme: $(fset_gpgme)
@@ -69,16 +69,16 @@ $(fset_gpgme):
 	cd ./gpgme; \
 	./autogen.sh; \
 	./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --disable-doc --with-pic --with-libassuan-prefix=${TARGETDIR} --with-libgpg-error-prefix=${TARGETDIR} --prefix=${TARGETDIR}; \
-	make; \
-	make install
+	$(MAKE); \
+	$(MAKE) install
 
 fset_cryptopp:= $(TARGETDIR)/include/cryptopp/config.h $(TARGETDIR)/lib/libcryptopp.a
 make_cryptopp: $(fset_cryptopp)
 $(fset_cryptopp):
 	echo "making cryptopp"
 	cd ./cryptopp; \
-	make -f GNUmakefile -j4; \
+	$(MAKE) -f GNUmakefile -j2; \
 	export PREFIX=${TARGETDIR}; \
-	make -f GNUmakefile install
+	$(MAKE) -f GNUmakefile install
 
 
