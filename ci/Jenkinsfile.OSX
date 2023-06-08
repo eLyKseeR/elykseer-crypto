@@ -14,7 +14,7 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'make -C ext'
+                sh 'gmake -C ext'
             }
         }
         stage('mk cpp') {
@@ -29,7 +29,7 @@ pipeline {
         }
         stage('compile') {
             steps {
-                sh 'cd build; make'
+                sh 'cd build; gmake'
             }
         }
         stage('unit tests') {
