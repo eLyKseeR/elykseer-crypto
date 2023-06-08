@@ -14,7 +14,7 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "make -C ext"'
+                sh 'nix-shell -p gcc cmake boost gettext pkg-config autoconf automake libtool m4 --run "make -C ext"'
             }
         }
         stage('mk cpp') {

@@ -25,13 +25,13 @@ clean:
 	ls -l $(TARGETDIR)
 
 release: makedirs
-	export CMAKE_BUILD_TYPE="Release" \
-	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH} \
+	export CMAKE_BUILD_TYPE="Release"; \
+	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH}; \
 	$(MAKE) make_exts
 
 debug: makedirs
-	export CMAKE_BUILD_TYPE="Debug" \
-	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH} \
+	export CMAKE_BUILD_TYPE="Debug"; \
+	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH}; \
 	$(MAKE) make_exts
 
 makedirs: $(CCACHE_DIR) $(TARGETDIR)
