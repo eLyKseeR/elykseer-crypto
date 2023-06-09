@@ -1,11 +1,5 @@
 pipeline {
     agent any
-    environment {
-        PKG_CONFIG_PATH = """${sh(
-	        returnStdout: true,
-	        script: 'echo "$(pwd)/ext/darwin/lib/pkgconfig:${PKG_CONFIG_PATH}"'
-	     )}"""
-    }
     stages {
         stage('init dependencies') {
             steps {

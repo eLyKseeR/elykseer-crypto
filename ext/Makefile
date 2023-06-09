@@ -25,13 +25,13 @@ clean:
 	ls -l $(TARGETDIR)
 
 release: makedirs
-	export CMAKE_BUILD_TYPE="Release" \
-	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH} \
+	export CMAKE_BUILD_TYPE="Release"; \
+	export PKG_CONFIG_PATH="${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH}"; \
 	$(MAKE) make_exts
 
 debug: makedirs
-	export CMAKE_BUILD_TYPE="Debug" \
-	export PKG_CONFIG_PATH=${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH} \
+	export CMAKE_BUILD_TYPE="Debug"; \
+	export PKG_CONFIG_PATH="${TARGETDIR}/lib/pkgconfig:${PKG_CONFIG_PATH}"; \
 	$(MAKE) make_exts
 
 makedirs: $(CCACHE_DIR) $(TARGETDIR)
@@ -39,8 +39,19 @@ makedirs: $(CCACHE_DIR) $(TARGETDIR)
 $(CCACHE_DIR) $(TARGETDIR):
 	mkdir -vp $@
 
-make_exts: make_libgpg_error make_libassuan make_gpgme make_cryptopp
+make_exts: make_gitalk make_libgpg_error make_libassuan make_gpgme make_cryptopp
 	echo "all done."
+
+fset_gitalk := $(TARGETDIR)/bin/html2text
+make_gitalk: $(fset_gitalk)
+$(fset_gitalk):
+	echo "making gitalk"
+	cd ./gitalk; \
+	git submodule update --init; \
+	cd ext/html2text.git; \
+	PREFIX=${TARGETDIR} ./configure; \
+	$(MAKE); \
+	$(MAKE) install
 
 fset_libgpg_error := $(TARGETDIR)/include/gpg-error.h $(TARGETDIR)/lib/libgpg-error.a
 make_libgpg_error: $(fset_libgpg_error)

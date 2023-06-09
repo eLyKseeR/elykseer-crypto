@@ -1,11 +1,5 @@
 pipeline {
     agent any
-    environment {
-        PKG_CONFIG_PATH_FOR_TARGET = """${sh(
-	        returnStdout: true,
-	        script: 'echo "$(pwd)/ext/linux/lib/pkgconfig:${PKG_CONFIG_PATH_FOR_TARGET}"'
-	     )}"""
-    }
     stages {
         stage('init dependencies') {
             steps {
@@ -14,7 +8,7 @@ pipeline {
         }
         stage('build dependencies') {
             steps {
-                sh 'nix-shell -p gcc gettext pkg-config autoconf automake libtool m4 --run "make -C ext"'
+                sh 'nix-shell -p gcc cmake boost gettext pkg-config autoconf automake libtool m4 --run "make -C ext"'
             }
         }
         stage('mk cpp') {

@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
-GITALK=`pwd`/../ext/gitalk
+UNAME_S=$(uname -s)
+UNAME_M=$(uname -m)
+
+GITALK=$(pwd)/../ext/gitalk
+
+if [ -e ${GITALK}/../${UNAME_S}_${UNAME_M}/bin/html2text ]; then
+  export PATH=${GITALK}/../${UNAME_S}_${UNAME_M}/bin/:$PATH
+fi
 
 cd src
 cd lxr
