@@ -48,7 +48,7 @@ $(fset_gitalk):
 	echo "making gitalk"
 	cd ./gitalk; \
 	git submodule update --init; \
-	make -C ext
+	$(MAKE) -C ext
 
 fset_libgpg_error := $(TARGETDIR)/include/gpg-error.h $(TARGETDIR)/lib/libgpg-error.a
 make_libgpg_error: $(fset_libgpg_error)
