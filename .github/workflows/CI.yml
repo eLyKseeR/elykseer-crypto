@@ -24,10 +24,12 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt-get -y install cmake pandoc html2text libdigest-sha3-perl libboost-all-dev libboost-contract-dev swig gcc clang opam m4 busybox gnupg
+        sudo apt-get -y install cmake gcc swig opam m4 busybox pandoc libdigest-sha3-perl libboost-all-dev libboost-contract-dev gettext pkg-config automake autoconf libtool
         gpg --keyserver hkp://keyserver.ubuntu.com --recv E2DFCA9AA83BA568AF39280999283F5327C5D38F
 
     - name: Update submodules
+      shell: bash
+      working-directory: ${{github.workspace}}/
       run: git submodule update --init
 
     - name: Build dependencies
@@ -38,7 +40,7 @@ jobs:
     - name: Prepare code
       shell: bash
       working-directory: ${{github.workspace}}/build
-      run: ./mk_cpp.sh
+      run: PATH=${{github.workspace}}/ext/Linux_*/bin:$PATH ./mk_cpp.sh
 
     - name: Configure CMake
       # Use a bash shell so we can use the same syntax for environment variable
@@ -48,7 +50,7 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake --fresh -DCMAKE_BUILD_TYPE=$BUILD_TYPE .
+      run: cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE .
 
     - name: Build
       working-directory: ${{github.workspace}}/build
