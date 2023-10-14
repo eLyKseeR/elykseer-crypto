@@ -3,11 +3,6 @@ declared in [Sha256](sha256.hpp.md)
 ```cpp
 
 #if CRYPTOLIB == CRYPTOPP
-Key256 Sha256::hash(std::string const & msg)
-{
-    return Sha256::hash(msg.c_str(), msg.size());
-}
-
 Key256 Sha256::hash(const char buffer[], int length)
 {
     assert(256/8 == CryptoPP::SHA3_256::DIGESTSIZE);
@@ -22,17 +17,30 @@ Key256 Sha256::hash(const char buffer[], int length)
 
 Key256 Sha256::hash(std::filesystem::path const & fpath)
 {
-    unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
-    CryptoPP::SHA3_256 hash;
-
-    Key256 k(true);
-    unsigned char buf[1024];
+    Sha256 sha256;
+    sizebounded<unsigned char, Sha256::datasz> buf;
     std::ifstream infile(fpath.string());
     while (infile.good()) {
-        infile.read((char*)buf, 1024);
-        hash.Update(buf, infile.gcount());
+        infile.read((char*)buf.ptr(), Sha256::datasz);
+        sha256.process(infile.gcount(), buf);
     }
-    hash.Final(digest);
+    return sha256.finish();
+}
+
+int Sha256::process(int len, sizebounded<unsigned char, Sha256::datasz> const & buf)
+{
+    if (len <= Sha256::datasz) {
+        _pimpl->hash.Update(buf.ptr(), len);
+        return len;
+    }
+    return 0;
+}
+
+Key256 Sha256::finish()
+{
+    unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
+    _pimpl->hash.Final(digest);
+    Key256 k(true);
     k.fromBytes(digest);
     return k;
 }
