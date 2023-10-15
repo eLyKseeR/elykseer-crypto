@@ -55,5 +55,6 @@ GTAGS
 .vscode
 .vs
 
-ext/win64/
-
+ext/Darwin_arm64
+ext/Darwin_amd64
+ext/Linux_aarch64
