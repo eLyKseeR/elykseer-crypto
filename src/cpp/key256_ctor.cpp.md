@@ -31,4 +31,11 @@ Key256 & Key256::operator=(Key256 const & o)
     return *this;
 }
 
+Key256 Key256::key256FromHex(std::string const &s)
+{
+    Key256 key{true};
+    key.fromHex(s);
+    return key;
+}
+
 ```
