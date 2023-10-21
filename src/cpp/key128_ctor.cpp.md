@@ -31,4 +31,11 @@ Key128 & Key128::operator=(Key128 const & o)
     return *this;
 }
 
+Key128 Key128::key128FromHex(std::string const &s)
+{
+    Key128 key{true};
+    key.fromHex(s);
+    return key;
+}
+
 ```

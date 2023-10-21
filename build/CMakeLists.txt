@@ -2,21 +2,28 @@
 cmake_minimum_required(VERSION 3.5)
 
 IF(DEFINED CMAKE_BUILD_TYPE)
-	SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release DebugProfile RelWithDebInfo MinSizeRel.")
+   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING 
+        "Choose the type of build, options are: 
+        None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) 
+        Debug Release RelWithDebInfo MinSizeRel." )
 ELSE()
-	SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release DebugProfile RelWithDebInfo MinSizeRel.")
+   SET(CMAKE_BUILD_TYPE Debug CACHE STRING 
+        "Choose the type of build, options are: 
+        None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) 
+        Debug Release RelWithDebInfo MinSizeRel." )
 ENDIF()
 
-project(elykseer-crypto CXX)
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
 
-message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
-message("CMAKE_HOST_SYSTEM_PROCESSOR: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
-message("CMAKE_SYSTEM: ${CMAKE_SYSTEM}")
+project(elykseer-crypto CXX)
 
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 1)
 set (${PROJECT_NAME}_VERSION_MINOR 0)
-set (${PROJECT_NAME}_VERSION_PATCH 8)
+set (${PROJECT_NAME}_VERSION_PATCH 9)
 set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-crypto_VERSION_MINOR}.${elykseer-crypto_VERSION_PATCH})
 
 # choose either one
@@ -25,11 +32,24 @@ set(USE_CRYPTOPP YES)
 
 option(RUN_ADDRESS_SANITIZER "using Clang you can turn on address sanitizer in Debug")
 
-set(CMAKE_CXX_STANDARD 17)
+# set to '-DDEBUG' to turn on debugging output
+# set to '-UDEBUG' to disable debugging output
+add_definitions( -UDEBUG )
+
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_LINKER_LANGUAGE "CXX")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+# boost
+add_definitions( -DBOOST_ALL_DYN_LINK )
+set(Boost_DEBUG OFF)
+set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_STATIC_RUNTIME OFF)
+set(Boost_USE_MULTITHREADED ON)
+find_package( Boost 1.74.0 REQUIRED COMPONENTS system date_time contract )
+link_directories ( ${Boost_LIBRARY_DIRS} )
+include_directories (${Boost_INCLUDE_DIRS})
 
 find_package(PkgConfig)
 
@@ -39,10 +59,10 @@ IF(CPPCHECK)
     message(STATUS "Found: cppcheck")
     add_custom_target(cppcheck
         ${CPPCHECK}
-        -Uassert --std=c++17 --enable=all
-        ${CMAKE_SOURCE_DIR}/build/src/lxr/*.hpp
-        ${CMAKE_SOURCE_DIR}/build/src/*.cpp
-        ${CMAKE_SOURCE_DIR}/build/test/*.cpp
+        -Uassert --std=c++20 --enable=all
+        ${CMAKE_SOURCE_DIR}/src/lxr/*.hpp
+        ${CMAKE_SOURCE_DIR}/src/*.cpp
+        ${CMAKE_SOURCE_DIR}/test/*.cpp
         -I ${CMAKE_SOURCE_DIR}/../ext
         -I /opt/homebrew/include
     )
@@ -58,20 +78,21 @@ set(LIB_PREFIX "")
 
 # OS dependent
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0")
-  include_directories(/usr/local/opt/zlib/include)
-  link_directories(/usr/local/opt/zlib/lib)
-  link_directories(/usr/local/lib)
-  include_directories(/opt/homebrew/opt/zlib/include)
-  link_directories(/opt/homebrew/opt/zlib/lib)
-  link_directories(/opt/homebrew/lib)
-  set(SELECTED_AR "/opt/homebrew/opt/binutils/bin/ar")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "13.6")
+  #include_directories(/usr/local/opt/zlib/include)
+  #link_directories(/usr/local/opt/zlib/lib)
+  #link_directories(/usr/local/lib)
+  #include_directories(/opt/homebrew/opt/zlib/include)
+  #link_directories(/opt/homebrew/opt/zlib/lib)
+  #link_directories(/opt/homebrew/lib)
+  find_program (SELECTED_AR NAMES ar PATHS /opt/homebrew/opt/binutils/bin /opt/homebrew/ NO_DEFAULT_PATH REQUIRED)
+  #set(SELECTED_AR "/opt/homebrew/opt/binutils/bin/ar")
   set(LIB_PREFIX "lib")
-  set(libs "dl" "z" "intl")
+  set(libs "dl" "z")
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-  set(EXT_PATH ${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR})
+  #set(EXT_PATH ${CMAKE_SYSTEM_NAME}_${CMAKE_HOST_SYSTEM_PROCESSOR})
   set(PLATFORM "win64")
   IF(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "AMD64")
           set(PROCESSOR_TYPE "x86_64")
@@ -97,6 +118,12 @@ set(EXT_PATH ${CMAKE_SYSTEM_NAME}_${PROCESSOR_TYPE})
 include_directories(../ext/)
 include_directories(../ext/${EXT_PATH}/include)
 link_directories("../ext/${EXT_PATH}/lib")
+
+find_program (HTML2TEXT NAMES html2text html2text.exe PATHS ../ext/${EXT_PATH}/bin NO_DEFAULT_PATH REQUIRED)
+IF(HTML2TEXT)
+    message(STATUS "Found: html2text in " ${HTML2TEXT})
+    set(ENV{HTML2TEXT} ${HTML2TEXT})
+ENDIF()
 
 # cryptography
 IF(USE_CRYPTOPP)

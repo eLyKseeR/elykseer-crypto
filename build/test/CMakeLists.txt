@@ -1,29 +1,44 @@
 cmake_minimum_required(VERSION 3.5)
 
+IF(DEFINED CMAKE_BUILD_TYPE)
+   SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release DebugProfile RelWithDebInfo MinSizeRel.")
+ELSE()
+   SET(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release DebugProfile RelWithDebInfo MinSizeRel.")
+ENDIF()
+
 # boost
 set(Boost_DEBUG OFF)
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_STATIC_RUNTIME OFF)
 set(Boost_USE_MULTITHREADED ON)
-find_package( Boost 1.70.0 REQUIRED COMPONENTS system unit_test_framework contract)
-include_directories(${Boost_INCLUDE_DIRS})
+find_package( Boost 1.74.0 REQUIRED COMPONENTS system date_time unit_test_framework contract)
+#include_directories(${Boost_INCLUDE_DIRS})
 
 # mine
 include_directories(../src)
 
-file(GLOB SRCS ut*.cpp)
+set(GENERATED_SRCS
+        utAes.cpp
+        utGpg.cpp
+        utKey128.cpp
+        utKey256.cpp
+        utMain.cpp
+        utMd5.cpp
+        utRandList.cpp
+        utRandom.cpp
+        utSha256.cpp)
+set_source_files_properties(${GENERATED_SRCS} GENERATED)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_executable ( ut${PROJECT_NAME}
+          ${GENERATED_SRCS}
+        )
 
 	add_library(libelykseer-crypto_s STATIC IMPORTED)
 	set_target_properties(libelykseer-crypto_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/src/libelykseer-crypto_d.a")
 
-        add_executable ( ut${PROJECT_NAME}
-          ${SRCS}
-        )
-
         target_link_libraries ( ut${PROJECT_NAME}
-          libelykseer-crypto_s
+          elykseer-crypto_${CMAKE_BUILD_TYPE}
           ${libs}
           ${Boost_LIBRARIES}
           ${CRYPTO_LIBS}
@@ -32,7 +47,7 @@ endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
         add_executable ( utp${PROJECT_NAME}
-                ${SRCS}
+                ${GENERATED_SRCS}
         )
         set_target_properties(utp${PROJECT_NAME} PROPERTIES LINK_FLAGS "-fprofile-arcs -ftest-coverage ")
         target_link_libraries ( utp${PROJECT_NAME}
@@ -45,3 +60,53 @@ if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
 
 endif()
 
+# generate sources from literate c++ files
+set(EXTRACT_CPP_CMD "${CMAKE_CURRENT_SOURCE_DIR}/../../ext/gitalk/utils/extract_cpp.sh")
+
+set(LITERATE_SRC_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../test/cpp")
+
+add_custom_command(
+  COMMAND rm -f utAes.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utAes.cpp.md"  utAes.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utAes.cpp.md"
+  OUTPUT utAes.cpp)
+add_custom_command(
+  COMMAND rm -f utGpg.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utGpg.cpp.md"  utGpg.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utGpg.cpp.md"
+  OUTPUT utGpg.cpp)
+add_custom_command(
+  COMMAND rm -f utKey128.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utKey128.cpp.md"  utKey128.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utKey128.cpp.md"
+  OUTPUT utKey128.cpp)
+add_custom_command(
+  COMMAND rm -f utKey256.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utKey256.cpp.md"  utKey256.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utKey256.cpp.md"
+  OUTPUT utKey256.cpp)
+add_custom_command(
+  COMMAND rm -f utMain.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utMain.cpp.md"  utMain.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utMain.cpp.md"
+  OUTPUT utMain.cpp)
+add_custom_command(
+  COMMAND rm -f utMd5.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utMd5.cpp.md"  utMd5.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utMd5.cpp.md"
+  OUTPUT utMd5.cpp)
+add_custom_command(
+  COMMAND rm -f utRandList.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utRandList.cpp.md"  utRandList.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utRandList.cpp.md"
+  OUTPUT utRandList.cpp)
+add_custom_command(
+  COMMAND rm -f utRandom.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utRandom.cpp.md"  utRandom.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utRandom.cpp.md"
+  OUTPUT utRandom.cpp)
+add_custom_command(
+  COMMAND rm -f utSha256.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utSha256.cpp.md"  utSha256.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utSha256.cpp.md"
+  OUTPUT utSha256.cpp)
