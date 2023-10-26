@@ -33,12 +33,13 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         add_executable ( ut${PROJECT_NAME}
           ${GENERATED_SRCS}
         )
+        add_test(NAME ut${PROJECT_NAME} COMMAND ut${PROJECT_NAME} --show_progress)
 
-	add_library(libelykseer-crypto_s STATIC IMPORTED)
-	set_target_properties(libelykseer-crypto_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/src/libelykseer-crypto_d.a")
+	add_library(lib${PROJECT_NAME}_s STATIC IMPORTED)
+	set_target_properties(lib${PROJECT_NAME}_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/src/libelykseer-crypto_d.a")
 
         target_link_libraries ( ut${PROJECT_NAME}
-          elykseer-crypto_${CMAKE_BUILD_TYPE}
+          ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}
           ${libs}
           ${Boost_LIBRARIES}
           ${CRYPTO_LIBS}
@@ -51,7 +52,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
         )
         set_target_properties(utp${PROJECT_NAME} PROPERTIES LINK_FLAGS "-fprofile-arcs -ftest-coverage ")
         target_link_libraries ( utp${PROJECT_NAME}
-                elykseer-crypto_p${CMAKE_BUILD_TYPE}
+                ${PROJECT_NAME}_p${CMAKE_BUILD_TYPE}
                 #gcov
                 ${libs}
                 ${Boost_LIBRARIES}

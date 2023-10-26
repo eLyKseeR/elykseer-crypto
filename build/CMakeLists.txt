@@ -168,5 +168,7 @@ IF(RUN_ADDRESS_SANITIZER)
   ENDIF(${CMAKE_BUILD_TYPE} MATCHES "Debug")
 ENDIF(RUN_ADDRESS_SANITIZER)
 
+enable_testing()
+
 add_subdirectory( src )
 add_subdirectory( test )

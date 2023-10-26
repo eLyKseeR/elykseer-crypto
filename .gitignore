@@ -55,6 +55,15 @@ GTAGS
 .vscode
 .vs
 
+*.swp
+
+CPackConfig.cmake
+CPackSourceConfig.cmake
+CTestTestfile.cmake
+Testing/
+_CPack_Packages/
+install_manifest.txt
+
 ext/Darwin_arm64
 ext/Darwin_amd64
 ext/Linux_aarch64
