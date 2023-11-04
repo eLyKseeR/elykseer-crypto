@@ -30,35 +30,34 @@ set(GENERATED_SRCS
 set_source_files_properties(${GENERATED_SRCS} GENERATED)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        add_executable ( ut${PROJECT_NAME}
-          ${GENERATED_SRCS}
-        )
-        add_test(NAME ut${PROJECT_NAME} COMMAND ut${PROJECT_NAME} --show_progress)
+    add_executable ( ut${PROJECT_NAME}
+        ${GENERATED_SRCS}
+    )
+    add_test(NAME ut${PROJECT_NAME} COMMAND ut${PROJECT_NAME} --show_progress)
 
 	add_library(lib${PROJECT_NAME}_s STATIC IMPORTED)
 	set_target_properties(lib${PROJECT_NAME}_s PROPERTIES IMPORTED_LOCATION "${CMAKE_HOME_DIRECTORY}/src/libelykseer-crypto_d.a")
 
-        target_link_libraries ( ut${PROJECT_NAME}
-          ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}
-          ${libs}
-          ${Boost_LIBRARIES}
-          ${CRYPTO_LIBS}
-        )
+    target_link_libraries ( ut${PROJECT_NAME}
+        ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}
+        ${libs}
+        ${Boost_LIBRARIES}
+        ${CRYPTO_LIBS}
+    )
 endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
-        add_executable ( utp${PROJECT_NAME}
-                ${GENERATED_SRCS}
-        )
-        set_target_properties(utp${PROJECT_NAME} PROPERTIES LINK_FLAGS "-fprofile-arcs -ftest-coverage ")
-        target_link_libraries ( utp${PROJECT_NAME}
-                ${PROJECT_NAME}_p${CMAKE_BUILD_TYPE}
-                #gcov
-                ${libs}
-                ${Boost_LIBRARIES}
-                ${CRYPTO_LIBS}
-        )
-
+    add_executable ( utp${PROJECT_NAME}
+        ${GENERATED_SRCS}
+    )
+    set_target_properties(utp${PROJECT_NAME} PROPERTIES LINK_FLAGS "-fprofile-arcs -ftest-coverage ")
+    target_link_libraries ( utp${PROJECT_NAME}
+        ${PROJECT_NAME}_p${CMAKE_BUILD_TYPE}
+        #gcov
+        ${libs}
+        ${Boost_LIBRARIES}
+        ${CRYPTO_LIBS}
+    )
 endif()
 
 # generate sources from literate c++ files

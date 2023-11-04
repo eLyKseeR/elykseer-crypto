@@ -66,3 +66,28 @@ gpgme
 
 (from https://gnupg.org/ftp/gcrypt/)
 
+
+## cross compilation
+
+### Windows
+
+
+Prepare dependencies in "ext":
+
+1. cd ext
+
+2. download a zip and extract here: https://github.com/skeeto/w64devkit/releases
+
+3. set environment variables CC, CXX, AR, RANLIB to point to "x86_64-w64-mingw32-gcc"
+
+4. run `make xWin64`
+
+
+Compile project using platform file:
+
+1. cd build
+
+2. cmake --fresh -DCMAKE_TOOLCHAIN_FILE=Toolchain_Darwin_to_Windows.cmake -DCMAKE_BUILD_TYPE=Release .
+
+
+

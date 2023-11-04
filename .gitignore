@@ -44,6 +44,8 @@ build/src
 build/test
 build/*.build/
 build/*.xcodeproj/
+build/elykseer-crypto-*.sh
+build/elykseer-crypto-*.tar.gz
 
 .fake
 .ionide
@@ -67,3 +69,7 @@ install_manifest.txt
 ext/Darwin_arm64
 ext/Darwin_amd64
 ext/Linux_aarch64
+ext/_ccache
+ext/w64devkit
+ext/xWindows_x86_64
+

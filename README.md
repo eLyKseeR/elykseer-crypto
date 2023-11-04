@@ -31,6 +31,12 @@ base library that provides cryptographic functions to _elykseer_ implementations
 | RandomList | [√](src/cpp/randlist.hpp.md) | [?](src/cpp/randlist_cbindings.cpp.md) | [?](src/csharp/RandList.cs.md) | [?] | [?](src/haskell/RandList.hs.md) |
 
 
+# cross compilation
+
+cd build
+cmake --fresh -DCMAKE_TOOLCHAIN_FILE=Toolchain_Darwin_to_Windows.cmake -DCMAKE_BUILD_TYPE=Release .
+
+
 # copyright
 
 Copyright 2019 by Alexander Diemand
