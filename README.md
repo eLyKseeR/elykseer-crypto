@@ -33,9 +33,10 @@ base library that provides cryptographic functions to _elykseer_ implementations
 
 # cross compilation
 
+```sh
 cd build
 cmake --fresh -DCMAKE_TOOLCHAIN_FILE=Toolchain_Darwin_to_Windows.cmake -DCMAKE_BUILD_TYPE=Release .
-
+```
 
 # copyright
 
