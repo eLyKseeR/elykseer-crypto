@@ -52,11 +52,16 @@ BOOST_AUTO_TEST_CASE( gpg_check_non_private_key )
   BOOST_TEST_WARN(!gpg.has_private_key(addr), "the archiving process should not have access to this private key.");
 }
 
-BOOST_AUTO_TEST_CASE( gpg_encrypt_string )
+BOOST_AUTO_TEST_CASE( gpg_encrypt_decrypt_string )
 {
   lxr::Gpg gpg;
-  auto s = gpg.encrypt_to_key(addr, "hello world.");
-  BOOST_CHECK(s);
+  std::optional<std::string> cipher = gpg.encrypt_to_key(addr, "hello world.");
+  BOOST_CHECK(cipher);
+  if (cipher) {
+    std::optional<std::string> plain = gpg.decrypt_from_buffer(cipher.value());
+    BOOST_CHECK(plain);
+    BOOST_CHECK_EQUAL("hello world.", plain.value());
+  }
 }
 
 BOOST_AUTO_TEST_CASE( gpg_encrypt_stream )

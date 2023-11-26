@@ -37,4 +37,9 @@ bool Gpg::decrypt_from_file(std::string const &fp)
     return _pimpl->decrypt_from_file(fp);
 }
 
+std::optional<std::string> Gpg::decrypt_from_buffer(std::string const &b)
+{
+    return _pimpl->decrypt_from_buffer(b);
+}
+
 ```
