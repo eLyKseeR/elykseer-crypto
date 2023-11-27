@@ -43,6 +43,8 @@ namespace [lxr](namespace.list) {
 
 >bool [decrypt_from_file](gpg_functions.cpp.md)(std::string const & fpath);
 
+>std::optional&lt;std::string&gt; [decrypt_from_buffer](gpg_functions.cpp.md)(std::string const & buffer);
+
 >private:
 
 >Gpg(Gpg const &) = delete;

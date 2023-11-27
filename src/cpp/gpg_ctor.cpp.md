@@ -13,6 +13,7 @@ struct Gpg::pimpl {
     std::ostream& ostream() { oss.reset(new std::ostringstream()); return *oss; }
     std::istream& istream() { return *iss; }
     bool decrypt_from_file(std::string const & fpath);
+    std::optional<std::string> decrypt_from_buffer(std::string const & buffer);
 
     private:
     gpgme_ctx_t ctx{nullptr};
@@ -179,6 +180,31 @@ bool Gpg::pimpl::decrypt_from_file(std::string const &p_fp)
     const char *mptr = gpgme_data_release_and_get_mem(plain, &mlen);
     iss.reset(new std::istringstream(std::string(mptr, mlen)));
     return true;
+}
+
+std::optional<std::string> Gpg::pimpl::decrypt_from_buffer(std::string const &p_buffer)
+{
+    gpgme_error_t err;
+    gpgme_data_t plain, cipher;
+    err = gpgme_data_new_from_mem(&cipher, p_buffer.c_str(), p_buffer.size(), 0);
+    if (err != GPG_ERR_NO_ERROR) { OUTPUT_GPGME_ERROR(err); return {}; }
+    err = gpgme_data_new(&plain);
+    if (err != GPG_ERR_NO_ERROR) { OUTPUT_GPGME_ERROR(err); gpgme_data_release(cipher); return {}; }
+    auto cleanup_data = [&](void) {
+        gpgme_data_release(plain);
+        gpgme_data_release(cipher);
+    };
+
+    err = gpgme_new(&ctx);
+    if (err != GPG_ERR_NO_ERROR) { OUTPUT_GPGME_ERROR(err); cleanup_data(); return {}; }
+
+    err = gpgme_op_decrypt(ctx, cipher, plain);
+    if (err != GPG_ERR_NO_ERROR) { OUTPUT_GPGME_ERROR(err); cleanup_data(); gpgme_release(ctx); return {}; }
+
+    gpgme_data_release(cipher);
+    size_t mlen;
+    const char *mptr = gpgme_data_release_and_get_mem(plain, &mlen);
+    return std::string(mptr, mlen);
 }
 
 Gpg::Gpg()
