@@ -1,6 +1,8 @@
 
 cmake_minimum_required(VERSION 3.5)
 
+cmake_policy(SET CMP0074 NEW)
+
 IF(DEFINED CMAKE_BUILD_TYPE)
    SET(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING 
         "Choose the type of build, options are: 
@@ -42,6 +44,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(PkgConfig)
+find_package(ZLIB)
 
 if(NOT CMAKE_CROSSCOMPILING)
 find_program(CPPCHECK NAMES cppcheck)
@@ -73,7 +76,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   find_program (SELECTED_AR NAMES ar PATHS /opt/homebrew/opt/binutils/bin /opt/homebrew/ NO_DEFAULT_PATH REQUIRED)
   message(STATUS "Selected: ar in " ${SELECTED_AR})
   set(LIB_PREFIX "lib")
-  set(libs "dl" "z")
+  set(libs "dl" ${ZLIB_LIBRARIES})
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
@@ -81,7 +84,7 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
       set(PROCESSOR_TYPE "x86_64")
   ENDIF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "AMD64")
   set(LIB_PREFIX "lib")
-  set(libs "z")
+  set(libs ${ZLIB_LIBRARIES})
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 IF(${CMAKE_HOST_SYSTEM_NAME} MATCHES "FreeBSD")
@@ -89,12 +92,12 @@ IF(${CMAKE_HOST_SYSTEM_NAME} MATCHES "FreeBSD")
 ENDIF(${CMAKE_HOST_SYSTEM_NAME} MATCHES "FreeBSD")
 IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
   set(LIB_PREFIX "lib")
-  set(libs "dl" "z")
+  set(libs "dl" ${ZLIB_LIBRARIES})
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   set(LIB_PREFIX "lib")
-  set(libs "dl" "z")
+  set(libs "dl" ${ZLIB_LIBRARIES})
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 IF(${CMAKE_CROSSCOMPILING})
