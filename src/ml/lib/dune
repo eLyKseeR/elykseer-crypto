@@ -6,7 +6,7 @@
  (no_dynlink)
  (modules key128 key256 aes256 random sha256)
  (c_library_flags :standard -lstdc++)
- (foreign_stubs (language cxx) (flags :standard -I ../../../../../ext -I ../../../../../BUILD/src -std=c++17 -fno-exceptions)
+ (foreign_stubs (language cxx) (flags :standard -I ../../../../../ext -I ../../../../../build/src -std=c++17 -fno-exceptions)
   (names key128 key256 aes256 random sha256))
  (foreign_archives elykseer-crypto_cpp)
  (libraries unix mlcpp_cstdio)
@@ -14,11 +14,11 @@
 
 ; copy the native libraries to the build directory and install them
 (rule
-  (deps ../../../BUILD/src/libelykseer-crypto.a)
+  (deps ../../../build/src/libelykseer-crypto.a)
   (targets libelykseer-crypto_cpp.a )
   (action
    (no-infer
     (progn 
-     (copy ../../../BUILD/src/libelykseer-crypto.a libelykseer-crypto_cpp.a)
+     (copy ../../../build/src/libelykseer-crypto.a libelykseer-crypto_cpp.a)
     )))
 )

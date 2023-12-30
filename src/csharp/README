@@ -16,8 +16,8 @@ gcc -o libelykseer-crypto-cs.so -shared -fpic \
    sha256_wrap.c \
    aes_wrap.c \
    -I. \
-   -L ../../../BUILD/src/ -lelykseer-crypto_Debug \
-   -Wl,-rpath=../../../BUILD/src/
+   -L ../../../build/src/ -lelykseer-crypto_Debug \
+   -Wl,-rpath=../../../build/src/
 
 cc -o libelykseer-crypto-cs.dylib -dynamiclib -fpic \
    md5_wrap.c \
