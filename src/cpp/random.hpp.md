@@ -33,6 +33,8 @@ module Random =
 
 >[Random](random_ctor.cpp.md)();
 
+>~[Random](random_ctor.cpp.md)();
+
 >uint32_t [random](random_functions.cpp.md)() const;
 
 > // generate a randum number in the interval [0,max), thus incl. zero but excl. max

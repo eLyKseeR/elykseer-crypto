@@ -13,6 +13,13 @@ Random::Random()
     }
 }
 
+Random::~Random()
+{
+    if (_rng) {
+        _rng.reset();
+    }
+}
+
 #else
 #error not yet defined
 #endif
