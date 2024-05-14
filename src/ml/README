@@ -1,0 +1,14 @@
+* setup opam environment
+
+eval $(opam env)
+
+
+* build project
+
+dune build
+
+
+* install project
+
+dune install -p elykseer_crypto
+
