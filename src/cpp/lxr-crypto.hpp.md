@@ -1,6 +1,6 @@
 ```cpp
 /*
- *  Copyright 2019 by Alexander Diemand
+ *  Copyright 2019-2024 by Alexander Diemand
  *
  *  [LICENSE](../LICENSE)
  */
@@ -14,6 +14,7 @@
 #include "lxr/key256.hpp"
 #include "lxr/random.hpp"
 #include "lxr/randlist.hpp"
+#include "lxr/hmac.hpp"
 
 ```
 

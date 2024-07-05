@@ -24,6 +24,7 @@ set(GENERATED_SRCS
         utKey256.cpp
         utMain.cpp
         utMd5.cpp
+        utHMAC.cpp
         utRandList.cpp
         utRandom.cpp
         utSha256.cpp)
@@ -95,6 +96,11 @@ add_custom_command(
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utMd5.cpp.md"  utMd5.cpp
   DEPENDS "${LITERATE_SRC_PATH}/utMd5.cpp.md"
   OUTPUT utMd5.cpp)
+add_custom_command(
+  COMMAND rm -f utHMAC.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utHMAC.cpp.md"  utHMAC.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utHMAC.cpp.md"
+  OUTPUT utHMAC.cpp)
 add_custom_command(
   COMMAND rm -f utRandList.cpp
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utRandList.cpp.md"  utRandList.cpp
