@@ -21,6 +21,7 @@ set(GENERATED_SRCS
         utAes.cpp
         utGpg.cpp
         utKey128.cpp
+        utKey160.cpp
         utKey256.cpp
         utMain.cpp
         utMd5.cpp
@@ -82,6 +83,11 @@ add_custom_command(
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utKey128.cpp.md"  utKey128.cpp
   DEPENDS "${LITERATE_SRC_PATH}/utKey128.cpp.md"
   OUTPUT utKey128.cpp)
+add_custom_command(
+  COMMAND rm -f utKey160.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utKey160.cpp.md"  utKey160.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utKey160.cpp.md"
+  OUTPUT utKey160.cpp)
 add_custom_command(
   COMMAND rm -f utKey256.cpp
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utKey256.cpp.md"  utKey256.cpp

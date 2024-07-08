@@ -9,4 +9,7 @@ let t1 =
 let t2 =
   Hmac.Sha256.string key m |> print_endline
 
-let () = t1 ; t2
+let t3 =
+  Hmac.Sha1.string "test" "test" |> print_endline
+
+let () = t1 ; t2 ; t3

@@ -5,6 +5,12 @@
  (libraries unix elykseer_crypto))
 
 (executable
+ (name key160)
+ (modules key160)
+ (flags :standard -cclib -lstdc++)
+ (libraries unix elykseer_crypto))
+
+(executable
  (name key256)
  (modules key256)
  (flags :standard -cclib -lstdc++)

@@ -19,4 +19,12 @@ CKey256* hmac_Sha256(int klen, const char k[], int mlen, const char * m)
     return r;
 }
 
+extern "C" EXPORT
+CKey160* hmac_Sha1(int klen, const char k[], int mlen, const char * m)
+{
+    lxr::Key160 h = lxr::HMAC::hmac_sha1(k, klen, m, mlen);
+    CKey160 * r = new CKey160; r->ptr = new lxr::Key160(h);
+    return r;
+}
+
 ```

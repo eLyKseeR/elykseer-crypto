@@ -7,4 +7,5 @@ module type HmacBase = sig
 end
     
 module Sha256 : HmacBase
+module Sha1 : HmacBase
 module Md5 : HmacBase

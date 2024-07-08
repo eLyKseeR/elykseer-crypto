@@ -9,6 +9,7 @@ set(GENERATED_SRCS
   gpg.cpp
   key.cpp
   key128.cpp
+  key160.cpp
   key256.cpp
   md5.cpp
   hmac.cpp
@@ -22,6 +23,7 @@ set(GENERATED_HDRS
   lxr/gpg.hpp
   lxr/key.hpp
   lxr/key128.hpp
+  lxr/key160.hpp
   lxr/key256.hpp
   lxr/lxr-cbindings.hpp
   lxr/lxr-crypto.hpp
@@ -105,6 +107,20 @@ add_custom_command(
   MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/key128.hpp.md"
   DEPENDS "${LITERATE_SRC_PATH}/key128*.md"
   OUTPUT lxr/key128.hpp)
+
+add_custom_command(
+  COMMAND rm -f key160.cpp
+  COMMAND ${MAKE_CPP_CMD} "${LITERATE_SRC_PATH}/key160.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/key160.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/key160*.md"
+  OUTPUT key160.cpp)
+add_custom_command(
+  WORKING_DIRECTORY "lxr"
+  COMMAND rm -f key160.hpp
+  COMMAND ${MAKE_HPP_CMD} "${LITERATE_SRC_PATH}/key160.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/key160.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/key160*.md"
+  OUTPUT lxr/key160.hpp)
 
 add_custom_command(
   COMMAND rm -f key256.cpp

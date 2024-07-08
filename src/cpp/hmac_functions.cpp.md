@@ -39,5 +39,22 @@ Key256 HMAC::hmac_sha256(const char k[], int klen, const char buffer[], int blen
     return k256;
 }
 
+Key160 HMAC::hmac_sha1(const char k[], int klen, std::string const & msg)
+{
+    return HMAC::hmac_sha1(k, klen, msg.c_str(), msg.size());
+}
+
+Key160 HMAC::hmac_sha1(const char k[], int klen, const char buffer[], int blen)
+{
+    assert(160/8 == CryptoPP::SHA1::DIGESTSIZE);
+    unsigned char digest[CryptoPP::SHA1::DIGESTSIZE];
+    CryptoPP::HMAC<CryptoPP::SHA1> hmac((const CryptoPP::byte *)k, klen);
+    hmac.CalculateDigest(digest, (unsigned char const *)buffer, blen);
+
+    Key160 k160(true);
+    k160.fromBytes(digest);
+    return k160;
+}
+
 # endif 
 ```
