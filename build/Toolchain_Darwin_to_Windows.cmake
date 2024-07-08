@@ -6,8 +6,8 @@ set(CMAKE_SYSTEM_PROCESSOR x86_64)
 set(CMAKE_SYSROOT ${CMAKE_HOME_DIRECTORY}/../ext/w64devkit/x86_64-w64-mingw32/)
 
 # which C and C++ compiler to use
-set(CMAKE_C_COMPILER /opt/homebrew/Cellar/mingw-w64/11.0.1/bin/x86_64-w64-mingw32-gcc)
-set(CMAKE_CXX_COMPILER /opt/homebrew/Cellar/mingw-w64/11.0.1/bin/x86_64-w64-mingw32-g++)
+set(CMAKE_C_COMPILER /opt/homebrew/Cellar/mingw-w64/12.0.0/bin/x86_64-w64-mingw32-gcc)
+set(CMAKE_CXX_COMPILER /opt/homebrew/Cellar/mingw-w64/12.0.0/bin/x86_64-w64-mingw32-g++)
 
 # location of the target environment
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_HOME_DIRECTORY}/../ext/targets/${CMAKE_SYSTEM_NAME})

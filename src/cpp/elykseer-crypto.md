@@ -56,3 +56,7 @@ Based on MT19937, a good pseudo random number generator.
 ## HMAC Keyed-Hashing for Message Authentication (RFC 2104)
 
 [HMAC](hmac.hpp.md)
+
+## Base64 encoding
+
+[Base64](base64.hpp.md)

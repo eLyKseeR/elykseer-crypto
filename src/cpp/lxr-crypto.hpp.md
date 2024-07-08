@@ -15,6 +15,7 @@
 #include "lxr/random.hpp"
 #include "lxr/randlist.hpp"
 #include "lxr/hmac.hpp"
+#include "lxr/base64.hpp"
 
 ```
 

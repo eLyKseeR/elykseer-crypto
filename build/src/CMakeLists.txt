@@ -12,6 +12,7 @@ set(GENERATED_SRCS
   key256.cpp
   md5.cpp
   hmac.cpp
+  base64.cpp
   randlist.cpp
   random.cpp
   sha256.cpp)
@@ -26,6 +27,7 @@ set(GENERATED_HDRS
   lxr/lxr-crypto.hpp
   lxr/md5.hpp
   lxr/hmac.hpp
+  lxr/base64.hpp
   lxr/randlist.hpp
   lxr/random.hpp
   lxr/sha256.hpp)
@@ -132,20 +134,34 @@ add_custom_command(
   DEPENDS "${LITERATE_SRC_PATH}/md5*.md"
   OUTPUT lxr/md5.hpp)
 
-  add_custom_command(
-    COMMAND rm -f hmac.cpp
-    COMMAND ${MAKE_CPP_CMD} "${LITERATE_SRC_PATH}/hmac.hpp.md"
-    MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/hmac.hpp.md"
-    DEPENDS "${LITERATE_SRC_PATH}/hmac*.md"
-    OUTPUT hmac.cpp)
-  add_custom_command(
-    WORKING_DIRECTORY "lxr"
-    COMMAND rm -f hmac.hpp
-    COMMAND ${MAKE_HPP_CMD} "${LITERATE_SRC_PATH}/hmac.hpp.md"
-    MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/hmac.hpp.md"
-    DEPENDS "${LITERATE_SRC_PATH}/hmac*.md"
-    OUTPUT lxr/hmac.hpp)
-  
+add_custom_command(
+  COMMAND rm -f hmac.cpp
+  COMMAND ${MAKE_CPP_CMD} "${LITERATE_SRC_PATH}/hmac.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/hmac.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/hmac*.md"
+  OUTPUT hmac.cpp)
+add_custom_command(
+  WORKING_DIRECTORY "lxr"
+  COMMAND rm -f hmac.hpp
+  COMMAND ${MAKE_HPP_CMD} "${LITERATE_SRC_PATH}/hmac.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/hmac.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/hmac*.md"
+  OUTPUT lxr/hmac.hpp)
+
+add_custom_command(
+  COMMAND rm -f base64.cpp
+  COMMAND ${MAKE_CPP_CMD} "${LITERATE_SRC_PATH}/base64.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/base64.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/base64*.md"
+  OUTPUT base64.cpp)
+add_custom_command(
+  WORKING_DIRECTORY "lxr"
+  COMMAND rm -f base64.hpp
+  COMMAND ${MAKE_HPP_CMD} "${LITERATE_SRC_PATH}/base64.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/base64.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/base64*.md"
+  OUTPUT lxr/base64.hpp)
+
   add_custom_command(
   COMMAND rm -f randlist.cpp
   COMMAND ${MAKE_CPP_CMD} "${LITERATE_SRC_PATH}/randlist.hpp.md"

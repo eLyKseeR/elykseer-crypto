@@ -33,3 +33,9 @@
  (modules hmac)
  (flags :standard -cclib -lstdc++)
  (libraries unix elykseer_crypto))
+
+(executable
+ (name base64)
+ (modules base64)
+ (flags :standard -cclib -lstdc++)
+ (libraries unix elykseer_crypto))

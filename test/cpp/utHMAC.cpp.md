@@ -14,7 +14,7 @@
 
 # Test suite: utHMAC
 
-on class [Md5](../src/hmac.hpp.md)
+on class [HMAC](../src/hmac.hpp.md)
 
 ```cpp
 BOOST_AUTO_TEST_SUITE( utHMAC )
