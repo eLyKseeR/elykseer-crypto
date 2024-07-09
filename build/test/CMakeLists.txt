@@ -21,9 +21,12 @@ set(GENERATED_SRCS
         utAes.cpp
         utGpg.cpp
         utKey128.cpp
+        utKey160.cpp
         utKey256.cpp
         utMain.cpp
         utMd5.cpp
+        utHMAC.cpp
+        utBase64.cpp
         utRandList.cpp
         utRandom.cpp
         utSha256.cpp)
@@ -81,6 +84,11 @@ add_custom_command(
   DEPENDS "${LITERATE_SRC_PATH}/utKey128.cpp.md"
   OUTPUT utKey128.cpp)
 add_custom_command(
+  COMMAND rm -f utKey160.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utKey160.cpp.md"  utKey160.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utKey160.cpp.md"
+  OUTPUT utKey160.cpp)
+add_custom_command(
   COMMAND rm -f utKey256.cpp
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utKey256.cpp.md"  utKey256.cpp
   DEPENDS "${LITERATE_SRC_PATH}/utKey256.cpp.md"
@@ -95,6 +103,16 @@ add_custom_command(
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utMd5.cpp.md"  utMd5.cpp
   DEPENDS "${LITERATE_SRC_PATH}/utMd5.cpp.md"
   OUTPUT utMd5.cpp)
+add_custom_command(
+  COMMAND rm -f utHMAC.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utHMAC.cpp.md"  utHMAC.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utHMAC.cpp.md"
+  OUTPUT utHMAC.cpp)
+add_custom_command(
+  COMMAND rm -f utBase64.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utBase64.cpp.md"  utBase64.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utBase64.cpp.md"
+  OUTPUT utBase64.cpp)
 add_custom_command(
   COMMAND rm -f utRandList.cpp
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utRandList.cpp.md"  utRandList.cpp

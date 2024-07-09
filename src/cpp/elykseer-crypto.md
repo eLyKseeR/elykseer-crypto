@@ -2,7 +2,7 @@
 
 A C++ implementation of eLyKseeR cryptographic functions (https://github.com/eLyKseeR/elykseer-crypto)
 
->  Copyright (C) 2019 Alexander Diemand
+>  Copyright (C) 2019-2024 Alexander Diemand
 
 >  GPL v3
    [LICENSE](../../LICENSE)
@@ -52,3 +52,11 @@ Based on MT19937, a good pseudo random number generator.
 ## PGP/GPG symmetric en-/decryption
 
 [GPG](gpg.hpp.md)
+
+## HMAC Keyed-Hashing for Message Authentication (RFC 2104)
+
+[HMAC](hmac.hpp.md)
+
+## Base64 encoding
+
+[Base64](base64.hpp.md)

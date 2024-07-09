@@ -5,6 +5,12 @@
  (libraries unix elykseer_crypto))
 
 (executable
+ (name key160)
+ (modules key160)
+ (flags :standard -cclib -lstdc++)
+ (libraries unix elykseer_crypto))
+
+(executable
  (name key256)
  (modules key256)
  (flags :standard -cclib -lstdc++)
@@ -25,5 +31,17 @@
 (executable
  (name random)
  (modules random)
+ (flags :standard -cclib -lstdc++)
+ (libraries unix elykseer_crypto))
+
+(executable
+ (name hmac)
+ (modules hmac)
+ (flags :standard -cclib -lstdc++)
+ (libraries unix elykseer_crypto))
+
+(executable
+ (name base64)
+ (modules base64)
  (flags :standard -cclib -lstdc++)
  (libraries unix elykseer_crypto))
