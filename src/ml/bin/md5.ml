@@ -17,17 +17,14 @@ let read_file fn =
     end
   | Error _ -> Error (-99)
 
-let shafile () =
+let md5file () =
   read_file "/bin/sh" |> function
   | Error code -> Printf.printf "Error: %d\n" code |> ignore
   | Ok (_cnt,buf) ->
-      Sha256.buffer buf |> Printf.printf "sha256 of file: %s\n"
+      Md5.buffer buf |> Printf.printf "md5 of file: %s\n"
 
-let shamsg () =
-  Sha256.string msg |> Printf.printf "sha256 of msg: %s\n"
+let md5msg () =
+  Md5.string msg |> Printf.printf "md5 of msg: %s\n"
 
-let shapath () =
-  Sha256.file "/bin/sh" |> Printf.printf "sha256 of path: %s\n"
-
-let () =
-  shafile () ; shamsg () ; shapath ()
+  let () =
+  md5file () ; md5msg ()
