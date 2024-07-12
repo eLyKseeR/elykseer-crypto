@@ -29,7 +29,8 @@ set(GENERATED_SRCS
         utBase64.cpp
         utRandList.cpp
         utRandom.cpp
-        utSha256.cpp)
+        utSha256.cpp
+        utSha3.cpp)
 set_source_files_properties(${GENERATED_SRCS} GENERATED)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -128,3 +129,8 @@ add_custom_command(
   COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utSha256.cpp.md"  utSha256.cpp
   DEPENDS "${LITERATE_SRC_PATH}/utSha256.cpp.md"
   OUTPUT utSha256.cpp)
+add_custom_command(
+  COMMAND rm -f utSha3.cpp
+  COMMAND ${EXTRACT_CPP_CMD} "${LITERATE_SRC_PATH}/utSha3.cpp.md"  utSha3.cpp
+  DEPENDS "${LITERATE_SRC_PATH}/utSha3.cpp.md"
+  OUTPUT utSha3.cpp)
