@@ -16,7 +16,8 @@ set(GENERATED_SRCS
   base64.cpp
   randlist.cpp
   random.cpp
-  sha256.cpp)
+  sha256.cpp
+  sha3.cpp)
 set_source_files_properties(${GENERATED_SRCS} GENERATED)
 set(GENERATED_HDRS
   lxr/aes.hpp
@@ -32,7 +33,8 @@ set(GENERATED_HDRS
   lxr/base64.hpp
   lxr/randlist.hpp
   lxr/random.hpp
-  lxr/sha256.hpp)
+  lxr/sha256.hpp
+  lxr/sha3.hpp)
 set_source_files_properties(${GENERATED_HDRS} GENERATED)
 
 # generate sources from literate c++ files
@@ -219,6 +221,20 @@ add_custom_command(
   MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/sha256.hpp.md"
   DEPENDS "${LITERATE_SRC_PATH}/sha256*.md"
   OUTPUT lxr/sha256.hpp)
+
+add_custom_command(
+  COMMAND rm -f sha3.cpp
+  COMMAND ${MAKE_CPP_CMD} "${LITERATE_SRC_PATH}/sha3.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/sha3.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/sha3*.md"
+  OUTPUT sha3.cpp)
+add_custom_command(
+  WORKING_DIRECTORY "lxr"
+  COMMAND rm -f sha3.hpp
+  COMMAND ${MAKE_HPP_CMD} "${LITERATE_SRC_PATH}/sha3.hpp.md"
+  MAIN_DEPENDENCY "${LITERATE_SRC_PATH}/sha3.hpp.md"
+  DEPENDS "${LITERATE_SRC_PATH}/sha3*.md"
+  OUTPUT lxr/sha3.hpp)
 
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")

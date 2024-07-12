@@ -5,9 +5,9 @@ declared in [Sha256](sha256.hpp.md)
 #if CRYPTOLIB == CRYPTOPP
 Key256 Sha256::hash(const char buffer[], int length)
 {
-    assert(256/8 == CryptoPP::SHA3_256::DIGESTSIZE);
-    unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
-    CryptoPP::SHA3_256 hash;
+    assert(256/8 == CryptoPP::SHA256::DIGESTSIZE);
+    unsigned char digest[CryptoPP::SHA256::DIGESTSIZE];
+    CryptoPP::SHA256 hash;
     hash.CalculateDigest( digest, (const unsigned char*)buffer, length );
 
     Key256 k(true);
@@ -38,7 +38,7 @@ int Sha256::process(int len, sizebounded<unsigned char, Sha256::datasz> const & 
 
 Key256 Sha256::finish()
 {
-    unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
+    unsigned char digest[CryptoPP::SHA256::DIGESTSIZE];
     _pimpl->hash.Final(digest);
     Key256 k(true);
     k.fromBytes(digest);

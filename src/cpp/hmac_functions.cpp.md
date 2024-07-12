@@ -28,10 +28,9 @@ Key256 HMAC::hmac_sha256(const char k[], int klen, std::string const & msg)
 
 Key256 HMAC::hmac_sha256(const char k[], int klen, const char buffer[], int blen)
 {
-    assert(256/8 == CryptoPP::SHA3_256::DIGESTSIZE);
-    unsigned char digest[CryptoPP::SHA3_256::DIGESTSIZE];
-    // CryptoPP::SHA3_256 hash;
-    CryptoPP::HMAC<CryptoPP::SHA3_256> hmac((const CryptoPP::byte *)k, klen);
+    assert(256/8 == CryptoPP::SHA256::DIGESTSIZE);
+    unsigned char digest[CryptoPP::SHA256::DIGESTSIZE];
+    CryptoPP::HMAC<CryptoPP::SHA256> hmac((const CryptoPP::byte *)k, klen);
     hmac.CalculateDigest(digest, (unsigned char const *)buffer, blen);
 
     Key256 k256(true);
