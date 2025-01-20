@@ -69,18 +69,8 @@ check_ranlib:
 	@[ -n "$(RANLIB)" ] && type $(RANLIB) 2> /dev/null
 
 
-make_exts: makedirs make_gitalk make_libgpg_error make_libassuan make_gpgme make_cryptopp
+make_exts: makedirs make_libgpg_error make_libassuan make_gpgme make_cryptopp
 	echo "all done."
-
-fset_gitalk := $(TARGETDIR)/bin/html2text
-make_gitalk: $(fset_gitalk)
-$(fset_gitalk):
-	if [ -z "$(CROSS_COMPILATION)" ]; then \
-	echo "making gitalk"; \
-	cd ./gitalk; \
-	git submodule update --init; \
-	$(MAKE) -C ext; \
-	fi
 
 fset_libgpg_error := $(TARGETDIR)/include/gpg-error.h $(TARGETDIR)/lib/libgpg-error.a
 make_libgpg_error: $(fset_libgpg_error)

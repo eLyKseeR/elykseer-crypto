@@ -1,6 +1,37 @@
-declared in [Gpg](gpg.hpp.md)
+module;
+/*
+    eLyKseeR or LXR - cryptographic data archiving software
+    https://github.com/eLyKseeR/elykseer-cpp
+    Copyright (C) 2019-2025 Alexander Diemand
 
-```cpp
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include <memory>
+#include <iostream>
+#include <sstream>
+#include <filesystem>
+#include <optional>
+#include <string>
+#include <locale.h>
+#include <gpgme.h>
+
+
+module lxr_gpg;
+
+
+namespace lxr {
 
 struct Gpg::pimpl {
     public:
@@ -215,5 +246,45 @@ Gpg::Gpg()
 
 Gpg::~Gpg() = default;
 
-```
-amp;
+
+bool Gpg::has_public_key(std::string const & addr) const
+{
+    return _pimpl->has_public_key(addr);
+}
+
+bool Gpg::has_private_key(std::string const & addr) const
+{
+    return _pimpl->has_private_key(addr);
+}
+
+std::optional<std::string> Gpg::encrypt_to_key(std::string const & addr, std::string const & msg)
+{
+    return _pimpl->encrypt_to_key(addr, msg);
+}
+
+std::optional<std::string> Gpg::encrypt_to_key(std::string const & addr)
+{
+    return _pimpl->encrypt_to_key(addr);
+}
+
+std::ostream& Gpg::ostream()
+{
+   return _pimpl->ostream();
+}
+
+std::istream& Gpg::istream()
+{
+   return _pimpl->istream();
+}
+
+bool Gpg::decrypt_from_file(std::string const &fp)
+{
+    return _pimpl->decrypt_from_file(fp);
+}
+
+std::optional<std::string> Gpg::decrypt_from_buffer(std::string const &b)
+{
+    return _pimpl->decrypt_from_buffer(b);
+}
+
+} // namespace

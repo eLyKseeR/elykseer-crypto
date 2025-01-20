@@ -35,17 +35,7 @@
 ._*
 .DS_Store
 
-build/CMakeCache.txt
-build/CMakeFiles/
-build/CMakeScripts
-build/Makefile
-build/cmake_install.cmake
-build/src
-build/test
-build/*.build/
-build/*.xcodeproj/
-build/elykseer-crypto-*.sh
-build/elykseer-crypto-*.tar.gz
+build
 
 .fake
 .ionide
@@ -69,7 +59,10 @@ install_manifest.txt
 ext/Darwin_arm64
 ext/Darwin_amd64
 ext/Linux_aarch64
+ext/Linux_x86_64
 ext/_ccache
 ext/w64devkit
 ext/xWindows_x86_64
 
+.cache
+build/compile_commands.json
