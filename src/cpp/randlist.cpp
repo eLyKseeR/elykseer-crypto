@@ -19,6 +19,7 @@ module;
 */
 
 #include <cmath>
+#include <stdint.h>
 #include <vector>
 
 import lxr_random;
@@ -50,11 +51,10 @@ std::vector<int> mklist(int lo0, int hi0)
 
 std::vector<int> permutation(std::vector<int> vs)
 {
-    lxr::Random rng;
     int n = vs.size();
     for (int i=0; i<n; i++) {
-        int r = rng.random(n);
-        if (i == r) { r = n - i; }
+        uint32_t r = Random::rng().random(n);
+        if (i == r || r < 0 || r >= n) { r = n - i; }
         // swap i with r positions
         auto t = vs[i];
         vs[i] = vs[r];

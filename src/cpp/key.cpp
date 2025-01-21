@@ -92,11 +92,10 @@ void Key::fromBytes(unsigned char const *buf)
 
 void Key::randomize()
 {
-    Random rng;
     uint32_t r = 0;
-    transform([&rng,&r](const int i, const unsigned char c) -> unsigned char {
+    transform([&r](const int i, const unsigned char c) -> unsigned char {
         if (i % 4 == 0) {
-            r = rng.random(); }
+            r = Random::rng().random(); }
         unsigned char c2 = r & 0xff;
         r = (r >> 8);
         return c2;

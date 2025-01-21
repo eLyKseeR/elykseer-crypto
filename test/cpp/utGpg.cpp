@@ -1,36 +1,45 @@
-```cpp
+/*
+    eLyKseeR or LXR - cryptographic data archiving software
+    https://github.com/eLyKseeR/elykseer-cpp
+    Copyright (C) 2019-2025 Alexander Diemand
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef BOOST_ALL_DYN_LINK
 #define BOOST_ALL_DYN_LINK
 #endif
 
-#include "boost/test/unit_test.hpp"
-
-#include "lxr/gpg.hpp"
-
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <optional>
 #include <sstream>
 #include <string>
 
-````
+#include "boost/test/unit_test.hpp"
 
-# Test suite: utGpg
+import lxr_gpg;
 
-on class [Gpg](../src/gpg.hpp.md)
 
-```cpp
 BOOST_AUTO_TEST_SUITE( utGpg, * boost::unit_test_framework::disabled() )
-```
 
-set this to the fingerprint of a PGP key you own the private key.
-it will be used to encrypt data that only you may decrypt.
-```cpp
+// set this to the fingerprint of a PGP key you own the private key.
+// it will be used to encrypt data that only you may decrypt.
 static const std::string addr = "E2DFCA9AA83BA568AF39280999283F5327C5D38F";
-```
 
-## Test case: check address availability
-```cpp
+// Test case: check address availability
 BOOST_AUTO_TEST_CASE( gpg_check_address_fail )
 {
   const std::string addr = "02355D3AE5A849EA2FFC0E8887EFE7D9796875C2";
@@ -87,11 +96,9 @@ BOOST_AUTO_TEST_CASE( gpg_encrypt_stream2 )
     fout.close();
   }
 }
-```
 
-the following might ask for your private key and thus is disabled.
-feel free to test it on your own.
-```cpp
+// the following might ask for your private key and thus is disabled.
+// feel free to test it on your own.
 BOOST_AUTO_TEST_CASE( gpg_decrypt_file, * boost::unit_test::disabled() )
 {
   auto const tmpd = std::filesystem::temp_directory_path();
@@ -104,8 +111,5 @@ BOOST_AUTO_TEST_CASE( gpg_decrypt_file, * boost::unit_test::disabled() )
   gpg.istream().getline(plain, 256);
   BOOST_CHECK_EQUAL("hello world.", plain);
 }
-```
 
-```cpp
 BOOST_AUTO_TEST_SUITE_END()
-```

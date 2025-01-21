@@ -9,13 +9,16 @@ stdenv.mkDerivation rec {
     nativeBuildInputs = [
         cmake
         ninja
+        ccache
         git
         gnused
         gettext
         texinfo
         swig
         #gcc
-        clang
+        llvmPackages_19.openmp
+        lldb_19
+        clang_19
         opam m4
         #global
         cppcheck

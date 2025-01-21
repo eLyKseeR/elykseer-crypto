@@ -59,9 +59,9 @@ Sha256::~Sha256()
 
 Key256 Sha256::hash(const char buffer[], int length)
 {
+    CryptoPP::SHA256 hash;
     assert(256/8 == CryptoPP::SHA256::DIGESTSIZE);
     unsigned char digest[CryptoPP::SHA256::DIGESTSIZE];
-    CryptoPP::SHA256 hash;
     hash.CalculateDigest( digest, (const unsigned char*)buffer, length );
 
     Key256 k(true);

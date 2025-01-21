@@ -1,43 +1,54 @@
-```cpp
+/*
+    eLyKseeR or LXR - cryptographic data archiving software
+    https://github.com/eLyKseeR/elykseer-cpp
+    Copyright (C) 2019-2025 Alexander Diemand
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 #ifndef BOOST_ALL_DYN_LINK
 #define BOOST_ALL_DYN_LINK
 #endif
 
+#include <iostream>
+
 #include "boost/test/unit_test.hpp"
 
-#include "lxr/key160.hpp"
 #include "sizebounded/sizebounded.ipp"
 
-#include <iostream>
-````
+import lxr_key160;
 
-# Test suite: utKey160
 
-on class [Key160](../src/key160.hpp.md)
-
-```cpp
 BOOST_AUTO_TEST_SUITE( utKey160 )
-```
-## Test case: verify that key is random
-```cpp
+// Test case: verify that key is random
 BOOST_AUTO_TEST_CASE( new_key_is_random )
 {
-    lxr::Key160 k1, k2;
-    BOOST_CHECK(k1 != k2);
+    lxr::Key160 k1;
+    {
+        lxr::Key160 k2;
+        BOOST_CHECK(k1 != k2);
+    }
 }
-```
 
-## Test case: key length is 160 bits
-```cpp
+// Test case: key length is 160 bits
 BOOST_AUTO_TEST_CASE( key_length )
 {
     lxr::Key160 k;
 	BOOST_CHECK_EQUAL(k.toHex().size(), 160 / 8 * 2);
 }
-```
 
-## Test case in C: verify that key is random
-```cpp
+// Test case in C: verify that key is random
 BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 {
     CKey160 *k1 = mk_Key160();
@@ -48,20 +59,16 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
     release_Key160(k1); release_Key160(k2);
     free(h1); free(h2);
 }
-```
 
-## Test case in C: key length is 160 bits
-```cpp
+// Test case in C: key length is 160 bits
 BOOST_AUTO_TEST_CASE( c_key_length )
 {
     CKey160 *k = mk_Key160();
 	BOOST_CHECK_EQUAL(len_Key160(k), 160);
     release_Key160(k);
 }
-```
 
-## Test case in C: bytes(fromhex(tohex(k)))==bytes(k)
-```cpp
+// Test case in C: bytes(fromhex(tohex(k)))==bytes(k)
 BOOST_AUTO_TEST_CASE( c_fromhex_regenerates_key )
 {
     CKey160 *k1 = mk_Key160();
@@ -74,8 +81,5 @@ BOOST_AUTO_TEST_CASE( c_fromhex_regenerates_key )
     release_Key160(k1); release_Key160(k2);
     free(h1); free(h2);
 }
-```
 
-```cpp
 BOOST_AUTO_TEST_SUITE_END()
-```

@@ -18,6 +18,7 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <memory>
 #include <stdint.h>
 
 
@@ -29,14 +30,20 @@ export namespace lxr {
 class Random
 {
     public:
-        Random();
-        ~Random();
+        // access the random number generator
+        static Random& rng();
+
         uint32_t random() const;
         // generate a randum number in the interval [0,max), thus incl. zero but excl. max
-        uint32_t random(int max) const;
+        uint32_t random(uint32_t max) const;
     private:
+        Random();
+        ~Random();
         Random(Random const &) = delete;
         Random & operator=(Random const &) = delete;
+
+        struct pimpl;
+        std::unique_ptr<pimpl> _pimpl;
 };
 
 } // namespace

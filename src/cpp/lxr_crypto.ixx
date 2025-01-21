@@ -29,7 +29,7 @@ export import lxr_key160;
 export import lxr_key256;
 export import lxr_random;
 export import lxr_sha3;
-export import lxr_sha256;
+// export import lxr_sha256;  // deprecated
 export import lxr_randlist;
 export import lxr_hmac;
 export import lxr_gpg;

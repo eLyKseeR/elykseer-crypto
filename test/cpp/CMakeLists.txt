@@ -20,20 +20,22 @@ include_directories(../src)
 set(TEST_PRIVATE_SRCS
       utMain.cpp
       utAes.cpp
+      utHMAC.cpp
+      utKey128.cpp
+      utKey256.cpp
+      utKey160.cpp
+      utBase64.cpp
+      utMd5.cpp
+      utRandList.cpp
+      utRandom.cpp
+      # utSha256.cpp # deprecated
+      utSha3.cpp
 )
-set(TEST_SRCS
-      # utGpg.cpp
-      # utKey128.cpp
-      # utKey160.cpp
-      # utKey256.cpp
-      # utMd5.cpp
-      # utHMAC.cpp
-      # utBase64.cpp
-      # utRandList.cpp
-      # utRandom.cpp
-      # utSha256.cpp
-      # utSha3.cpp
-   )
+
+# add the following test case to also test GnuPG features:
+#   utGpg.cpp
+
+set(TEST_SRCS "")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_executable ( ut${PROJECT_NAME} )
@@ -54,6 +56,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         ${libs}
         ${Boost_LIBRARIES}
         ${CRYPTO_LIBS}
+        # ${GPG_LIBS}
     )
 endif()
 
@@ -68,5 +71,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
         ${libs}
         ${Boost_LIBRARIES}
         ${CRYPTO_LIBS}
+        # ${GPG_LIBS}
     )
 endif()

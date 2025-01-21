@@ -37,11 +37,11 @@ class HMAC
 {
     public:
         static Key128 hmac_md5(const char k[], int klen, std::string const & m);
-        static Key128 hmac_md5(const char k[], int klen, const char m[], int mlen);
+        static Key128 hmac_md5(const char k[], int klen, const char *m, int mlen);
         static Key256 hmac_sha256(const char k[], int klen, std::string const & m);
-        static Key256 hmac_sha256(const char k[], int klen, const char m[], int mlen);
+        static Key256 hmac_sha256(const char k[], int klen, const char *m, int mlen);
         static Key160 hmac_sha1(const char k[], int klen, std::string const & m);
-        static Key160 hmac_sha1(const char k[], int klen, const char m[], int mlen);
+        static Key160 hmac_sha1(const char k[], int klen, const char *m, int mlen);
     protected:
         HMAC() {}
     private:

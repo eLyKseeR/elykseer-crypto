@@ -18,13 +18,10 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <math.h>
-
-#if CRYPTOLIB == CRYPTOPP
-#include <cryptopp/osrng.h>
-#else
-#error not yet defined
-#endif
+#include <memory>
+#include <random>
+#include <mutex>
+#include <stdint.h>
 
 
 module lxr_random;
@@ -32,51 +29,42 @@ module lxr_random;
 
 namespace lxr {
 
-#if CRYPTOLIB == CRYPTOPP
 
-static std::unique_ptr<CryptoPP::AutoSeededX917RNG<CryptoPP::AES>> _rng;
+struct Random::pimpl {
+    pimpl() {
+        std::random_device rng_dev;
+        rng_gen.reset(new std::mt19937(rng_dev()));
+    }
+    std::unique_ptr<std::mt19937> rng_gen{};
+    std::mutex rng_mutex;
+};
 
 Random::Random()
-{
-    if (! _rng) {
-        _rng.reset(new CryptoPP::AutoSeededX917RNG<CryptoPP::AES>);
-    }
-}
+    : _pimpl(new Random::pimpl)
+{}
 
 Random::~Random()
 {
-    if (_rng) {
-        _rng.reset();
+    if (_pimpl) {
+        _pimpl.reset();
     }
 }
 
-#else
-#error not yet defined
-#endif
-
-
-#if CRYPTOLIB == CRYPTOPP
-uint32_t rnd_uint32() {
-    const unsigned int BLOCKSIZE = 4 * 8;
-    CryptoPP::SecByteBlock scratch(BLOCKSIZE);
-    _rng->GenerateBlock(scratch, scratch.size());
-    return *(uint32_t*)(scratch.BytePtr());
+Random& Random::rng() {
+    static Random _rng;
+    return _rng;
 }
-#else
-#error not yet defined
-#endif
 
 uint32_t Random::random() const
 {
-    return rnd_uint32();
+    std::lock_guard<std::mutex> lock(_pimpl->rng_mutex);
+    return std::uniform_int_distribution<uint32_t>(0)(*_pimpl->rng_gen);
 }
 
-uint32_t Random::random(int max) const
+uint32_t Random::random(uint32_t max) const
 {
-    uint32_t r0 = rnd_uint32();
-    double r = double(r0) * double(max) / (pow(2, 32) - 1) - 0.5;
-    long int r1 = lrint(r);
-    return (uint32_t)r1;
+    std::lock_guard<std::mutex> lock(_pimpl->rng_mutex);
+    return std::uniform_int_distribution<uint32_t>(0, max - 1)(*_pimpl->rng_gen);
 }
 
 } // namespace

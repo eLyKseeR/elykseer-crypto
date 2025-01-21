@@ -28,7 +28,6 @@
 
 #include "boost/test/unit_test.hpp"
 
-#include "sizebounded/sizebounded.hpp"
 #include "sizebounded/sizebounded.ipp"
 
 import lxr_aes;

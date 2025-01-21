@@ -42,6 +42,9 @@ cd build
 cmake --fresh -DCMAKE_TOOLCHAIN_FILE=Toolchain_Darwin_to_Windows.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
 ```
 
+./test/cpp/utelykseer-crypto --show_progress
+./test/cpp/utelykseer-crypto --log_level=unit_scope
+
 # copyright
 
 Copyright 2019-2025 by Alexander Diemand
