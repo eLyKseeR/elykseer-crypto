@@ -73,6 +73,12 @@ ELSE()
       ${CRYPTO_LIBS}
       ${GPG_LIBS}
   )
+  if(OpenMP_CXX_FOUND)
+    target_link_libraries (${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
+	  OpenMP::OpenMP_CXX)
+  endif()
+  target_compile_features(${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC cxx_std_20)
+
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 
 
@@ -88,6 +94,11 @@ target_sources(${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s
 target_link_libraries(${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s PUBLIC
   ${libs}
 )
+if(OpenMP_CXX_FOUND)
+  target_link_libraries (${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
+    OpenMP::OpenMP_CXX)
+endif()
+target_compile_features(${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s PUBLIC cxx_std_20)
 
 # combine all static libs into one
 IF(${CMAKE_BUILD_TYPE} MATCHES "Debug")
@@ -150,7 +161,7 @@ set(CPACK_PACKAGE_VERSION_MAJOR ${${PROJECT_NAME}_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${${PROJECT_NAME}_VERSION_MINOR})
 set(CPACK_PACKAGE_VERSION_PATCH ${${PROJECT_NAME}_VERSION_PATCH})
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${LIBRARY_NAME} DESTINATION lib)
-install(FILES ${LIB_HDRS} DESTINATION include/lxr)
+install(FILES ${LIB_HDRS} lxr-cbindings.hpp DESTINATION include/lxr)
 
 include(CPack)
 
