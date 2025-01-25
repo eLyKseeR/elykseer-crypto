@@ -4,16 +4,7 @@ External Dependencies
 the content of the 'ext/' directory:
 
   cryptopp
-  gitalk/
   sizebounded/
-
-
-gitalk
-======
-
-license: BSD3
-
-https://github.com/CodiePP/gitalk.git
 
 
 sizebounded

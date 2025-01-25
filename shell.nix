@@ -8,21 +8,25 @@ stdenv.mkDerivation rec {
     # Customizable development requirements
     nativeBuildInputs = [
         cmake
+        ninja
+        ccache
         git
         gnused
-        pandoc
-        html2text
+        gettext
+        texinfo
         swig
-        gcc
-        #clang
+        #gcc
+        llvmPackages_19.openmp
+        lldb_19
+        clang_19
         opam m4
         #global
         cppcheck
         #busybox
-        perl534Packages.DigestSHA3
+        perl538Packages.DigestSHA3
         pkg-config
         autoconf automake libtool
-        libassuan libgpgerror
+        libassuan libgpg-error
         gnupg
     ];
 
@@ -35,9 +39,8 @@ stdenv.mkDerivation rec {
     shellHook = ''
       echo 'eLyKseeR nixified environment'
       export SED=sed
-      export CC=gcc
-      export CXX=g++
+      export CC=clang
+      export CXX=clang++
     '';
 
 }
-
