@@ -18,7 +18,10 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstddef>
 #include <memory>
+#include <string>
+
 #include "sizebounded/sizebounded.hpp"
 
 import lxr_key128;
@@ -72,31 +75,25 @@ class AesEncrypt : public Aes
 // C binding interface
 #include "lxr-cbindings.hpp"
 
+extern "C" {
 export struct CAesEncrypt {
    void *ptr;
    unsigned int lastpos;
    unsigned char buf[lxr::Aes::datasz];
 };
 
-extern "C" EXPORT
 export CAesEncrypt* mk_AesEncrypt(CKey256 *k, CKey128 *iv);
 
-extern "C" EXPORT
 export void release_AesEncrypt(CAesEncrypt *cl);
 
-extern "C" EXPORT
 export int proc_AesEncrypt(CAesEncrypt *cl, unsigned int inlen, unsigned char const *);
 
-extern "C" EXPORT
 export int fin_AesEncrypt(CAesEncrypt *cl);
 
-extern "C" EXPORT
 export unsigned int len_AesEncrypt(CAesEncrypt *cl);
 
-extern "C" EXPORT
 export unsigned int copy_AesEncrypt(CAesEncrypt *cl, unsigned int outlen, unsigned char *);
 
-extern "C" EXPORT
 export unsigned int sz_AesEncrypt();
 
 export struct CAesDecrypt {
@@ -105,23 +102,17 @@ export struct CAesDecrypt {
    unsigned char buf[lxr::Aes::datasz];
 };
 
-extern "C" EXPORT
 export CAesDecrypt* mk_AesDecrypt(CKey256 *k, CKey128 *iv);
 
-extern "C" EXPORT
 export void release_AesDecrypt(CAesDecrypt *cl);
 
-extern "C" EXPORT
 export int proc_AesDecrypt(CAesDecrypt *cl, unsigned int inlen, unsigned char const *);
 
-extern "C" EXPORT
 export int fin_AesDecrypt(CAesDecrypt *cl);
 
-extern "C" EXPORT
 export unsigned int len_AesDecrypt(CAesDecrypt *cl);
 
-extern "C" EXPORT
 export unsigned int copy_AesDecrypt(CAesDecrypt *cl, unsigned int outlen, unsigned char *);
 
-extern "C" EXPORT
 export unsigned int sz_AesDecrypt();
+}

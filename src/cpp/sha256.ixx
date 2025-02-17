@@ -55,8 +55,8 @@ class Sha256
 // C binding interface
 #include "lxr-cbindings.hpp"
 
-extern "C" EXPORT
+extern "C" {
 export CKey256* hash_Sha256(int len, const char *s);
 
-extern "C" EXPORT
 export CKey256* filehash_Sha256(const char * fp);
+}

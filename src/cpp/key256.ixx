@@ -18,8 +18,10 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstddef>
 #include <functional>
 #include <memory>
+#include <string>
 
 import lxr_key;
 
@@ -57,24 +59,20 @@ class Key256 : public Key
 // C binding interface
 #include "lxr-cbindings.hpp"
 
+extern "C" {
 export struct CKey256 {
    void * ptr;
 };
 
-extern "C" EXPORT
 export CKey256* mk_Key256();
 
-extern "C" EXPORT
 export void release_Key256(CKey256*);
 
-extern "C" EXPORT
 export int len_Key256(CKey256*);
 
-extern "C" EXPORT
 export char* bytes_Key256(CKey256*);
 
-extern "C" EXPORT
 export char* tohex_Key256(CKey256*);
 
-extern "C" EXPORT
 export CKey256* fromhex_Key256(const char*);
+}

@@ -62,6 +62,16 @@ gpgme
 
 ### Windows
 
+Compile project using platform file:
+
+1. mkdir -p dist; cd build
+
+2. cmake --fresh -DCMAKE_TOOLCHAIN_FILE=../support/Toolchain_Darwin_to_Windows.cmake --install-prefix=$(pwd)/../dist -DCMAKE_BUILD_TYPE=Release -GNinja ..
+
+3. make && make install/strip
+
+
+### dependencies
 
 Prepare dependencies in "ext":
 
@@ -74,11 +84,11 @@ Prepare dependencies in "ext":
 4. run `make xWin64`
 
 
-Compile project using platform file:
 
-1. cd build
+#### zlib: https://zlib.net/zlib-1.3.tar.xz
 
-2. cmake --fresh -DCMAKE_TOOLCHAIN_FILE=Toolchain_Darwin_to_Windows.cmake -DCMAKE_BUILD_TYPE=Release .
+   2.1 mkdir build; cd build
 
+   2.2 cmake --fresh -DCMAKE_TOOLCHAIN_FILE=../../../support/Toolchain_Darwin_to_Windows.cmake --install-prefix=$(pwd)/../../xWindows_x86_64 -DCMAKE_BUILD_TYPE=Release ..
 
-
+   2.3 make & make install

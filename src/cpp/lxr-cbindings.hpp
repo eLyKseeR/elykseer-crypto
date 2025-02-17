@@ -17,6 +17,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#pragma once
+
+
 #if defined(_MSC_VER)
 
 #define EXPORT __declspec(dllexport)

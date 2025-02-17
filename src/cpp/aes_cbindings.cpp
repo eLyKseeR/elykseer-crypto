@@ -25,11 +25,11 @@ module;
 
 #include "lxr-cbindings.hpp"
 
-import lxr_key128;
-import lxr_key256;
-
 #include "sizebounded/sizebounded.hpp"
 #include "sizebounded/sizebounded.ipp"
+
+import lxr_key128;
+import lxr_key256;
 
 
 module lxr_aes;

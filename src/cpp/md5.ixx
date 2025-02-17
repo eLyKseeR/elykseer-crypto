@@ -46,5 +46,6 @@ class Md5
 // C binding interface
 #include "lxr-cbindings.hpp"
 
-extern "C" EXPORT
+extern "C" {
 export CKey128* hash_Md5(int len, const char *);
+}

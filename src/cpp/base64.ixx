@@ -43,8 +43,8 @@ class Base64
 // C binding interface
 #include "lxr-cbindings.hpp"
 
-extern "C" EXPORT
+extern "C" {
 export int base64_encode(int mlen, const char * m, int outlen, unsigned char * out);
 
-extern "C" EXPORT
 export int base64_decode(int mlen, const char * m, int outlen, unsigned char * out);
+}
