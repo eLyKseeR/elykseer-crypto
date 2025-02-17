@@ -34,4 +34,3 @@
 // Boost test includes
 
 #include "boost/test/unit_test.hpp"
-

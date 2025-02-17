@@ -18,6 +18,7 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstddef>
 #include <filesystem>
 #include <memory>
 #include <string>
@@ -55,8 +56,8 @@ class Sha3_256
 // C binding interface
 #include "lxr-cbindings.hpp"
 
-extern "C" EXPORT
+extern "C" {
 export CKey256* hash_Sha3_256(int len, const char *s);
 
-extern "C" EXPORT
 export CKey256* filehash_Sha3_256(const char * fp);
+}

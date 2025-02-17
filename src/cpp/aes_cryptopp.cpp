@@ -20,13 +20,17 @@ module;
 
 #if CRYPTOLIB == CRYPTOPP
 
+#include <cstddef>
+#include <memory>
+#include <string>
+
 #include "cryptopp/filters.h"
 #include "cryptopp/modes.h"
 #include "cryptopp/aes.h"
 
 #endif
 
-#include "sizebounded/sizebounded.ipp"
+#include "sizebounded/sizebounded.hpp"
 
 import lxr_key128;
 import lxr_key256;

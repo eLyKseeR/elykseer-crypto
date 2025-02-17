@@ -98,7 +98,7 @@ $(fset_gpgme):
 	echo "making gpgme"
 	cd ./gpgme; \
 	./autogen.sh; \
-	./configure --enable-static --disable-shared --enable-languages=cpp --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --disable-doc --with-pic --with-libassuan-prefix=${TARGETDIR} --with-libgpg-error-prefix=${TARGETDIR} --prefix=${TARGETDIR} ${HOST_SELECTOR}; \
+	./configure --enable-static --disable-shared --disable-gpgsm-test --disable-g13-test --disable-gpg-test --disable-gpgconf-test --disable-doc --with-pic --with-libassuan-prefix=${TARGETDIR} --with-libgpg-error-prefix=${TARGETDIR} --prefix=${TARGETDIR} ${HOST_SELECTOR}; \
 	$(MAKE); \
 	$(MAKE) install
 

@@ -39,7 +39,7 @@ base library that provides cryptographic functions to _elykseer_ implementations
 
 ```sh
 cd build
-cmake --fresh -DCMAKE_TOOLCHAIN_FILE=Toolchain_Darwin_to_Windows.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
+cmake --fresh -DCMAKE_TOOLCHAIN_FILE=../support/Toolchain_Darwin_to_Windows.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja ..
 ```
 
 ./test/cpp/utelykseer-crypto --show_progress

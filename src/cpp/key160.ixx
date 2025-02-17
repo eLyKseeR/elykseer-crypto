@@ -20,6 +20,7 @@ module;
 
 #include <functional>
 #include <memory>
+#include <string>
 
 import lxr_key;
 
@@ -59,24 +60,20 @@ class Key160 : public Key
 
 // #define CKey160 lxr::Key160
 
+extern "C" {
 export struct CKey160 {
    void * ptr;
 };
 
-extern "C" EXPORT
 export CKey160* mk_Key160();
 
-extern "C" EXPORT
 export void release_Key160(CKey160*);
 
-extern "C" EXPORT
 export int len_Key160(CKey160*);
 
-extern "C" EXPORT
 export char* bytes_Key160(CKey160*);
 
-extern "C" EXPORT
 export char* tohex_Key160(CKey160*);
 
-extern "C" EXPORT
 export CKey160* fromhex_Key160(const char*);
+}

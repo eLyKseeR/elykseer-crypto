@@ -18,6 +18,7 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <memory>
@@ -54,11 +55,10 @@ class HMAC
 // C binding interface
 #include "lxr-cbindings.hpp"
 
-extern "C" EXPORT
+extern "C" {
 export CKey128* hmac_Md5(int klen, const char k[], int mlen, const char *m);
 
-extern "C" EXPORT
 export CKey256* hmac_Sha256(int klen, const char k[], int mlen, const char *m);
 
-extern "C" EXPORT
 export CKey160* hmac_Sha1(int klen, const char k[], int mlen, const char *m);
+}

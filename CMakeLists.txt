@@ -26,7 +26,7 @@ project(elykseer-crypto CXX)
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 2)
 set (${PROJECT_NAME}_VERSION_MINOR 0)
-set (${PROJECT_NAME}_VERSION_PATCH 1)
+set (${PROJECT_NAME}_VERSION_PATCH 2)
 set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-crypto_VERSION_MINOR}.${elykseer-crypto_VERSION_PATCH})
 
 # choose either one
@@ -50,7 +50,7 @@ set(CMAKE_CXX_SCAN_FOR_MODULES ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(PkgConfig REQUIRED)
-find_package(ZLIB REQUIRED)
+#find_package(ZLIB REQUIRED)
 #find_package(OpenMP REQUIRED)
 
 if(NOT CMAKE_CROSSCOMPILING)
