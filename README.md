@@ -24,7 +24,6 @@ base library that provides cryptographic functions to _elykseer_ implementations
 | ---- | ---- | ---- | ---- | ---- | ---- |  
 | AES | [√](src/cpp/aes.hpp.md) | [√](src/cpp/aes_cbindings.cpp.md) | [?](src/csharp/Aes.cs.md) | [√](src/ml/lib/aes256.ml) | [?](src/haskell/Aes.hs.md) |
 | MD5 | [√](src/cpp/md5.hpp.md) | [√](src/cpp/md5_cbindings.cpp.md) | [?](src/csharp/Md5.cs.md) | [√](src/ml/lib/md5.ml) | [?](src/haskell/Md5.hs.md) |
-| SHA256 | [√](src/cpp/sha256.hpp.md) | [√](src/cpp/sha256_cbindings.cpp.md) | [?](src/csharp/Sha256.cs.md) | [√](src/ml/lib/sha256.ml) | [?](src/haskell/Sha256.hs.md) |
 | SHA3-256 | [√](src/cpp/sha3.hpp.md) | [√](src/cpp/sha3_cbindings.cpp.md) | [?](src/csharp/Sha3.cs.md) | [√](src/ml/lib/sha3_256.ml) | [?](src/haskell/Sha3.hs.md) |
 | KEY128 | [√](src/cpp/key128.hpp.md) | [√](src/cpp/key128_cbindings.cpp.md) | [?](src/csharp/Key128.cs.md) | [√](src/ml/lib/key128.ml) | [?](src/haskell/Key128.hs.md) |
 | KEY160 | [√](src/cpp/key160.hpp.md) | [√](src/cpp/key160_cbindings.cpp.md) | [?](src/csharp/Key160.cs.md) | [√](src/ml/lib/key160.ml) | [?](src/haskell/Key160.hs.md) |
