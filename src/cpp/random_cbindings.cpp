@@ -1,3 +1,4 @@
+module;
 /*
     eLyKseeR or LXR - cryptographic data archiving software
     https://github.com/eLyKseeR/elykseer-cpp
@@ -17,38 +18,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef BOOST_ALL_DYN_LINK
-#define BOOST_ALL_DYN_LINK
-#endif
+#include <cstdint>
 
-#include <iostream>
-#include <string>
-
-#include "boost/test/unit_test.hpp"
-
-import lxr_md5;
-import lxr_key128;
+#include "lxr-cbindings.hpp"
 
 
-BOOST_AUTO_TEST_SUITE( utMd5 )
+module lxr_random;
 
-// Test case: compare message digest to known one
-BOOST_AUTO_TEST_CASE( message_digest )
+
+extern "C" EXPORT
+uint32_t random_one()
 {
-	std::string msg = "the cleartext message, I am.";
-	std::string md5 = "9cf9e8974fa9d1151de1daf6983a3e71";
-	BOOST_CHECK_EQUAL(lxr::Md5::hash(msg).toHex(), md5);
+    return lxr::Random::rng().random();
 }
 
-// Test case in C: compare message digest to known one
-BOOST_AUTO_TEST_CASE( c_message_digest )
+extern "C" EXPORT
+uint32_t random_upto(uint32_t max)
 {
-	const char* msg = "the cleartext message, I am.";
-	std::string md5 = "9cf9e8974fa9d1151de1daf6983a3e71";
-	CKey128 *k = hash_Md5(std::strlen(msg), msg);
-	auto h = tohex_Key128(k);
-	BOOST_CHECK_EQUAL(h, md5);
-    release_Key128(k);
+    return lxr::Random::rng().random(max);
 }
-
-BOOST_AUTO_TEST_SUITE_END()

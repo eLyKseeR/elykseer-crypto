@@ -33,8 +33,8 @@ namespace lxr {
 std::vector<int> mklist(int lo0, int hi0)
 {
     int step = 1;   // the increment
-    int lo = lo0;
-    int hi = hi0;
+    const int lo = lo0;
+    const int hi = hi0;
     if (lo0 > hi0) {
         step = -1;
     }
@@ -43,18 +43,21 @@ std::vector<int> mklist(int lo0, int hi0)
     int i = 0;
     int d = lo;
     while (i < n) {
-        res[i++] = d;
+        res[i] = d;
         d += step;
+        i++;
     }
     return res;
 }
 
 std::vector<int> permutation(std::vector<int> vs)
 {
-    int n = vs.size();
+    const int n = vs.size();
     for (int i=0; i<n; i++) {
         uint32_t r = Random::rng().random(n);
-        if (i == r || r < 0 || r >= n) { r = n - i; }
+        if (i == r || r < 0 || r >= n) {
+            r = n - i;
+        }
         // swap i with r positions
         auto t = vs[i];
         vs[i] = vs[r];

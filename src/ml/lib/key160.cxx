@@ -14,14 +14,22 @@ extern "C" {
 // C++ includes
 #include <string>
 
-#define theClass Key160
+extern "C" {
+struct CKey160 {
+   void * ptr;
+};
+CKey160* mk_Key160();
+void release_Key160(CKey160*);
+int len_Key160(CKey160*);
+char* bytes_Key160(CKey160*);
+std::string tohex_Key160(CKey160*);
+CKey160* fromhex_Key160(const char*);
+}
+
+#define theClass CKey160
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
-
-#include "lxr/key160.hpp"
-
-using namespace lxr;
 
 #define CPP_PTR(v) (*((theClass**) Data_custom_val(v)))
 
@@ -30,7 +38,7 @@ static void del_ptr (value v) {
     theClass *s = CPP_PTR(v);
     if (s) {
         // printf("delete ptr %llx\n", s);
-        delete s;
+        release_Key160(s);
     }
     CAMLreturn0;
 }
@@ -54,7 +62,7 @@ value cpp_mk_key160(value unit)
 {
     CAMLparam1(unit);
     CAMLlocal1(res);
-    auto p = new Key160();
+    auto p = mk_Key160();
     res = caml_alloc_custom(&cpp_ptr_ops,
                             sizeof(theClass*), 1, 1000);
     CPP_PTR(res) = p;
@@ -70,8 +78,7 @@ value cpp_from_hex_key160(value vs)
 {
     CAMLparam1(vs);
     CAMLlocal1(res);
-    auto p = new Key160(true);
-    p->fromHex(std::string(String_val(vs)));
+    auto p = fromhex_Key160(String_val(vs));
     res = caml_alloc_custom(&cpp_ptr_ops,
                             sizeof(theClass*), 1, 1000);
     CPP_PTR(res) = p;
@@ -87,8 +94,8 @@ value cpp_len_key160(value vk)
 {
     CAMLparam1(vk);
     CAMLlocal1(res);
-    Key160 *k = CPP_PTR(vk);
-    CAMLreturn(Val_long(k->length()));
+    CKey160 *k = CPP_PTR(vk);
+    CAMLreturn(Val_long(len_Key160(k)));
 }
 } // extern C
 
@@ -100,8 +107,8 @@ value cpp_to_hex_key160(value vk)
 {
     CAMLparam1(vk);
     CAMLlocal1(res);
-    Key160 *k = CPP_PTR(vk);
-    CAMLreturn(caml_copy_string(k->toHex().c_str()));
+    CKey160 *k = CPP_PTR(vk);
+    CAMLreturn(caml_copy_string(tohex_Key160(k).c_str()));
 }
 } // extern C
 
@@ -113,8 +120,8 @@ value cpp_to_bytes_key160(value vk)
 {
     CAMLparam1(vk);
     CAMLlocal1(res);
-    Key160 *k = CPP_PTR(vk);
-    CAMLreturn(caml_copy_string((const char *)k->bytes()));
+    CKey160 *k = CPP_PTR(vk);
+    CAMLreturn(caml_copy_string((const char *)bytes_Key160(k)));
 }
 } // extern C
 

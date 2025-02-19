@@ -15,10 +15,16 @@ extern "C" {
 #include <string>
 #include <filesystem>
 
-#include "lxr/key256.hpp"
-#include "lxr/sha3.hpp"
+extern "C" {
+// #include "lxr/key256.hpp"
+class CKey256;
+std::string tohex_Key256(CKey256 *k);
+// #include "lxr/sha3.hpp"
+CKey256* hash_Sha3_256(int len, const char *s);
+CKey256* filehash_Sha3_256(const char * fp);
+}
 
-using namespace lxr;
+// using namespace lxr;
 
 struct _cpp_cstdio_buffer {
     char *_buf {nullptr};
@@ -36,8 +42,9 @@ value cpp_string_sha3_256(value vs)
     CAMLparam1(vs);
     const char *s = String_val(vs);
     const int len = caml_string_length(vs);
-    auto k = lxr::Sha3_256::hash(s, len);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hash_Sha3_256(len, s);
+    std::string h = tohex_Key256(k);
+    CAMLreturn(caml_copy_string(h.c_str()));
 }
 } // extern C
 
@@ -49,8 +56,9 @@ value cpp_file_sha3_256(value vfp)
 {
     CAMLparam1(vfp);
     const char *fp = String_val(vfp);
-    auto k = lxr::Sha3_256::hash(std::filesystem::path(fp));
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = filehash_Sha3_256(std::filesystem::path(fp).c_str());
+    std::string h = tohex_Key256(k);
+    CAMLreturn(caml_copy_string(h.c_str()));
 }
 } // extern C
 
@@ -62,7 +70,8 @@ value cpp_buffer_sha3_256(value vb)
 {
     CAMLparam1(vb);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
-    auto k = lxr::Sha3_256::hash(b->_buf, b->_len);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hash_Sha3_256(b->_len, b->_buf);
+    std::string h = tohex_Key256(k);
+    CAMLreturn(caml_copy_string(h.c_str()));
 }
 } // extern C

@@ -51,10 +51,11 @@ BOOST_AUTO_TEST_CASE( c_message_digest )
     const char *key = "Jefe";
     const int klen = 4;
 	const char* msg = "what do ya want for nothing?";
-	const char* md5 = "750c783e6ab0b503eaa86e310a5db738";
+	std::string md5 = "750c783e6ab0b503eaa86e310a5db738";
 	CKey128 *k = hmac_Md5(klen, key, std::strlen(msg), msg);
-	char *h = tohex_Key128(k);
+	auto h = tohex_Key128(k);
 	BOOST_CHECK_EQUAL(h, md5);
+    release_Key128(k);
 }
 
 // Test case: compare message SHA1 digest to known one

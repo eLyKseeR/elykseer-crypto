@@ -40,7 +40,9 @@ BOOST_AUTO_TEST_CASE( new_key_is_random )
     char buffer[128]; 
     {
         lxr::Key128 k2;
-        BOOST_CHECK(k1 != k2);
+        if (k1 == k2)
+            std::clog << "? keys different: " << k1.toHex() << " - " << k2.toHex() << std::endl;
+        BOOST_CHECK_NE(k1, k2);
     }
 }
 
@@ -48,6 +50,7 @@ BOOST_AUTO_TEST_CASE( new_key_is_random )
 BOOST_AUTO_TEST_CASE( key_length )
 {
     lxr::Key128 k;
+    BOOST_CHECK_EQUAL(k.length(), 128);
 	BOOST_CHECK_EQUAL(k.toHex().size(), 128 / 8 * 2);
 }
 
@@ -56,11 +59,10 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 {
     CKey128 *k1 = mk_Key128();
     CKey128 *k2 = mk_Key128();
-	char *h1 = tohex_Key128(k1);
-	char *h2 = tohex_Key128(k2);
-	BOOST_CHECK(strncmp(h1, h2, 128/8*2) != 0);
+	auto h1 = tohex_Key128(k1);
+	auto h2 = tohex_Key128(k2);
+	BOOST_CHECK_NE(h1, h2);
     release_Key128(k1); release_Key128(k2);
-    free(h1); free(h2);
 }
 
 // Test case in C: key length is 128 bits
@@ -75,14 +77,11 @@ BOOST_AUTO_TEST_CASE( c_key_length )
 BOOST_AUTO_TEST_CASE( c_fromhex_regenerates_key )
 {
     CKey128 *k1 = mk_Key128();
-    char *h1 = tohex_Key128(k1);
+    auto h1 = tohex_Key128(k1);
     CKey128 *k2 = fromhex_Key128(h1);
-    char *h2 = tohex_Key128(k2);
-    std::string b1 = std::string(h1, len_Key128(k1)*2/8);
-    std::string b2 = std::string(h2, len_Key128(k2)*2/8);
-    BOOST_CHECK_EQUAL(b1, b2);
+    auto h2 = tohex_Key128(k2);
+    BOOST_CHECK_EQUAL(h1, h2);
     release_Key128(k1); release_Key128(k2);
-    free(h1); free(h2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -56,9 +56,14 @@ BOOST_AUTO_TEST_CASE( small_encrypt_then_decrypt )
   } catch (std::exception & e) {
     std::clog << "exception " << e.what() << std::endl;
   }
-  //std::clog << "encrypted " << lenc << " bytes." << std::endl;
+  // std::clog << "encrypted " << lenc << " bytes." << std::endl;
   lenc += _aesenc.finish(lenc, buf);
-  //std::clog << "finished: " << lenc << " bytes." << std::endl;
+  // std::clog << "finished: " << lenc << " bytes." << std::endl;
+
+  // compare buffer
+  std::string msg1 = buf.toString().substr(0, msg.size());
+  // std::clog << msg1 << std::endl;
+  BOOST_CHECK_NE(msg, msg1);
 
   // decrypt and compare to original message
   lxr::AesDecrypt _aesdec(_k, _iv);

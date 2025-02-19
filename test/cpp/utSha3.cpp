@@ -71,9 +71,9 @@ BOOST_AUTO_TEST_CASE( file_checksum )
 BOOST_AUTO_TEST_CASE( c_message_digest )
 {
 	const char* msg = "the cleartext message, I am.";
-	const char* sha3_256 = "975069d1d1eefe92b2c1e81983df7cc503635614e81190c70364fe32e5683df3";
+	std::string sha3_256 = "975069d1d1eefe92b2c1e81983df7cc503635614e81190c70364fe32e5683df3";
   CKey256 * k = hash_Sha3_256(std::strlen(msg), msg);
-	char *h = tohex_Key256(k);
+	auto h = tohex_Key256(k);
 	BOOST_CHECK_EQUAL(h, sha3_256);
 }
 
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE( c_file_checksum )
 #error Where are we?
 #endif
   CKey256 * k = filehash_Sha3_256(fp);
-  char *h = tohex_Key256(k);
+  auto h = tohex_Key256(k);
   BOOST_CHECK_EQUAL(h, sha3_256);
 }
 

@@ -47,3 +47,11 @@ class Random
 };
 
 } // namespace
+
+// C binding interface
+#include "lxr-cbindings.hpp"
+
+extern "C" {
+export uint32_t random_one();
+export uint32_t random_upto(uint32_t max);
+}

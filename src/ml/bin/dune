@@ -28,11 +28,11 @@
  (flags :standard -cclib -lstdc++)
  (libraries unix elykseer_crypto mlcpp_cstdio mlcpp_filesystem))
 
-(executable
- (name sha256)
- (modules sha256)
- (flags :standard -cclib -lstdc++)
- (libraries unix elykseer_crypto mlcpp_cstdio mlcpp_filesystem))
+; (executable
+;  (name sha256)
+;  (modules sha256)
+;  (flags :standard -cclib -lstdc++)
+;  (libraries unix elykseer_crypto mlcpp_cstdio mlcpp_filesystem))
 
 (executable
  (name sha3_256)

@@ -37,7 +37,7 @@ class Key128 : public Key
         virtual ~Key128();
         Key128(Key128 const &);
         Key128 & operator=(Key128 const &);
-        static Key128 key128FromHex(std::string const &);
+        static Key128 keyFromHex(std::string const &);
         virtual unsigned char const* bytes() const override;
         virtual int length() const override { return 128; };
         virtual bool operator==(Key128 const &) const final;
@@ -62,7 +62,7 @@ class Key128 : public Key
 
 extern "C" {
 export struct CKey128 {
-   void * ptr;
+   lxr::Key128 * ptr;
 };
 
 export CKey128* mk_Key128();
@@ -71,9 +71,9 @@ export void release_Key128(CKey128*);
 
 export int len_Key128(CKey128*);
 
-export char* bytes_Key128(CKey128*);
+export const char* bytes_Key128(CKey128*);
 
-export char* tohex_Key128(CKey128*);
+export std::string tohex_Key128(CKey128*);
 
-export CKey128* fromhex_Key128(const char*);
+export CKey128* fromhex_Key128(std::string const &);
 }

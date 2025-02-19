@@ -18,6 +18,7 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cassert>
 #include <cstddef>
 #include <iostream>
 #include <stdint.h>
@@ -66,13 +67,14 @@ unsigned char const* Key::bytes() const
 std::string Key::toHex() const
 {
     const int alen = this->length() * 2 / 8;
-    unsigned char *buf = (unsigned char*)calloc(alen, 1);
+    assert(alen <= 512*2);
+    char buf[512*2]; // max alloc: 512 bit keys
     map([&buf](const int i, const unsigned char c) {
         int cc = int2hex(c);
         buf[2*i] = (cc >> 8) & 0xff;
         buf[2*i+1] = cc & 0xff;
     });
-    return std::string((char*)buf, alen);
+    return std::string(buf, alen);
 }
 
 void Key::fromHex(std::string const &k)

@@ -65,11 +65,11 @@ Key160 & Key160::operator=(Key160 const & o)
     return *this;
 }
 
-Key160 Key160::key160FromHex(std::string const &s)
+Key160 Key160::keyFromHex(std::string const &s)
 {
     Key160 key{true};
     key.fromHex(s);
-    return key;
+    return std::move(key);
 }
 
 

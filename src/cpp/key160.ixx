@@ -37,7 +37,7 @@ class Key160 : public Key
       virtual ~Key160();
       Key160(Key160 const &);
       Key160 & operator=(Key160 const &);
-      static Key160 key160FromHex(std::string const &);
+      static Key160 keyFromHex(std::string const &);
       virtual unsigned char const* bytes() const override;
       virtual int length() const override { return 160; };
       virtual bool operator==(Key160 const &) const final;
@@ -62,7 +62,7 @@ class Key160 : public Key
 
 extern "C" {
 export struct CKey160 {
-   void * ptr;
+   lxr::Key160 * ptr;
 };
 
 export CKey160* mk_Key160();
@@ -71,9 +71,9 @@ export void release_Key160(CKey160*);
 
 export int len_Key160(CKey160*);
 
-export char* bytes_Key160(CKey160*);
+export const char* bytes_Key160(CKey160*);
 
-export char* tohex_Key160(CKey160*);
+export std::string tohex_Key160(CKey160*);
 
-export CKey160* fromhex_Key160(const char*);
+export CKey160* fromhex_Key160(std::string const &);
 }
