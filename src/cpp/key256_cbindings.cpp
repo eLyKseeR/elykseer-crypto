@@ -51,20 +51,18 @@ int len_Key256(CKey256 * k)
 { return ((lxr::Key256*)k->ptr)->length(); }
 
 extern "C" EXPORT
-char* bytes_Key256(CKey256 * k)
+const char* bytes_Key256(CKey256 * k)
 { const unsigned char *b = ((lxr::Key256*)k->ptr)->bytes();
   return (char*)b; }
 
 extern "C" EXPORT
-char* tohex_Key256(CKey256 * k)
-{ auto h = ((lxr::Key256*)k->ptr)->toHex();
-  return strdup(h.c_str()); }
+std::string tohex_Key256(CKey256 * k)
+{ return ((lxr::Key256*)k->ptr)->toHex(); }
 
 extern "C" EXPORT
-CKey256* fromhex_Key256(const char * s)
+CKey256* fromhex_Key256(std::string const & s)
 { auto k = new lxr::Key256(true);
-  std::string h = std::string(s, k->length()*2/8);
-  k->fromHex(h);
+  k->fromHex(s);
   CKey256 * r = new CKey256;
   r->ptr = k;
   return r;

@@ -23,6 +23,7 @@ set(LIB_PRIVATE_SRCS
   base64_cbindings.cpp
   randlist.cpp
   random.cpp
+  random_cbindings.cpp
   # sha256.cpp  # deprecated
   # sha256_cryptopp.cpp
   # sha256_openssl.cpp

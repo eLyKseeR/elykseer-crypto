@@ -36,9 +36,14 @@ BOOST_AUTO_TEST_CASE( list_integers )
 	auto vs = lxr::RandList::Make(1, 100);
 	int sum = 0;
 	for (auto v : vs) {
-		//std::clog << v << std::endl;
 		sum += v;
 	}
+    if (sum != 50*101) {
+	    for (auto v : vs) {
+            std::clog << v << " ";
+        }
+        std::clog << "ERROR!" << std::endl;
+    }
 	BOOST_CHECK_EQUAL(vs.size(), 100);
 	BOOST_CHECK_EQUAL(sum, 50*101);  // (1 + 100) + (2 + 99) + (3 + 98) ..
 }

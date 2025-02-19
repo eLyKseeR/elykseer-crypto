@@ -26,7 +26,7 @@ project(elykseer-crypto CXX)
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 2)
 set (${PROJECT_NAME}_VERSION_MINOR 0)
-set (${PROJECT_NAME}_VERSION_PATCH 2)
+set (${PROJECT_NAME}_VERSION_PATCH 3)
 set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-crypto_VERSION_MINOR}.${elykseer-crypto_VERSION_PATCH})
 
 # choose either one
@@ -79,7 +79,7 @@ set(LIB_PREFIX "")
 
 # OS dependent
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "13.6")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0")
   find_program (SELECTED_AR NAMES ar PATHS /opt/homebrew/opt/binutils/bin /opt/homebrew/ NO_DEFAULT_PATH REQUIRED)
   message(STATUS "Selected: ar in " ${SELECTED_AR})
   set(LIB_PREFIX "lib")
