@@ -18,7 +18,6 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <memory>
 #include <string>
 
 import lxr_key256;

@@ -18,18 +18,18 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if CRYPTOLIB == CRYPTOPP
+
 #include <cstddef>
 #include <filesystem>
 #include <fstream>
 #include <cassert>
 
-#if CRYPTOLIB == CRYPTOPP
-
 #include "cryptopp/sha3.h"
 
-#endif
-
 #include "sizebounded/sizebounded.ipp"
+
+#endif
 
 import lxr_key256;
 
