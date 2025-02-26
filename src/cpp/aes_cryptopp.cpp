@@ -28,9 +28,9 @@ module;
 #include "cryptopp/modes.h"
 #include "cryptopp/aes.h"
 
-#endif
-
 #include "sizebounded/sizebounded.hpp"
+
+#endif
 
 import lxr_key128;
 import lxr_key256;

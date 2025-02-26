@@ -41,18 +41,19 @@ BOOST_AUTO_TEST_SUITE( utAes )
 BOOST_AUTO_TEST_CASE( small_encrypt_then_decrypt )
 {
   const std::string msg = "all my precious data are safe, so I will sleep fine!";
+  const int msg_sz = msg.size();
 
   lxr::Key256 _k;
   lxr::Key128 _iv;
   lxr::AesEncrypt _aesenc(_k, _iv);
   sizebounded<unsigned char, lxr::Aes::datasz> buf;
-  buf.transform([&msg](const int i, const char c0)->char {
-      if (i < msg.size()) { return msg[i]; }
+  buf.transform([&msg,&msg_sz](const int i, const char c0)->char {
+      if (i < msg_sz) { return msg[i]; }
       else { return '\0'; }
       });
   int lenc = 0;
   try {
-    lenc = _aesenc.process(msg.size(), buf);
+    lenc = _aesenc.process(msg_sz, buf);
   } catch (std::exception & e) {
     std::clog << "exception " << e.what() << std::endl;
   }
@@ -61,7 +62,7 @@ BOOST_AUTO_TEST_CASE( small_encrypt_then_decrypt )
   // std::clog << "finished: " << lenc << " bytes." << std::endl;
 
   // compare buffer
-  std::string msg1 = buf.toString().substr(0, msg.size());
+  std::string msg1 = buf.toString().substr(0, msg_sz);
   // std::clog << msg1 << std::endl;
   BOOST_CHECK_NE(msg, msg1);
 
@@ -71,7 +72,7 @@ BOOST_AUTO_TEST_CASE( small_encrypt_then_decrypt )
   ldec = _aesdec.process(lenc, buf);
   ldec += _aesdec.finish(ldec, buf);
 
-  std::string msg2 = buf.toString().substr(0, msg.size());
+  std::string msg2 = buf.toString().substr(0, msg_sz);
 
   BOOST_CHECK_EQUAL(msg, msg2);
 }
@@ -167,7 +168,7 @@ BOOST_AUTO_TEST_CASE( large_encrypt_then_decrypt )
 BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
 {
   const unsigned char msg[] = "all my precious data are save, so I will sleep fine!";
-  unsigned char buf[lxr::Aes::datasz];
+  unsigned char buf[lxr::Aes::datasz+16];
 
   CKey256 *_k = mk_Key256();
   CKey128 *_iv = mk_Key128();
@@ -191,7 +192,7 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
   }
   //std::clog << "encrypted " << lenc << " bytes." << std::endl;
   //std::clog << "finished: " << flenc << " bytes." << std::endl;
-  memcpy(buf, _aesenc->buf, copied); // copy ciphertext into buffer
+  // memcpy(buf, _aesenc->buf, copied); // copy ciphertext into buffer
   release_AesEncrypt(_aesenc);
 
   // decrypt and compare to original message

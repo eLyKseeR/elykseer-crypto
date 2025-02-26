@@ -25,13 +25,13 @@ project(elykseer-crypto CXX)
 
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 2)
-set (${PROJECT_NAME}_VERSION_MINOR 0)
-set (${PROJECT_NAME}_VERSION_PATCH 3)
+set (${PROJECT_NAME}_VERSION_MINOR 1)
+set (${PROJECT_NAME}_VERSION_PATCH 0)
 set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-crypto_VERSION_MINOR}.${elykseer-crypto_VERSION_PATCH})
 
 # choose either one
-set(USE_OPENSSL NO)
-set(USE_CRYPTOPP YES)
+set(USE_OPENSSL YES)
+set(USE_CRYPTOPP NO)
 
 option(RUN_ADDRESS_SANITIZER "using Clang you can turn on address sanitizer in Debug")
 

@@ -79,7 +79,7 @@ extern "C" {
 export struct CAes {
    void *ptr;
    unsigned int lastpos;
-   unsigned char buf[lxr::Aes::datasz];
+   unsigned char buf[lxr::Aes::datasz+16];
 };
 export struct CAesEncrypt : public CAes {
 };

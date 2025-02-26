@@ -20,7 +20,9 @@ module;
 
 #if CRYPTOLIB == OPENSSL
 
-#include "openssl/md5.h"
+#include <string>
+
+#include "openssl/evp.h"
 
 #endif
 
@@ -41,9 +43,15 @@ Key128 Md5::hash(std::string const & msg)
 
 Key128 Md5::hash(const char buffer[], int length)
 {
-    unsigned char digest[MD5_DIGEST_LENGTH];
-    /*unsigned char *ret =*/
-    MD5((unsigned char const *)buffer, length, digest);
+    const EVP_MD *md5 = EVP_md5();
+    EVP_MD_CTX *ctx = EVP_MD_CTX_new();
+    unsigned char digest[EVP_MAX_MD_SIZE];
+    unsigned int md5_len;
+
+    EVP_DigestInit_ex2(ctx, md5, NULL);
+    EVP_DigestUpdate(ctx, buffer, length);
+    EVP_DigestFinal_ex(ctx, digest, &md5_len);
+    EVP_MD_CTX_free(ctx);
 
     Key128 k(true);
     k.fromBytes(digest);
