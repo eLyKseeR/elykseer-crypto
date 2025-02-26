@@ -58,6 +58,16 @@ BOOST_AUTO_TEST_CASE( c_message_digest )
     release_Key128(k);
 }
 
+// Test case: compare message MD5 digest to known one
+BOOST_AUTO_TEST_CASE( test_md5_hmac )
+{
+    const char *key = "test";
+    const int klen = 4;
+    std::string msg = "test";
+	auto md5 = lxr::HMAC::hmac_md5(key, klen, msg);
+	BOOST_CHECK_EQUAL(md5.toHex(), "cd4b0dcbe0f4538b979fb73664f51abe");
+}
+
 // Test case: compare message SHA1 digest to known one
 BOOST_AUTO_TEST_CASE( test_sha1_hmac )
 {
@@ -66,6 +76,17 @@ BOOST_AUTO_TEST_CASE( test_sha1_hmac )
     std::string msg = "test";
 	auto sha1 = lxr::HMAC::hmac_sha1(key, klen, msg);
 	BOOST_CHECK_EQUAL(sha1.toHex(), "0c94515c15e5095b8a87a50ba0df3bf38ed05fe6");
+}
+
+// Test case: compare message SHA256 digest to known one
+// openssl dgst -hmac "test" -sha256 test.txt # faad4ffcac0c6eb99d3f3cd5975001bc69011844238d50729ff485c2d8f8724f
+BOOST_AUTO_TEST_CASE( test_sha256_hmac )
+{
+    const char *key = "test";
+    const int klen = 4;
+    std::string msg = "test";
+	auto sha256 = lxr::HMAC::hmac_sha256(key, klen, msg);
+	BOOST_CHECK_EQUAL(sha256.toHex(), "88cd2108b5347d973cf39cdf9053d7dd42704876d8c9a9bd8e2d168259d3ddf7");
 }
 
 // Test case: compare message SHA1 digest to known one
@@ -81,8 +102,9 @@ BOOST_AUTO_TEST_CASE( message_sha1_digest )
 	auto sha1 = lxr::HMAC::hmac_sha1(key, klen, msg);
 	BOOST_CHECK_EQUAL(sha1.toHex(), "aa0936fba4aff7fa0cec6dea2c48d31f56b59758");
 	std::string sha1_b64 = "qgk2+6Sv9/oM7G3qLEjTH1a1l1g=";
-	constexpr int blen = 128;
-	unsigned char buffer[blen];
+	constexpr int blen = 256/8;
+	unsigned char buffer[blen+1];
+    memset(buffer, 0, blen+1);
 	int b64len = base64_encode(160/8, (const char *)sha1.bytes(), blen, buffer);
 	buffer[b64len] = '\0';
 	std::string b64((const char *)buffer, b64len);

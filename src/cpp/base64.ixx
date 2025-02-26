@@ -19,6 +19,7 @@ module;
 */
 
 #include <string>
+#include <string_view>
 
 
 export module lxr_base64;
@@ -29,8 +30,8 @@ export namespace lxr {
 class Base64
 {
     public:
-        static std::string encode(std::string const & m);
-        static std::string decode(std::string const & m);
+        static std::string encode(std::string_view const & m);
+        static std::string decode(std::string_view const & m);
     protected:
         Base64() {}
     private:

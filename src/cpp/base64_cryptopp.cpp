@@ -19,12 +19,7 @@ module;
 */
 
 #include <string>
-#include <ctime>
-#include <cassert>
-
-#if CRYPTOLIB == OPENSSL
-#error to-be-done
-#endif
+#include <string_view>
 
 #if CRYPTOLIB == CRYPTOPP
 #include "cryptopp/base64.h"
@@ -38,24 +33,24 @@ module lxr_base64;
 
 namespace lxr {
 
-std::string Base64::encode(std::string const & m)
+std::string Base64::encode(std::string_view const & m)
 {
     std::string out;
     CryptoPP::Base64Encoder filter;
     CryptoPP::AlgorithmParameters params = CryptoPP::MakeParameters(CryptoPP::Name::InsertLineBreaks(), false);
     filter.IsolatedInitialize(params);
     filter.Detach(new CryptoPP::StringSink(out));
-    filter.Put((const unsigned char *)m.c_str(), m.size());
+    filter.Put((const unsigned char *)m.data(), m.size());
     filter.MessageEnd();
     return std::move(out);
 }
 
-std::string Base64::decode(std::string const & m)
+std::string Base64::decode(std::string_view const & m)
 {
     std::string out;
     CryptoPP::Base64Decoder filter;
     filter.Detach(new CryptoPP::StringSink(out));
-    filter.Put((const unsigned char *)m.c_str(), m.size());
+    filter.Put((const unsigned char *)m.data(), m.size());
     filter.MessageEnd();
     return std::move(out);
 }

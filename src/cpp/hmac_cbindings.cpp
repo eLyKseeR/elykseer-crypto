@@ -22,8 +22,7 @@ module;
 #include <string>
 
 #if CRYPTOLIB == OPENSSL
-// #include "openssl/hmac.h"
-#error to-be-done
+#include "openssl/evp.h"
 #endif
 
 #if CRYPTOLIB == CRYPTOPP
