@@ -34,18 +34,18 @@ let write_file sz buf fn =
 
 
 let encrypt () =
-  read_file "/tmp/test.txt" |> function
+  read_file "./test.txt" |> function
   | Error code -> Printf.printf "Error: %d\n" code |> ignore
   | Ok (cnt,buf) ->
       let buf' = Aes256.encrypt iv k buf in
-      write_file cnt buf' "/tmp/test.crypt" |> ignore
+      write_file cnt buf' "./test.crypt" |> ignore
 
 let decrypt () =
-  read_file "/tmp/test.crypt" |> function
+  read_file "./test.crypt" |> function
   | Error code -> Printf.printf "Error: %d\n" code |> ignore
   | Ok (cnt,buf) ->
       let buf' = Aes256.decrypt iv k buf in
-      write_file cnt buf' "/tmp/test.plain" |> ignore
+      write_file cnt buf' "./test.plain" |> ignore
 
 let () =
   encrypt () ; decrypt ()

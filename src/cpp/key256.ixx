@@ -18,7 +18,6 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstddef>
 #include <functional>
 #include <memory>
 #include <string>
@@ -38,7 +37,7 @@ class Key256 : public Key
         virtual ~Key256();
         Key256(Key256 const &);
         Key256 & operator=(Key256 const &);
-        static Key256 key256FromHex(std::string const &);
+        static Key256 keyFromHex(std::string const &);
         virtual unsigned char const* bytes() const override;
         virtual int length() const override { return 256; };
         virtual bool operator==(Key256 const &) const final;
@@ -61,7 +60,7 @@ class Key256 : public Key
 
 extern "C" {
 export struct CKey256 {
-   void * ptr;
+   lxr::Key256 * ptr;
 };
 
 export CKey256* mk_Key256();
@@ -70,9 +69,9 @@ export void release_Key256(CKey256*);
 
 export int len_Key256(CKey256*);
 
-export char* bytes_Key256(CKey256*);
+export const char* bytes_Key256(CKey256*);
 
-export char* tohex_Key256(CKey256*);
+export std::string tohex_Key256(CKey256*);
 
-export CKey256* fromhex_Key256(const char*);
+export CKey256* fromhex_Key256(std::string const &);
 }

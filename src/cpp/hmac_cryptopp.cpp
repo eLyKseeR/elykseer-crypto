@@ -19,13 +19,9 @@ module;
 */
 
 #include <cstddef>
+#include <algorithm>
 #include <string>
 #include <cassert>
-
-#if CRYPTOLIB == OPENSSL
-// #include "openssl/hmac.h"
-#error to-be-done
-#endif
 
 #if CRYPTOLIB == CRYPTOPP
 #include "cryptopp/hmac.h"

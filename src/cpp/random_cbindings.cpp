@@ -18,46 +18,22 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if CRYPTOLIB == OPENSSL
+#include <cstdint>
 
-#include <string>
-
-#include "openssl/evp.h"
-
-#endif
-
-import lxr_key128;
+#include "lxr-cbindings.hpp"
 
 
-module lxr_md5;
+module lxr_random;
 
 
-#if CRYPTOLIB == OPENSSL
-
-namespace lxr {
-
-Key128 Md5::hash(std::string const & msg)
+extern "C" EXPORT
+uint32_t random_one()
 {
-    return Md5::hash(msg.c_str(), msg.size());
+    return lxr::Random::rng().random();
 }
 
-Key128 Md5::hash(const char buffer[], int length)
+extern "C" EXPORT
+uint32_t random_upto(uint32_t max)
 {
-    const EVP_MD *md5 = EVP_md5();
-    EVP_MD_CTX *ctx = EVP_MD_CTX_new();
-    unsigned char digest[EVP_MAX_MD_SIZE];
-    unsigned int md5_len;
-
-    EVP_DigestInit_ex2(ctx, md5, NULL);
-    EVP_DigestUpdate(ctx, buffer, length);
-    EVP_DigestFinal_ex(ctx, digest, &md5_len);
-    EVP_MD_CTX_free(ctx);
-
-    Key128 k(true);
-    k.fromBytes(digest);
-    return k;
+    return lxr::Random::rng().random(max);
 }
-
-} // namespace
-
-#endif

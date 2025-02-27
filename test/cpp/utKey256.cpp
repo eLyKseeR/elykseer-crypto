@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE( new_key_is_random )
     lxr::Key256 k1;
     {
         lxr::Key256 k2;
-        BOOST_CHECK(! (k1 == k2));
+        BOOST_CHECK_NE(k1, k2);
     }
 }
 
@@ -51,8 +51,8 @@ BOOST_AUTO_TEST_CASE( key_length )
 // Test case: key restored from string representation
 BOOST_AUTO_TEST_CASE( restore_key_from_string_representation )
 {
-    lxr::Key256 k1, k2(true);
-	k2.fromHex(k1.toHex());
+    lxr::Key256 k1;
+    lxr::Key256 k2{lxr::Key256::keyFromHex(k1.toHex())};
 	BOOST_CHECK_EQUAL(k1, k2);
 }
 
@@ -61,11 +61,10 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 {
     CKey256 *k1 = mk_Key256();
     CKey256 *k2 = mk_Key256();
-	char *h1 = tohex_Key256(k1);
-	char *h2 = tohex_Key256(k2);
-	BOOST_CHECK(strncmp(h1, h2, 256/8*2) != 0);
+	auto h1 = tohex_Key256(k1);
+	auto h2 = tohex_Key256(k2);
+    BOOST_CHECK_NE(h1, h2);
 	release_Key256(k1); release_Key256(k2);
-    free(h1); free(h2);
 }
 
 // Test case in C: key length is 256 bits
@@ -80,14 +79,11 @@ BOOST_AUTO_TEST_CASE( c_key_length )
 BOOST_AUTO_TEST_CASE( c_fromhex_regenerates_key )
 {
     CKey256 *k1 = mk_Key256();
-    char *h1 = tohex_Key256(k1);
+    auto h1 = tohex_Key256(k1);
     CKey256 *k2 = fromhex_Key256(h1);
-    char *h2 = tohex_Key256(k2);
-    std::string b1 = std::string(h1, len_Key256(k1)*2/8);
-    std::string b2 = std::string(h2, len_Key256(k2)*2/8);
-    BOOST_CHECK_EQUAL(b1, b2);
+    auto h2 = tohex_Key256(k2);
+    BOOST_CHECK_EQUAL(h1, h2);
     release_Key256(k1); release_Key256(k2);
-    free(h1); free(h2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

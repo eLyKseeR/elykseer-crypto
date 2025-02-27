@@ -15,11 +15,20 @@ extern "C" {
 #include <string>
 #include <filesystem>
 
-#include "lxr/key128.hpp"
-#include "lxr/key256.hpp"
-#include "lxr/hmac.hpp"
+extern "C" {
+class CKey128;
+std::string tohex_Key128(CKey128 *k);
+struct CKey160;
+std::string tohex_Key160(CKey160*);
+class CKey256;
+std::string tohex_Key256(CKey256 *k);
+// import lxr_hmac;
+CKey256* hmac_Sha256(int klen, const char k[], int mlen, const char *m);
+CKey128* hmac_Md5(int klen, const char k[], int mlen, const char *m);
+CKey160* hmac_Sha1(int klen, const char k[], int mlen, const char *m);
+}
 
-using namespace lxr;
+// using namespace lxr;
 
 struct _cpp_cstdio_buffer {
     char *_buf {nullptr};
@@ -39,8 +48,8 @@ value cpp_string_hmac_sha256(value vk, value vm)
     const int klen = caml_string_length(vk);
     const char *m = String_val(vm);
     const int mlen = caml_string_length(vm);
-    auto k = lxr::HMAC::hmac_sha256(key, klen, m, mlen);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hmac_Sha256(klen, key, mlen, m);
+    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
 }
 } // extern C
 
@@ -54,8 +63,8 @@ value cpp_buffer_hmac_sha256(value vk, value vb)
     const char *key = String_val(vk);
     const int klen = caml_string_length(vk);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
-    auto k = lxr::HMAC::hmac_sha256(key, klen, b->_buf, b->_len);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hmac_Sha256(klen, key, b->_len, b->_buf);
+    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
 }
 } // extern C
 
@@ -70,8 +79,8 @@ value cpp_string_hmac_md5(value vk, value vm)
     const int klen = caml_string_length(vk);
     const char *m = String_val(vm);
     const int mlen = caml_string_length(vm);
-    auto k = lxr::HMAC::hmac_md5(key, klen, m, mlen);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hmac_Md5(klen, key, mlen, m);
+    CAMLreturn(caml_copy_string(tohex_Key128(k).c_str()));
 }
 } // extern C
 
@@ -85,8 +94,8 @@ value cpp_buffer_hmac_md5(value vk, value vb)
     const char *key = String_val(vk);
     const int klen = caml_string_length(vk);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
-    auto k = lxr::HMAC::hmac_md5(key, klen, b->_buf, b->_len);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hmac_Md5(klen, key, b->_len, b->_buf);
+    CAMLreturn(caml_copy_string(tohex_Key128(k).c_str()));
 }
 } // extern C
 
@@ -102,9 +111,9 @@ value cpp_string_hmac_sha1(value vk, value vm)
     const int klen = caml_string_length(vk);
     const char *m = String_val(vm);
     const int mlen = caml_string_length(vm);
-    auto k = lxr::HMAC::hmac_sha1(key, klen, m, mlen);
-    std::string k40 = k.toHex().substr(0,40); // 20 bytes in hex: 40 chars
-    CAMLreturn(caml_copy_string(k40.c_str()));
+    auto k = hmac_Sha1(klen, key, mlen, m);
+    // std::string k40 = k.toHex().substr(0,40); // 20 bytes in hex: 40 chars
+    CAMLreturn(caml_copy_string(tohex_Key160(k).c_str()));
 }
 } // extern C
 
@@ -118,8 +127,8 @@ value cpp_buffer_hmac_sha1(value vk, value vb)
     const char *key = String_val(vk);
     const int klen = caml_string_length(vk);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
-    auto k = lxr::HMAC::hmac_sha1(key, klen, b->_buf, b->_len);
-    std::string k40 = k.toHex().substr(0,40); // 20 bytes in hex: 40 chars
-    CAMLreturn(caml_copy_string(k40.c_str()));
+    auto k = hmac_Sha1(klen, key, b->_len, b->_buf);
+    // std::string k40 = tohex_Key160(k).substr(0,40); // 20 bytes in hex: 40 chars
+    CAMLreturn(caml_copy_string(tohex_Key160(k).c_str()));
 }
 } // extern C

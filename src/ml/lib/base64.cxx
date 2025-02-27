@@ -14,9 +14,10 @@ extern "C" {
 // C++ includes
 #include <string>
 
-#include "lxr/base64.hpp"
-
-using namespace lxr;
+extern "C" {
+int base64_encode(int mlen, const char * m, int outlen, unsigned char * out);
+int base64_decode(int mlen, const char * m, int outlen, unsigned char * out);
+}
 
 /*
  *   cpp_encode_base64 : string -> string

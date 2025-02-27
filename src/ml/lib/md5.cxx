@@ -15,10 +15,14 @@ extern "C" {
 #include <string>
 #include <filesystem>
 
-#include "lxr/key128.hpp"
-#include "lxr/md5.hpp"
+extern "C" {
+class CKey128;
+std::string tohex_Key128(CKey128 *k);
+void release_Key128(CKey128 *k);
+CKey128* hash_Md5(int len, const char *);
+}
 
-using namespace lxr;
+// using namespace lxr;
 
 struct _cpp_cstdio_buffer {
     char *_buf {nullptr};
@@ -36,8 +40,10 @@ value cpp_string_md5(value vs)
     CAMLparam1(vs);
     const char *s = String_val(vs);
     const int len = caml_string_length(vs);
-    auto k = lxr::Md5::hash(s, len);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hash_Md5(len, s);
+    auto res = caml_copy_string(tohex_Key128(k).c_str());
+    release_Key128(k);
+    CAMLreturn(res);
 }
 } // extern C
 
@@ -49,7 +55,7 @@ value cpp_buffer_md5(value vb)
 {
     CAMLparam1(vb);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
-    auto k = lxr::Md5::hash(b->_buf, b->_len);
-    CAMLreturn(caml_copy_string(k.toHex().c_str()));
+    auto k = hash_Md5(b->_len, b->_buf);
+    CAMLreturn(caml_copy_string(tohex_Key128(k).c_str()));
 }
 } // extern C

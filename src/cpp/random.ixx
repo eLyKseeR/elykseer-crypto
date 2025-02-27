@@ -43,7 +43,15 @@ class Random
         Random & operator=(Random const &) = delete;
 
         struct pimpl;
-        std::unique_ptr<pimpl> _pimpl;
+        mutable std::unique_ptr<pimpl> _pimpl;
 };
 
 } // namespace
+
+// C binding interface
+#include "lxr-cbindings.hpp"
+
+extern "C" {
+export uint32_t random_one();
+export uint32_t random_upto(uint32_t max);
+}

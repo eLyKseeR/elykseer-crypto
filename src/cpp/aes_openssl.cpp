@@ -20,14 +20,13 @@ module;
 
 #if CRYPTOLIB == OPENSSL
 
-#error AES using OpenSSL needs a rework!
 #include "openssl/conf.h"
 #include "openssl/evp.h"
 #include "openssl/err.h"
 
-#endif
-
 #include "sizebounded/sizebounded.ipp"
+
+#endif
 
 import lxr_key128;
 import lxr_key256;
@@ -66,11 +65,9 @@ AesEncrypt::AesEncrypt(Key256 const & k, Key128 const & iv)
     : Aes()
 {
     if (_pimpl->_ctx) {
-        if (EVP_EncryptInit(_pimpl->_ctx, EVP_aes_256_cbc(), (const unsigned char *)k.bytes(),
-                               (const unsigned char *)iv.bytes()) != 1)
+        if (EVP_EncryptInit(_pimpl->_ctx, EVP_aes_256_cbc(), k.bytes(), iv.bytes()) != 1)
         {
-            EVP_CIPHER_CTX_free(_pimpl->_ctx);
-            _pimpl->_ctx = NULL;
+            EVP_CIPHER_CTX_cleanup(_pimpl->_ctx);
             std::clog << "failed to init encryption!" << std::endl;
         }
     }
@@ -83,10 +80,10 @@ int AesEncrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & ino
     unsigned char tbuf[Aes::datasz];
     try {
         if (EVP_EncryptUpdate(_pimpl->_ctx, &tbuf[0], &len, inoutbuf.ptr(), inlen) == 1) {
-        inoutbuf.transform([&len,&tbuf](const int i, const char c)->char {
+            inoutbuf.transform([&len,&tbuf](const int i, const char c)->char {
               if (i < len) { return tbuf[i]; }
               else { return '\0'; }
-          });
+            });
         } else {
           std::clog << "failed to update encryption!" << std::endl;
         }
@@ -100,16 +97,14 @@ int AesEncrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outb
 {
     if (! _pimpl->_ctx) { return -1; }
     int len = 0;
-    unsigned char tbuf[Aes::datasz];
-    if (EVP_EncryptFinal(_pimpl->_ctx, tbuf, &len) != 1) {
-         len = -1;
+    unsigned char tbuf[Aes::datasz+16];
+    if (EVP_EncryptFinal(_pimpl->_ctx, tbuf, &len) == 1) {
+        outbuf.transform([&inpos,&len,&tbuf](const int i, const char c)->char {
+            if (i >= inpos && i < len+inpos) { return tbuf[i-inpos]; }
+            else { return c; }
+        });
     }
-    outbuf.transform([&inpos,&len,&tbuf](const int i, const char c)->char {
-        if (i >= inpos && i < len+inpos) { return tbuf[i]; }
-        else { return '\0'; }
-    });
-    EVP_CIPHER_CTX_free(_pimpl->_ctx);
-    _pimpl->_ctx = NULL;
+    EVP_CIPHER_CTX_cleanup(_pimpl->_ctx);
     return len;
 }
 
@@ -119,18 +114,22 @@ AesDecrypt::AesDecrypt(Key256 const & k, Key128 const & iv)
     if (_pimpl->_ctx && 
         EVP_DecryptInit(_pimpl->_ctx, EVP_aes_256_cbc(), k.bytes(), iv.bytes()) != 1)
     {
-        EVP_CIPHER_CTX_free(_pimpl->_ctx);
-        _pimpl->_ctx = NULL;
+        EVP_CIPHER_CTX_cleanup(_pimpl->_ctx);
     }
 }
 
-int AesDecrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & outbuf)
+int AesDecrypt::process(int inlen, sizebounded<unsigned char, Aes::datasz> & inoutbuf)
 {
     if (! _pimpl->_ctx) { return -1; }
     int len = 0;
     unsigned char tbuf[Aes::datasz];
-    if (EVP_DecryptUpdate(_pimpl->_ctx, tbuf, &len, outbuf.ptr(), inlen) != 1) {
-        throw "AesDecrypt::process failed";
+    if (EVP_DecryptUpdate(_pimpl->_ctx, &tbuf[0], &len, inoutbuf.ptr(), inlen) == 1) {
+        inoutbuf.transform([&len,&tbuf](const int i, const char c)->char {
+              if (i < len) { return tbuf[i]; }
+              else { return '\0'; }
+          });
+    } else {
+        std::clog << "failed to update decryption!" << std::endl;
     }
     return len;
 }
@@ -139,11 +138,14 @@ int AesDecrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outb
 {
     if (! _pimpl->_ctx) { return -1; }
     int len = 0;
-    if (EVP_DecryptFinal(_pimpl->_ctx, (unsigned char*)outbuf.ptr()+inpos, &len) != 1) {
-        len = -1;
+    unsigned char tbuf[Aes::datasz];
+    if (EVP_DecryptFinal_ex(_pimpl->_ctx, tbuf, &len) == 1) {
+        outbuf.transform([&inpos,&len,&tbuf](const int i, const char c)->char {
+        if (i >= inpos && i < len+inpos) { return tbuf[i-inpos]; }
+        else { return c; }
+        });
     }
-    EVP_CIPHER_CTX_free(_pimpl->_ctx);
-    _pimpl->_ctx = NULL;
+    EVP_CIPHER_CTX_cleanup(_pimpl->_ctx);
     return len;
 }
 

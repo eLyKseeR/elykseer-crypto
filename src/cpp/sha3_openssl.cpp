@@ -18,17 +18,18 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#if CRYPTOLIB == OPENSSL
+
 #include <filesystem>
 #include <fstream>
-
-#if CRYPTOLIB == OPENSSL
+#include <iostream>
 
 #include "openssl/evp.h"
 #include "openssl/sha.h"
 
-#endif
-
 #include "sizebounded/sizebounded.ipp"
+
+#endif
 
 import lxr_key256;
 
@@ -41,9 +42,17 @@ module lxr_sha3;
 namespace lxr {
 
 struct lxr::Sha3_256::pimpl {
-    const EVP_MD *md = EVP_sha3_256();
-    EVP_MD_CTX *ctx = EVP_MD_CTX_new();
-    EVP_DigestInit_ex(ctx, md, nullptr);
+    pimpl() {
+        ctx = EVP_MD_CTX_new();
+        const EVP_MD *md = EVP_sha3_256();
+        EVP_DigestInit_ex(ctx, md, nullptr);
+    }
+    ~pimpl() {
+        if (ctx) {
+            EVP_MD_CTX_free(ctx);
+        }
+    }
+    EVP_MD_CTX *ctx = NULL;
 };
 
 Sha3_256::Sha3_256()
@@ -67,7 +76,8 @@ Key256 Sha3_256::hash(const char buffer[], int length)
     EVP_DigestInit_ex(ctx, md, nullptr);
 
     EVP_DigestUpdate(ctx, buffer, length);
-    EVP_DigestFinal_ex(ctx, digest, nullptr);
+    unsigned int digest_len{0};
+    EVP_DigestFinal_ex(ctx, digest, &digest_len);
 
     Key256 k(true);
     k.fromBytes(digest);
@@ -79,31 +89,35 @@ Key256 Sha3_256::hash(std::filesystem::path const & fpath)
 {
     Sha3_256 sha3_256;
     sizebounded<unsigned char, Sha3_256::datasz> buf;
-    std::filesystem::ifstream infile(fpath);
+    std::ifstream infile(fpath);
     while (infile.good()) {
         infile.read((char*)buf.ptr(), Sha3_256::datasz);
-        sha3_256.process(infile.gcount(), buf);
+        int count = sha3_256.process(infile.gcount(), buf);
+        if (count < 0) {
+            std::clog << "error in Sha3_256::hash(fp): " << count << std::endl;
+            break;
+        }
     }
-    k.fromBytes(digest);
     return sha3_256.finish();
 }
 
 int Sha3_256::process(int len, sizebounded<unsigned char, Sha3_256::datasz> const & buf)
 {
     if (len <= Sha3_256::datasz) {
-        EVP_DigestUpdate(_pimpl->ctx, buf->ptr(), len);
+        EVP_DigestUpdate(_pimpl->ctx, buf.ptr(), len);
         return len;
     }
-    return 0;
+    return -1;
 }
 
 Key256 Sha3_256::finish()
 {
     unsigned char digest[SHA256_DIGEST_LENGTH];
-    EVP_DigestFinal_ex(_pimpl->ctx, digest, nullptr);
+    unsigned int digest_len{0};
+    EVP_DigestFinal_ex(_pimpl->ctx, digest, &digest_len);
+
     Key256 k(true);
     k.fromBytes(digest);
-    EVP_MD_CTX_free(_pimpl->ctx);
     return k;
 }
 

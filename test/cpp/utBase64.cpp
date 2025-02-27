@@ -21,8 +21,8 @@
 #define BOOST_ALL_DYN_LINK
 #endif
 
-#include <iostream>
 #include <string>
+#include <string_view>
 
 #include "boost/test/unit_test.hpp"
 
@@ -33,16 +33,34 @@ BOOST_AUTO_TEST_SUITE( utBase64 )
 // Test case: compare message encoding to known one
 BOOST_AUTO_TEST_CASE( base64_encoding )
 {
-	std::string msg = "hello world.";
-	std::string b64 = "aGVsbG8gd29ybGQu";
+	std::string_view msg = "hello world.";
+	std::string_view b64 = "aGVsbG8gd29ybGQu";
+	BOOST_CHECK_EQUAL(lxr::Base64::encode(msg), b64);
+}
+
+BOOST_AUTO_TEST_CASE( base64_long_encoding )
+{
+    constexpr int repetitions = 1000;
+	const std::string base_m = "hello world.";
+    std::string t_m;
+    t_m.reserve(base_m.length() * repetitions);
+	const std::string base_b64 = "aGVsbG8gd29ybGQu";
+    std::string t_b64;
+    t_b64.reserve(base_b64.length() * repetitions);
+    for (int i = 0; i < repetitions; i++) {
+        t_m += base_m;
+        t_b64 += base_b64;
+    }
+    std::string_view msg{t_m};
+	std::string_view b64{t_b64};
 	BOOST_CHECK_EQUAL(lxr::Base64::encode(msg), b64);
 }
 
 // Test case: compare message decoding to known one
 BOOST_AUTO_TEST_CASE( base64_decoding )
 {
-	std::string b64 = "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIG5lYyBlaXVzIHZvbHVtdXMgcGF0cmlvcXVlIGN1LCBuZWMgZXQgY29tbW9kby4uLg==";
-	std::string msg = "Lorem ipsum dolor sit amet, nec eius volumus patrioque cu, nec et commodo...";
+	std::string_view b64 = "TG9yZW0gaXBzdW0gZG9sb3Igc2l0IGFtZXQsIG5lYyBlaXVzIHZvbHVtdXMgcGF0cmlvcXVlIGN1LCBuZWMgZXQgY29tbW9kby4uLg==";
+	std::string_view msg = "Lorem ipsum dolor sit amet, nec eius volumus patrioque cu, nec et commodo...";
 	BOOST_CHECK_EQUAL(lxr::Base64::decode(b64), msg);
 }
 

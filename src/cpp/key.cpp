@@ -18,6 +18,7 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cassert>
 #include <cstddef>
 #include <iostream>
 #include <stdint.h>
@@ -66,29 +67,39 @@ unsigned char const* Key::bytes() const
 std::string Key::toHex() const
 {
     const int alen = this->length() * 2 / 8;
-    unsigned char *buf = (unsigned char*)calloc(alen, 1);
+    assert(alen <= 512*2);
+    char buf[512*2+2]; // max alloc: 512 bit keys
+    memset(buf, 0, 512*2+2);
     map([&buf](const int i, const unsigned char c) {
         int cc = int2hex(c);
         buf[2*i] = (cc >> 8) & 0xff;
         buf[2*i+1] = cc & 0xff;
     });
-    return std::string((char*)buf, alen);
+    return std::string(buf, alen);
 }
 
 void Key::fromHex(std::string const &k)
 {
-    transform([&k](const int i, const unsigned char c) -> unsigned char {
-        unsigned char c1 = k[i*2];
-        unsigned char c2 = k[i*2+1];
-        return (hex2int(c1)<<4 | hex2int(c2));
+    transform([this,&k](const int i, const unsigned char c) -> unsigned char {
+        if (i < length() * 2 / 8) {
+            unsigned char c1 = k[i*2];
+            unsigned char c2 = k[i*2+1];
+            return (hex2int(c1)<<4 | hex2int(c2));
+        } else {
+            return 0;
+        }
     });
 }
 
 void Key::fromBytes(unsigned char const *buf)
 {
-    transform([&buf](const int i, const unsigned char _c) -> unsigned char {
-        unsigned char c = buf[i];
-        return buf[i];
+    transform([this,&buf](const int i, const unsigned char _c) -> unsigned char {
+        if (i < length() / 8) {
+            unsigned char c = buf[i];
+            return buf[i];
+        } else {
+            return 0;
+        }
     });
 }
 

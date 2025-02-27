@@ -18,7 +18,7 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <string>
+#include <string_view>
 #include <cstring>
 
 #include "lxr-cbindings.hpp"
@@ -30,7 +30,7 @@ module lxr_base64;
 extern "C" EXPORT
 int base64_encode(int mlen, const char * m, int outlen, unsigned char * out)
 {
-    auto tr = lxr::Base64::encode(std::string(m, mlen));
+    auto tr = lxr::Base64::encode(std::string_view(m, mlen));
     int sz = tr.size();
     unsigned int copied = std::min(outlen, sz);
     std::memcpy(out, tr.c_str(), copied);
@@ -40,7 +40,7 @@ int base64_encode(int mlen, const char * m, int outlen, unsigned char * out)
 extern "C" EXPORT
 int base64_decode(int mlen, const char * m, int outlen, unsigned char * out)
 {
-    auto tr = lxr::Base64::decode(std::string(m, mlen));
+    auto tr = lxr::Base64::decode(std::string_view(m, mlen));
     int sz = tr.size();
     unsigned int copied = std::min(outlen, sz);
     std::memcpy(out, tr.c_str(), copied);

@@ -92,3 +92,22 @@ Prepare dependencies in "ext":
    2.2 cmake --fresh -DCMAKE_TOOLCHAIN_FILE=../../../support/Toolchain_Darwin_to_Windows.cmake --install-prefix=$(pwd)/../../xWindows_x86_64 -DCMAKE_BUILD_TYPE=Release ..
 
    2.3 make & make install
+
+
+#### OpenSSL
+
+export AR=/opt/llvm-mingw/bin/x86_64-w64-mingw32-ar
+export AS=/opt/llvm-mingw/bin/x86_64-w64-mingw32-as
+export CC=/opt/llvm-mingw/bin/x86_64-w64-mingw32-clang
+export CXX=/opt/llvm-mingw/bin/x86_64-w64-mingw32-clang++
+export RANLIB=/opt/llvm-mingw/bin/x86_64-w64-mingw32-ranlib
+export OBJCOPY=/opt/llvm-mingw/bin/x86_64-w64-mingw32-objcopy
+export RC=/opt/llvm-mingw/bin/x86_64-w64-mingw32-windres
+
+source: https://github.com/openssl/openssl
+`./Configure mingw64 --prefix=$(pwd)/../xWindows_x86_64 --openssldir=$(pwd)/../xWindows_x86_64`
+
+- link with these libraries:
+    -lssl -lcrypto -lws2_32 -lgdi32 -lcrypt32
+
+

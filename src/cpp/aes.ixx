@@ -76,10 +76,12 @@ class AesEncrypt : public Aes
 #include "lxr-cbindings.hpp"
 
 extern "C" {
-export struct CAesEncrypt {
+export struct CAes {
    void *ptr;
    unsigned int lastpos;
-   unsigned char buf[lxr::Aes::datasz];
+   unsigned char buf[lxr::Aes::datasz+16];
+};
+export struct CAesEncrypt : public CAes {
 };
 
 export CAesEncrypt* mk_AesEncrypt(CKey256 *k, CKey128 *iv);
@@ -96,10 +98,7 @@ export unsigned int copy_AesEncrypt(CAesEncrypt *cl, unsigned int outlen, unsign
 
 export unsigned int sz_AesEncrypt();
 
-export struct CAesDecrypt {
-   void *ptr;
-   unsigned int lastpos;
-   unsigned char buf[lxr::Aes::datasz];
+export struct CAesDecrypt : public CAes {
 };
 
 export CAesDecrypt* mk_AesDecrypt(CKey256 *k, CKey128 *iv);

@@ -17,12 +17,15 @@ set(LIB_PRIVATE_SRCS
   md5_cryptopp.cpp
   md5_openssl.cpp
   md5_cbindings.cpp
-  hmac.cpp
+  hmac_cryptopp.cpp
+  hmac_openssl.cpp
   hmac_cbindings.cpp
-  base64.cpp
+  base64_cryptopp.cpp
+  base64_openssl.cpp
   base64_cbindings.cpp
   randlist.cpp
   random.cpp
+  random_cbindings.cpp
   # sha256.cpp  # deprecated
   # sha256_cryptopp.cpp
   # sha256_openssl.cpp
