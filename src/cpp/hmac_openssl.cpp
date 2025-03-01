@@ -20,6 +20,7 @@ module;
 
 #include <cstddef>
 #include <algorithm>
+#include <cstring>
 #include <string>
 #include <cassert>
 
