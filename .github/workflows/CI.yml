@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt-get -y install cmake ninja-build clang-19 clang-tools-19 swig opam m4 busybox openssl libdigest-sha3-perl libboost-all-dev libboost-contract-dev gettext pkg-config automake autoconf libtool
+        sudo apt-get -y install cmake ninja-build clang-19 clang-tools-19 swig opam m4 busybox openssl libssl-dev libdigest-sha3-perl libboost-all-dev libboost-contract-dev gettext pkg-config automake autoconf libtool
         gpg --keyserver hkp://keyserver.ubuntu.com --recv E2DFCA9AA83BA568AF39280999283F5327C5D38F
 
     - name: Set up cache on external code
