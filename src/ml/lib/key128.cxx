@@ -21,8 +21,8 @@ struct CKey128 {
 CKey128* mk_Key128();
 void release_Key128(CKey128*);
 int len_Key128(CKey128*);
-char* bytes_Key128(CKey128*);
-std::string tohex_Key128(CKey128*);
+bool bytes_Key128(CKey128*, unsigned char buffer[], int buflen);
+bool tohex_Key128(CKey128*, unsigned char buffer[], int buflen);
 CKey128* fromhex_Key128(const char*);
 }
 
@@ -108,7 +108,13 @@ value cpp_to_hex_key128(value vk)
     CAMLparam1(vk);
     CAMLlocal1(res);
     CKey128 *k = CPP_PTR(vk);
-    CAMLreturn(caml_copy_string(tohex_Key128(k).c_str()));
+    const int len = len_Key128(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key128(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key128");
+    }
 }
 } // extern C
 
@@ -121,7 +127,13 @@ value cpp_to_bytes_key128(value vk)
     CAMLparam1(vk);
     CAMLlocal1(res);
     CKey128 *k = CPP_PTR(vk);
-    CAMLreturn(caml_copy_string((const char *)bytes_Key128(k)));
+    const int len = len_Key128(k) / 8;
+    value bytes = caml_alloc_string(len);
+    if (bytes_Key128(k, (unsigned char *)String_val(bytes), len)) {
+        CAMLreturn(bytes);
+    } else {
+        caml_failwith("failure in C code: bytes_Key128");
+    }
 }
 } // extern C
 

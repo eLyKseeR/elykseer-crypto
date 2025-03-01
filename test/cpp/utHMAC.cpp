@@ -51,9 +51,11 @@ BOOST_AUTO_TEST_CASE( c_message_digest )
     const char *key = "Jefe";
     const int klen = 4;
 	const char* msg = "what do ya want for nothing?";
-	std::string md5 = "750c783e6ab0b503eaa86e310a5db738";
+	const std::string md5 = "750c783e6ab0b503eaa86e310a5db738";
 	CKey128 *k = hmac_Md5(klen, key, std::strlen(msg), msg);
-	auto h = tohex_Key128(k);
+    unsigned char buf[32];
+	BOOST_CHECK(tohex_Key128(k, buf, 32));
+    std::string h{(const char*)buf, 32};
 	BOOST_CHECK_EQUAL(h, md5);
     release_Key128(k);
 }

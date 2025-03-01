@@ -96,9 +96,10 @@ target_sources(${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s
 )
 target_link_libraries(${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s PUBLIC
   ${libs}
+  ${CRYPTO_LIBS}
 )
 if(OpenMP_CXX_FOUND)
-  target_link_libraries (${PROJECT_NAME}_${CMAKE_BUILD_TYPE} PUBLIC
+  target_link_libraries (${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s PUBLIC
     OpenMP::OpenMP_CXX)
 endif()
 target_compile_features(${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s PUBLIC cxx_std_20)
@@ -112,18 +113,28 @@ ENDIF()
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_custom_command(OUTPUT ${LIBRARY_NAME}
-    COMMAND libtool -static -o ${LIBRARY_NAME} ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a ../../../ext/${EXT_PATH}/lib/libgpgme.a ../../../ext/${EXT_PATH}/lib/libgpg-error.a ../../../ext/${EXT_PATH}/lib/libassuan.a ../../../ext/${EXT_PATH}/lib/libcryptopp.a
+    COMMAND libtool -static -o ${LIBRARY_NAME}
+          ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a
+          ../../../ext/${EXT_PATH}/lib/libgpgme.a
+          ../../../ext/${EXT_PATH}/lib/libgpg-error.a
+          ../../../ext/${EXT_PATH}/lib/libassuan.a
+          ${CRYPTO_LIBPATHS}
         DEPENDS ${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s 
         COMMENT "combining static libraries into ${LIBRARY_NAME}"
   )
 ELSE()
+  list(TRANSFORM ${CRYPTO_LIBPATHS}
+       PREPEND "addlib "
+       APPEND "\n"
+       OUTPUT_VARIABLE CRYPTO_ADD_LIBS
+  )
   file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/lib_${CMAKE_BUILD_TYPE}.mri"
 "create ${LIBRARY_NAME}\n\
 addlib ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a\n\
 addlib ../../../ext/${EXT_PATH}/lib/libgpgme.a\n\
 addlib ../../../ext/${EXT_PATH}/lib/libgpg-error.a\n\
 addlib ../../../ext/${EXT_PATH}/lib/libassuan.a\n\
-addlib ../../../ext/${EXT_PATH}/lib/libcryptopp.a\n\
+${CRYPTO_ADD_LIBS}\
 save\n\
 end")
 
@@ -141,7 +152,7 @@ add_custom_target(static_lib ALL
 # profiling
 if (CMAKE_BUILD_TYPE STREQUAL "DebugProfile")
 	add_library (${PROJECT_NAME}_p${CMAKE_BUILD_TYPE} STATIC)
-  target_sources(${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s
+  target_sources(${PROJECT_NAME}_p${CMAKE_BUILD_TYPE}
       PRIVATE
         ${LIB_PRIVATE_SRCS}
       PUBLIC

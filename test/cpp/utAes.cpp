@@ -192,7 +192,6 @@ BOOST_AUTO_TEST_CASE( c_small_encrypt_then_decrypt )
   }
   //std::clog << "encrypted " << lenc << " bytes." << std::endl;
   //std::clog << "finished: " << flenc << " bytes." << std::endl;
-  // memcpy(buf, _aesenc->buf, copied); // copy ciphertext into buffer
   release_AesEncrypt(_aesenc);
 
   // decrypt and compare to original message

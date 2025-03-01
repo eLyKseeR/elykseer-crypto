@@ -71,9 +71,9 @@ export void release_Key128(CKey128*);
 
 export int len_Key128(CKey128*);
 
-export const char* bytes_Key128(CKey128*);
+export bool bytes_Key128(CKey128*, unsigned char buffer[], int buflen);
 
-export std::string tohex_Key128(CKey128*);
+export bool tohex_Key128(CKey128*, unsigned char buffer[], int buflen);
 
 export CKey128* fromhex_Key128(std::string const &);
 }
