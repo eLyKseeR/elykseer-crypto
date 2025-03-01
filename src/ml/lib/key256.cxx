@@ -21,8 +21,8 @@ struct CKey256 {
 CKey256* mk_Key256();
 void release_Key256(CKey256*);
 int len_Key256(CKey256*);
-char* bytes_Key256(CKey256*);
-std::string tohex_Key256(CKey256*);
+bool bytes_Key256(CKey256*, unsigned char buffer[], int buflen);
+bool tohex_Key256(CKey256*, unsigned char buffer[], int buflen);
 CKey256* fromhex_Key256(const char*);
 }
 
@@ -108,7 +108,13 @@ value cpp_to_hex_key256(value vk)
     CAMLparam1(vk);
     CAMLlocal1(res);
     CKey256 *k = CPP_PTR(vk);
-    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
+    const int len = len_Key256(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key256(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key256");
+    }
 }
 } // extern C
 
@@ -121,6 +127,12 @@ value cpp_to_bytes_key256(value vk)
     CAMLparam1(vk);
     CAMLlocal1(res);
     CKey256 *k = CPP_PTR(vk);
-    CAMLreturn(caml_copy_string((const char *)bytes_Key256(k)));
+    const int len = len_Key256(k) / 8;
+    value bytes = caml_alloc_string(len);
+    if (bytes_Key256(k, (unsigned char *)String_val(bytes), len)) {
+        CAMLreturn(bytes);
+    } else {
+        caml_failwith("failure in C code: bytes_Key256");
+    }
 }
 } // extern C

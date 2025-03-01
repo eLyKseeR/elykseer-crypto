@@ -6,7 +6,7 @@ extern "C" {
 // #include <caml/bigarray.h>
 // #include <caml/custom.h>
 // #include <caml/callback.h>
-// #include <caml/fail.h>
+#include <caml/fail.h>
 
 #include <sys/errno.h>
 } //extern C
@@ -17,11 +17,14 @@ extern "C" {
 
 extern "C" {
 class CKey128;
-std::string tohex_Key128(CKey128 *k);
+int len_Key128(CKey128*);
+bool tohex_Key128(CKey128*, unsigned char buffer[], int buflen);
 struct CKey160;
-std::string tohex_Key160(CKey160*);
+int len_Key160(CKey160*);
+bool tohex_Key160(CKey160*, unsigned char buffer[], int buflen);
 class CKey256;
-std::string tohex_Key256(CKey256 *k);
+int len_Key256(CKey256*);
+bool tohex_Key256(CKey256*, unsigned char buffer[], int buflen);
 // import lxr_hmac;
 CKey256* hmac_Sha256(int klen, const char k[], int mlen, const char *m);
 CKey128* hmac_Md5(int klen, const char k[], int mlen, const char *m);
@@ -49,7 +52,13 @@ value cpp_string_hmac_sha256(value vk, value vm)
     const char *m = String_val(vm);
     const int mlen = caml_string_length(vm);
     auto k = hmac_Sha256(klen, key, mlen, m);
-    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
+    const int len = len_Key256(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key256(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key256");
+    }
 }
 } // extern C
 
@@ -64,7 +73,13 @@ value cpp_buffer_hmac_sha256(value vk, value vb)
     const int klen = caml_string_length(vk);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
     auto k = hmac_Sha256(klen, key, b->_len, b->_buf);
-    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
+    const int len = len_Key256(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key256(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key256");
+    }
 }
 } // extern C
 
@@ -80,7 +95,13 @@ value cpp_string_hmac_md5(value vk, value vm)
     const char *m = String_val(vm);
     const int mlen = caml_string_length(vm);
     auto k = hmac_Md5(klen, key, mlen, m);
-    CAMLreturn(caml_copy_string(tohex_Key128(k).c_str()));
+    const int len = len_Key128(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key128(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key128");
+    }
 }
 } // extern C
 
@@ -95,7 +116,13 @@ value cpp_buffer_hmac_md5(value vk, value vb)
     const int klen = caml_string_length(vk);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
     auto k = hmac_Md5(klen, key, b->_len, b->_buf);
-    CAMLreturn(caml_copy_string(tohex_Key128(k).c_str()));
+    const int len = len_Key128(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key128(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key128");
+    }
 }
 } // extern C
 
@@ -112,8 +139,13 @@ value cpp_string_hmac_sha1(value vk, value vm)
     const char *m = String_val(vm);
     const int mlen = caml_string_length(vm);
     auto k = hmac_Sha1(klen, key, mlen, m);
-    // std::string k40 = k.toHex().substr(0,40); // 20 bytes in hex: 40 chars
-    CAMLreturn(caml_copy_string(tohex_Key160(k).c_str()));
+    const int len = len_Key160(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key160(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key160");
+    }
 }
 } // extern C
 
@@ -128,7 +160,12 @@ value cpp_buffer_hmac_sha1(value vk, value vb)
     const int klen = caml_string_length(vk);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
     auto k = hmac_Sha1(klen, key, b->_len, b->_buf);
-    // std::string k40 = tohex_Key160(k).substr(0,40); // 20 bytes in hex: 40 chars
-    CAMLreturn(caml_copy_string(tohex_Key160(k).c_str()));
+    const int len = len_Key160(k) * 2 / 8;
+    value hex = caml_alloc_string(len);
+    if (tohex_Key160(k, (unsigned char *)String_val(hex), len)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key160");
+    }
 }
 } // extern C

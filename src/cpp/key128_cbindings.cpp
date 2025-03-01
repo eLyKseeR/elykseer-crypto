@@ -40,7 +40,7 @@ extern "C" EXPORT
 void release_Key128(CKey128 * k)
 { if (k) {
     if (k->ptr) {
-        delete (lxr::Key128*)k->ptr;
+        delete k->ptr;
     }
     delete k;
   }
@@ -48,16 +48,24 @@ void release_Key128(CKey128 * k)
 
 extern "C" EXPORT
 int len_Key128(CKey128 * k)
-{ return ((lxr::Key128*)k->ptr)->length(); }
+{ return k->ptr->length(); }
 
 extern "C" EXPORT
-const char* bytes_Key128(CKey128 * k)
-{ const unsigned char *b = ((lxr::Key128*)k->ptr)->bytes();
-  return (char*)b; }
+bool bytes_Key128(CKey128 * k, unsigned char buffer[], int buflen)
+{ const int len = k->ptr->length() / 8;
+  if (buflen < len) { return false; }
+  memcpy(buffer, k->ptr->bytes(), len);
+  return true;
+}
 
 extern "C" EXPORT
-std::string tohex_Key128(CKey128 * k)
-{ return k->ptr->toHex(); }
+bool tohex_Key128(CKey128 * k, unsigned char buffer[], int buflen)
+{ const int len = k->ptr->length() * 2 / 8;
+  if (buflen < len) { return false; }
+  const auto shex = k->ptr->toHex();
+  memcpy(buffer, shex.c_str(), len);
+  return true;
+}
 
 extern "C" EXPORT
 CKey128* fromhex_Key128(std::string const & s)

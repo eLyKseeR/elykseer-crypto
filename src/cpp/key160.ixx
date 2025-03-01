@@ -71,9 +71,9 @@ export void release_Key160(CKey160*);
 
 export int len_Key160(CKey160*);
 
-export const char* bytes_Key160(CKey160*);
+export bool bytes_Key160(CKey160*, unsigned char buffer[], int buflen);
 
-export std::string tohex_Key160(CKey160*);
+export bool tohex_Key160(CKey160*, unsigned char buffer[], int buflen);
 
 export CKey160* fromhex_Key160(std::string const &);
 }

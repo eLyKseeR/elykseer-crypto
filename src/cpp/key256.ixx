@@ -69,9 +69,9 @@ export void release_Key256(CKey256*);
 
 export int len_Key256(CKey256*);
 
-export const char* bytes_Key256(CKey256*);
+export bool bytes_Key256(CKey256*, unsigned char buffer[], int buflen);
 
-export std::string tohex_Key256(CKey256*);
+export bool tohex_Key256(CKey256*, unsigned char buffer[], int buflen);
 
 export CKey256* fromhex_Key256(std::string const &);
 }
