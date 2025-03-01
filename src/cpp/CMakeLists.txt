@@ -123,11 +123,13 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         COMMENT "combining static libraries into ${LIBRARY_NAME}"
   )
 ELSE()
-  list(TRANSFORM ${CRYPTO_LIBPATHS}
+  list(TRANSFORM CRYPTO_LIBPATHS
        PREPEND "addlib "
-       APPEND "\n"
        OUTPUT_VARIABLE CRYPTO_ADD_LIBS
-  )
+       )
+  list(TRANSFORM CRYPTO_ADD_LIBS
+       APPEND "\n"
+       )
   file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/lib_${CMAKE_BUILD_TYPE}.mri"
 "create ${LIBRARY_NAME}\n\
 addlib ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a\n\
