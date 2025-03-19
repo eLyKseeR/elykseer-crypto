@@ -37,16 +37,11 @@ module lxr_aes;
 
 extern "C" EXPORT
 CAesEncrypt* mk_AesEncrypt(CKey256 *k, CKey128 *iv)
-{ auto r = new lxr::AesEncrypt(*((lxr::Key256*)k->ptr), *((lxr::Key128*)iv->ptr));
-  CAesEncrypt *cl = new CAesEncrypt; cl->ptr = r;
-  cl->lastpos = 0;
-  return cl;
-}
-
-extern "C" EXPORT
-unsigned int sz_AesEncrypt()
 {
-  return lxr::Aes::datasz;
+  auto r = new lxr::AesEncrypt(*((lxr::Key256*)k->ptr), *((lxr::Key128*)iv->ptr));
+  CAesEncrypt *cl = new CAesEncrypt; cl->ptr = r;
+  cl->totproc = 0;
+  return cl;
 }
 
 extern "C" EXPORT
@@ -61,59 +56,38 @@ void release_AesEncrypt(CAesEncrypt *cl)
 }
 
 extern "C" EXPORT
-int proc_AesEncrypt(CAesEncrypt *cl, unsigned int inlen, unsigned char const *inbuf)
-{   if (inlen > lxr::Aes::datasz) return (-1);
-    sizebounded<unsigned char, lxr::Aes::datasz> buf;
-    unsigned int sz = std::min(inlen, lxr::Aes::datasz);
-    std::memcpy((void*)buf.ptr(), inbuf, sz);
-    int len = ((lxr::AesEncrypt*)(cl->ptr))->process(sz, buf);
-    if (len > 0) {
-      std::memcpy(cl->buf+cl->lastpos, buf.ptr(), len);
-      cl->lastpos += len;
-    }
-    return len;
+int proc_AesEncrypt(CAesEncrypt *cl, unsigned int inlen, unsigned char *inoutbuf)
+{
+  if (inlen > lxr::Aes::datasz) return (-1);
+  sizebounded<unsigned char, lxr::Aes::datasz> buf;
+  std::memcpy((void*)buf.ptr(), inoutbuf, inlen);
+  int len = ((lxr::AesEncrypt*)(cl->ptr))->process(inlen, buf);
+  if (len > 0) {
+    std::memcpy(inoutbuf, buf.ptr(), len);
+    cl->totproc += len;
+  }
+  return len;
 }
 
 extern "C" EXPORT
-int fin_AesEncrypt(CAesEncrypt *cl)
-{   sizebounded<unsigned char, lxr::Aes::datasz> buf;
-    int len = ((lxr::AesEncrypt*)(cl->ptr))->finish(0, buf);
-    if (len > 0) {
-      std::memcpy(cl->buf+cl->lastpos, buf.ptr(), len);
-      cl->lastpos += len;
-    }
-    return len;
-}
-
-extern "C" EXPORT
-unsigned int len_AesEncrypt(CAesEncrypt *cl)
-{   return cl->lastpos;
-}
-
-ATTRIBUTE_NO_SANITIZE_ADDRESS
-extern "C" EXPORT
-unsigned int copy_AesEncrypt(CAesEncrypt *cl, unsigned int outlen, unsigned char *outbuf)
-{   unsigned int ncopied = std::min(outlen, cl->lastpos);
-    memcpy(outbuf, cl->buf, ncopied);
-    if (ncopied <= cl->lastpos) {
-      // copied 'ncopied' bytes out; move from 'ncopied' to lastpos to front
-      memcpy(cl->buf, cl->buf + ncopied, cl->lastpos - ncopied);
-    }
-    cl->lastpos -= ncopied;
-    return ncopied;
+int fin_AesEncrypt(CAesEncrypt *cl, unsigned char *outbuf)
+{ 
+  sizebounded<unsigned char, lxr::Aes::datasz> buf;
+  int len = ((lxr::AesEncrypt*)(cl->ptr))->finish(0, buf);
+  if (len > 0) {
+    std::memcpy(outbuf, buf.ptr(), len);
+    cl->totproc += len;
+  }
+  return len;
 }
 
 extern "C" EXPORT
 CAesDecrypt* mk_AesDecrypt(CKey256 * k, CKey128 * iv)
-{ auto r = new lxr::AesDecrypt(*((lxr::Key256*)k->ptr), *((lxr::Key128*)iv->ptr));
+{
+  auto r = new lxr::AesDecrypt(*((lxr::Key256*)k->ptr), *((lxr::Key128*)iv->ptr));
   CAesDecrypt *cl = new CAesDecrypt; cl->ptr = r;
-  cl->lastpos = 0;
+  cl->totproc = 0;
   return cl;
-}
-
-extern "C" EXPORT
-unsigned int sz_AesDecrypt()
-{   return lxr::Aes::datasz;
 }
 
 extern "C" EXPORT
@@ -121,51 +95,34 @@ void release_AesDecrypt(CAesDecrypt *cl)
 {
   if (cl) {
     if (cl->ptr) {
-        free(cl->ptr);
+        delete (lxr::AesDecrypt*)(cl->ptr);
     }
     delete cl;
   }
 }
 
 extern "C" EXPORT
-int proc_AesDecrypt(CAesDecrypt *cl, unsigned int inlen, unsigned char const *inbuf)
-{   if (inlen > lxr::Aes::datasz) return (-1);
-    sizebounded<unsigned char, lxr::Aes::datasz> buf;
-    unsigned int sz = std::min(inlen, lxr::Aes::datasz);
-    std::memcpy((void*)buf.ptr(), inbuf, sz);
-    int len = ((lxr::AesDecrypt*)(cl->ptr))->process(sz, buf);
-    if (len > 0) {
-      std::memcpy(cl->buf+cl->lastpos, buf.ptr(), len);
-      cl->lastpos += len;
-    }
-    return len;
+int proc_AesDecrypt(CAesDecrypt *cl, unsigned int inlen, unsigned char *inoutbuf)
+{ 
+  if (inlen > lxr::Aes::datasz) return (-1);
+  sizebounded<unsigned char, lxr::Aes::datasz> buf;
+  std::memcpy((void*)buf.ptr(), inoutbuf, inlen);
+  int len = ((lxr::AesDecrypt*)(cl->ptr))->process(inlen, buf);
+  if (len > 0) {
+    std::memcpy(inoutbuf, buf.ptr(), len);
+    cl->totproc += len;
+  }
+  return len;
 }
 
 extern "C" EXPORT
-int fin_AesDecrypt(CAesDecrypt *cl)
-{   sizebounded<unsigned char, lxr::Aes::datasz> buf;
-    int len = ((lxr::AesDecrypt*)(cl->ptr))->finish(0, buf);
-    if (len > 0) {
-      std::memcpy(cl->buf+cl->lastpos, buf.ptr(), len);
-      cl->lastpos += len;
-    }
-    return len;
-}
-
-extern "C" EXPORT
-unsigned int len_AesDecrypt(CAesDecrypt *cl)
-{   return cl->lastpos;
-}
-
-ATTRIBUTE_NO_SANITIZE_ADDRESS
-extern "C" EXPORT
-unsigned int copy_AesDecrypt(CAesDecrypt *cl, unsigned int outlen, unsigned char *outbuf)
-{   unsigned int ncopied = std::min(outlen, cl->lastpos);
-    memcpy(outbuf, cl->buf, ncopied);
-    if (ncopied <= cl->lastpos) {
-      // copied 'ncopied' bytes out; move from 'copied' to lastpos to front
-      memcpy(cl->buf, cl->buf + ncopied, cl->lastpos - ncopied);
-    }
-    cl->lastpos -= ncopied;
-    return ncopied;
+int fin_AesDecrypt(CAesDecrypt *cl, unsigned char *outbuf)
+{ 
+  sizebounded<unsigned char, lxr::Aes::datasz> buf;
+  int len = ((lxr::AesDecrypt*)(cl->ptr))->finish(0, buf);
+  if (len > 0) {
+    std::memcpy(outbuf, buf.ptr(), len);
+    cl->totproc += len;
+  }
+  return len;
 }

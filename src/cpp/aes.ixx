@@ -78,9 +78,9 @@ class AesEncrypt : public Aes
 extern "C" {
 export struct CAes {
    void *ptr;
-   unsigned int lastpos;
-   unsigned char buf[lxr::Aes::datasz+16];
+   unsigned int totproc;
 };
+
 export struct CAesEncrypt : public CAes {
 };
 
@@ -88,15 +88,9 @@ export CAesEncrypt* mk_AesEncrypt(CKey256 *k, CKey128 *iv);
 
 export void release_AesEncrypt(CAesEncrypt *cl);
 
-export int proc_AesEncrypt(CAesEncrypt *cl, unsigned int inlen, unsigned char const *);
+export int proc_AesEncrypt(CAesEncrypt *cl, unsigned int inlen, unsigned char *inoutbuf);
 
-export int fin_AesEncrypt(CAesEncrypt *cl);
-
-export unsigned int len_AesEncrypt(CAesEncrypt *cl);
-
-export unsigned int copy_AesEncrypt(CAesEncrypt *cl, unsigned int outlen, unsigned char *);
-
-export unsigned int sz_AesEncrypt();
+export int fin_AesEncrypt(CAesEncrypt *cl, unsigned char *outbuf);
 
 export struct CAesDecrypt : public CAes {
 };
@@ -105,13 +99,8 @@ export CAesDecrypt* mk_AesDecrypt(CKey256 *k, CKey128 *iv);
 
 export void release_AesDecrypt(CAesDecrypt *cl);
 
-export int proc_AesDecrypt(CAesDecrypt *cl, unsigned int inlen, unsigned char const *);
+export int proc_AesDecrypt(CAesDecrypt *cl, unsigned int inlen, unsigned char *inoutbuf);
 
-export int fin_AesDecrypt(CAesDecrypt *cl);
+export int fin_AesDecrypt(CAesDecrypt *cl, unsigned char *outbuf);
 
-export unsigned int len_AesDecrypt(CAesDecrypt *cl);
-
-export unsigned int copy_AesDecrypt(CAesDecrypt *cl, unsigned int outlen, unsigned char *);
-
-export unsigned int sz_AesDecrypt();
 }
