@@ -6,7 +6,7 @@ extern "C" {
 // #include <caml/bigarray.h>
 // #include <caml/custom.h>
 // #include <caml/callback.h>
-// #include <caml/fail.h>
+#include <caml/fail.h>
 
 #include <sys/errno.h>
 } //extern C
@@ -17,7 +17,8 @@ extern "C" {
 
 extern "C" {
 class CKey256;
-std::string tohex_Key256(CKey256 *k);
+int len_Key256(CKey256*);
+bool tohex_Key256(CKey256*, unsigned char buffer[], int buflen);
 
 CKey256* hash_Sha256(int len, const char *s);
 CKey256* filehash_Sha256(const char * fp);
@@ -42,7 +43,13 @@ value cpp_string_sha256(value vs)
     const char *s = String_val(vs);
     const int len = caml_string_length(vs);
     auto k = hash_Sha256(len, s);
-    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
+    const int klen = len_Key256(k) * 2 / 8;
+    value hex = caml_alloc_string(klen);
+    if (tohex_Key256(k, (unsigned char *)String_val(hex), klen)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key256");
+    }
 }
 } // extern C
 
@@ -55,7 +62,13 @@ value cpp_file_sha256(value vfp)
     CAMLparam1(vfp);
     const char *fp = String_val(vfp);
     auto k = filehash_Sha256(std::filesystem::path(fp).c_str());
-    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
+    const int klen = len_Key256(k) * 2 / 8;
+    value hex = caml_alloc_string(klen);
+    if (tohex_Key256(k, (unsigned char *)String_val(hex), klen)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key256");
+    }
 }
 } // extern C
 
@@ -68,6 +81,12 @@ value cpp_buffer_sha256(value vb)
     CAMLparam1(vb);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
     auto k = hash_Sha256(b->_len, b->_buf);
-    CAMLreturn(caml_copy_string(tohex_Key256(k).c_str()));
+    const int klen = len_Key256(k) * 2 / 8;
+    value hex = caml_alloc_string(klen);
+    if (tohex_Key256(k, (unsigned char *)String_val(hex), klen)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key256");
+    }
 }
 } // extern C

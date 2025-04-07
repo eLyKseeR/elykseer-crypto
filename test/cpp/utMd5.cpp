@@ -44,9 +44,11 @@ BOOST_AUTO_TEST_CASE( message_digest )
 BOOST_AUTO_TEST_CASE( c_message_digest )
 {
 	const char* msg = "the cleartext message, I am.";
-	std::string md5 = "9cf9e8974fa9d1151de1daf6983a3e71";
+	const std::string md5 = "9cf9e8974fa9d1151de1daf6983a3e71";
 	CKey128 *k = hash_Md5(std::strlen(msg), msg);
-	auto h = tohex_Key128(k);
+	unsigned char buf[32];
+    BOOST_CHECK(tohex_Key128(k, buf, 32));
+    std::string h{(const char*)buf, 32};
 	BOOST_CHECK_EQUAL(h, md5);
     release_Key128(k);
 }

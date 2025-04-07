@@ -59,8 +59,11 @@ BOOST_AUTO_TEST_CASE( c_new_key_is_random )
 {
     CKey128 *k1 = mk_Key128();
     CKey128 *k2 = mk_Key128();
-	auto h1 = tohex_Key128(k1);
-	auto h2 = tohex_Key128(k2);
+	unsigned char buf[32];
+    BOOST_CHECK(tohex_Key128(k1, buf, 32));
+    std::string h1{(const char*)buf,32};
+    BOOST_CHECK(tohex_Key128(k2, buf, 32));
+    std::string h2{(const char*)buf,32};
 	BOOST_CHECK_NE(h1, h2);
     release_Key128(k1); release_Key128(k2);
 }
@@ -77,9 +80,12 @@ BOOST_AUTO_TEST_CASE( c_key_length )
 BOOST_AUTO_TEST_CASE( c_fromhex_regenerates_key )
 {
     CKey128 *k1 = mk_Key128();
-    auto h1 = tohex_Key128(k1);
+	unsigned char buf[32];
+    BOOST_CHECK(tohex_Key128(k1, buf, 32));
+    std::string h1{(const char*)buf,32};
     CKey128 *k2 = fromhex_Key128(h1);
-    auto h2 = tohex_Key128(k2);
+    BOOST_CHECK(tohex_Key128(k2, buf, 32));
+    std::string h2{(const char*)buf,32};
     BOOST_CHECK_EQUAL(h1, h2);
     release_Key128(k1); release_Key128(k2);
 }

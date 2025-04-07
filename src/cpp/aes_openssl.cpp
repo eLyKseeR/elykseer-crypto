@@ -20,6 +20,9 @@ module;
 
 #if CRYPTOLIB == OPENSSL
 
+#include <iostream>
+#include <memory>
+
 #include "openssl/conf.h"
 #include "openssl/evp.h"
 #include "openssl/err.h"
@@ -97,7 +100,7 @@ int AesEncrypt::finish(int inpos, sizebounded<unsigned char, Aes::datasz> & outb
 {
     if (! _pimpl->_ctx) { return -1; }
     int len = 0;
-    unsigned char tbuf[Aes::datasz+16];
+    unsigned char tbuf[Aes::datasz];
     if (EVP_EncryptFinal(_pimpl->_ctx, tbuf, &len) == 1) {
         outbuf.transform([&inpos,&len,&tbuf](const int i, const char c)->char {
             if (i >= inpos && i < len+inpos) { return tbuf[i-inpos]; }

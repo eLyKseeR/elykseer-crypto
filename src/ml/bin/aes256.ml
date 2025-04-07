@@ -10,7 +10,7 @@ let read_file fn =
   Cstdio.File.fopen fn "r" |> function
   | Ok fptr -> begin
     let sz = Filesystem.Path.file_size (Filesystem.Path.from_string fn) in
-    let buf = Cstdio.File.Buffer.create sz in
+    let buf = Cstdio.File.Buffer.create (sz + 16) in (* add extra space for alignment *)
     Cstdio.File.fread buf sz fptr |> function
      | Ok cnt ->
        Ok (cnt, buf)
@@ -37,15 +37,15 @@ let encrypt () =
   read_file "./test.txt" |> function
   | Error code -> Printf.printf "Error: %d\n" code |> ignore
   | Ok (cnt,buf) ->
-      let buf' = Aes256.encrypt iv k buf in
-      write_file cnt buf' "./test.crypt" |> ignore
+      let (cnt',buf') = Aes256.encrypt iv k cnt buf in
+      write_file cnt' buf' "./test.crypt" |> ignore
 
 let decrypt () =
   read_file "./test.crypt" |> function
   | Error code -> Printf.printf "Error: %d\n" code |> ignore
   | Ok (cnt,buf) ->
-      let buf' = Aes256.decrypt iv k buf in
-      write_file cnt buf' "./test.plain" |> ignore
+      let (cnt',buf') = Aes256.decrypt iv k cnt buf in
+      write_file cnt' buf' "./test.plain" |> ignore
 
 let () =
   encrypt () ; decrypt ()

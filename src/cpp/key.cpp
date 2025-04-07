@@ -24,6 +24,7 @@ module;
 #include <stdint.h>
 #include <stdlib.h>
 #include <string>
+#include <cstring>
 
 import lxr_random;
 

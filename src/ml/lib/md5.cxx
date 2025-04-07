@@ -6,7 +6,7 @@ extern "C" {
 // #include <caml/bigarray.h>
 // #include <caml/custom.h>
 // #include <caml/callback.h>
-// #include <caml/fail.h>
+#include <caml/fail.h>
 
 #include <sys/errno.h>
 } //extern C
@@ -17,7 +17,8 @@ extern "C" {
 
 extern "C" {
 class CKey128;
-std::string tohex_Key128(CKey128 *k);
+int len_Key128(CKey128*);
+bool tohex_Key128(CKey128*, unsigned char buffer[], int buflen);
 void release_Key128(CKey128 *k);
 CKey128* hash_Md5(int len, const char *);
 }
@@ -41,9 +42,13 @@ value cpp_string_md5(value vs)
     const char *s = String_val(vs);
     const int len = caml_string_length(vs);
     auto k = hash_Md5(len, s);
-    auto res = caml_copy_string(tohex_Key128(k).c_str());
-    release_Key128(k);
-    CAMLreturn(res);
+    const int klen = len_Key128(k) * 2 / 8;
+    value hex = caml_alloc_string(klen);
+    if (tohex_Key128(k, (unsigned char *)String_val(hex), klen)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key128");
+    }
 }
 } // extern C
 
@@ -56,6 +61,12 @@ value cpp_buffer_md5(value vb)
     CAMLparam1(vb);
     struct _cpp_cstdio_buffer *b = CPP_CSTDIO_BUFFER(vb);
     auto k = hash_Md5(b->_len, b->_buf);
-    CAMLreturn(caml_copy_string(tohex_Key128(k).c_str()));
+    const int klen = len_Key128(k) * 2 / 8;
+    value hex = caml_alloc_string(klen);
+    if (tohex_Key128(k, (unsigned char *)String_val(hex), klen)) {
+        CAMLreturn(hex);
+    } else {
+        caml_failwith("failure in C code: tohex_Key128");
+    }
 }
 } // extern C
