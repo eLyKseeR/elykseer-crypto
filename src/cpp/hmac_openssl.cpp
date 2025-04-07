@@ -23,6 +23,7 @@ module;
 #include <cstring>
 #include <string>
 #include <cassert>
+#include <stdexcept>
 
 #if CRYPTOLIB == OPENSSL
 #include "openssl/evp.h"
