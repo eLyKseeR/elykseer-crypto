@@ -69,7 +69,7 @@ check_ranlib:
 	@[ -n "$(RANLIB)" ] && type $(RANLIB) 2> /dev/null
 
 
-make_exts: makedirs make_libgpg_error make_libassuan make_gpgme make_cryptopp
+make_exts: makedirs make_libgpg_error make_libassuan make_gpgme make_cryptopp make_openssl
 	echo "all done."
 
 fset_libgpg_error := $(TARGETDIR)/include/gpg-error.h $(TARGETDIR)/lib/libgpg-error.a
@@ -112,4 +112,12 @@ $(fset_cryptopp):
 	export PREFIX=${TARGETDIR}; \
 	$(MAKE) -f GNUmakefile install
 
+fset_openssl:= $(TARGETDIR)/include/openssl/opensslconf.h $(TARGETDIR)/lib/libcrypto.a $(TARGETDIR)/lib/libssl.a
+make_openssl: $(fset_openssl)
+$(fset_openssl):
+	echo "making openssl"
+	cd ./openssl.git; \
+	./Configure no-docs no-dso no-engine no-filenames no-http no-legacy no-module no-ocsp no-shared no-tests threads no-ui-console no-uplink --prefix=${TARGETDIR} --openssldir=${TARGETDIR} --libdir=lib; \
+	$(MAKE); \
+ 	$(MAKE) install
 

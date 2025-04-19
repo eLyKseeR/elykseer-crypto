@@ -15,7 +15,8 @@ stdenv.mkDerivation rec {
         gettext
         texinfo
         swig
-        #gcc
+        gcc
+        llvmPackages_19.clang-tools
         llvmPackages_19.openmp
         lldb_19
         clang_19
@@ -23,6 +24,7 @@ stdenv.mkDerivation rec {
         #global
         cppcheck
         #busybox
+        perl
         perl538Packages.DigestSHA3
         pkg-config
         autoconf automake libtool
@@ -33,7 +35,8 @@ stdenv.mkDerivation rec {
     buildInputs = [
         openssl
         zlib
-        boost
+        zstd
+        boost186
     ];
 
     shellHook = ''

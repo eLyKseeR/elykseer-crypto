@@ -13,3 +13,6 @@
 [submodule "ext/libassuan"]
 	path = ext/libassuan
 	url = https://dev.gnupg.org/source/libassuan.git
+[submodule "ext/openssl.git"]
+	path = ext/openssl.git
+	url = https://github.com/openssl/openssl.git
