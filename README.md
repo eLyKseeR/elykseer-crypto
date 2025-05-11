@@ -3,6 +3,8 @@ base library that provides cryptographic functions to _elykseer_ implementations
 
 [![Compilation and verification by unit tests](https://github.com/eLyKseeR/elykseer-crypto/actions/workflows/CI.yml/badge.svg)](https://github.com/eLyKseeR/elykseer-crypto/actions/workflows/CI.yml)
 
+Mirrors: [Github](https://github.com/eLyKseeR/elykseer-crypto) [Gitlab](https://gitlab.com/elykseer/elykseer-crypto) [Codeberg](https://codeberg.org/elykseer/elykseer-crypto)
+
 ## compilation
 
 * clone or update submodules

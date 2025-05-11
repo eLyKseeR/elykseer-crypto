@@ -16,22 +16,33 @@ ELSE()
         Debug Release RelWithDebInfo MinSizeRel." )
 ENDIF()
 
+project(elykseer-crypto CXX)
+
+# Add options for enabling OpenSSL or Crypto++
+option(USE_OPENSSL "Enable OpenSSL support" ON)
+option(USE_CRYPTOPP "Enable Crypto++ support" OFF)
+
+# Print the selected option
+if(USE_CRYPTOPP)
+    message(STATUS "Crypto++ support enabled.")
+    set(USE_OPENSSL OFF)
+elseif(USE_OPENSSL)
+    message(STATUS "OpenSSL support enabled.")
+    set(USE_CRYPTOPP OFF)
+else()
+    message(STATUS "Neither OpenSSL nor Crypto++ support enabled.")
+endif()
+
 find_program(CCACHE_PROGRAM ccache)
 if(CCACHE_PROGRAM)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
 endif()
-
-project(elykseer-crypto CXX)
 
 # The version number.
 set (${PROJECT_NAME}_VERSION_MAJOR 2)
 set (${PROJECT_NAME}_VERSION_MINOR 1)
 set (${PROJECT_NAME}_VERSION_PATCH 0)
 set (${PROJECT_NAME}_VERSION_STRING ${elykseer-crypto_VERSION_MAJOR}.${elykseer-crypto_VERSION_MINOR}.${elykseer-crypto_VERSION_PATCH})
-
-# choose either one
-set(USE_OPENSSL YES)
-set(USE_CRYPTOPP NO)
 
 option(RUN_ADDRESS_SANITIZER "using Clang you can turn on address sanitizer in Debug")
 

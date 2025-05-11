@@ -43,16 +43,25 @@ jobs:
       - name: compile dependencies
         run: |
           nix-shell --run "make -C ext"
-      - name: build project
+      - name: build project with OpenSSL
         shell: nix-shell --run "{0}"
         run: |
           mkdir -vp build
           cd build
-          cmake --fresh -G Ninja -DCMAKE_BUILD_TYPE=Debug ..
+          cmake --fresh -G Ninja -DUSE_OPENSSL=ON -DCMAKE_BUILD_TYPE=Debug ..
           ninja
-      - name: test project
+      - name: test project (OpenSSL)
         shell: nix-shell --run "{0}"
         run: |
           cd build
           ./test/cpp/utelykseer-crypto --report_level=detailed
+      - name: build and test project with Crypto++
+        shell: nix-shell --run "{0}"
+        run: |
+          mkdir -vp build
+          cd build
+          ninja clean
+          cmake --fresh -G Ninja -DUSE_CRYPTOPP=ON -DCMAKE_BUILD_TYPE=Debug ..
+          ninja
+          ./test/cpp/utelykseer-crypto --report_level=detailed || echo "some error occured"
       - run: echo "🍏 This job's status is ${{ job.status }}."

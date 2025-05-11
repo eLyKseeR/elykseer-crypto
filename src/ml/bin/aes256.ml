@@ -48,4 +48,6 @@ let decrypt () =
       write_file cnt' buf' "./test.plain" |> ignore
 
 let () =
-  encrypt () ; decrypt ()
+  Global.initialize () |> ignore;
+  encrypt () ; decrypt ();
+  Global.cleanup () |> ignore

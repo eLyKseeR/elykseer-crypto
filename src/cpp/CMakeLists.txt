@@ -6,6 +6,8 @@ set(LIB_PRIVATE_SRCS
   aes_cryptopp.cpp
   aes_openssl.cpp
   aes_cbindings.cpp
+  global.cpp
+  global_cbindings.cpp
   gpg.cpp
   key.cpp
   key128.cpp
@@ -39,6 +41,7 @@ set(LIB_PRIVATE_SRCS
 set(LIB_SRCS "")
 set(LIB_HDRS
   aes.ixx
+  global.ixx
   gpg.ixx
   key.ixx
   key128.ixx
