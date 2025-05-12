@@ -130,8 +130,8 @@ ELSE()
        PREPEND "addlib "
        OUTPUT_VARIABLE CRYPTO_ADD_LIBS
        )
-  list(TRANSFORM CRYPTO_ADD_LIBS
-       APPEND "\n"
+  list(JOIN CRYPTO_ADD_LIBS
+       "\n" CRYPTO_STRING_LIBS
        )
   file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/lib_${CMAKE_BUILD_TYPE}.mri"
 "create ${LIBRARY_NAME}\n\
@@ -139,7 +139,7 @@ addlib ${LIB_PREFIX}${PROJECT_NAME}_${CMAKE_BUILD_TYPE}_s.a\n\
 addlib ../../../ext/${EXT_PATH}/lib/libgpgme.a\n\
 addlib ../../../ext/${EXT_PATH}/lib/libgpg-error.a\n\
 addlib ../../../ext/${EXT_PATH}/lib/libassuan.a\n\
-${CRYPTO_ADD_LIBS}\
+${CRYPTO_STRING_LIBS}\n\
 save\n\
 end")
 

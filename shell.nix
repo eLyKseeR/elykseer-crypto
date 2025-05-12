@@ -41,7 +41,11 @@ stdenv.mkDerivation rec {
 
     shellHook = ''
       echo 'eLyKseeR nixified environment'
-      export SED=sed
+      if [ `uname -s` = "Darwin" ]; then
+        export SED=gsed
+      else
+        export SED=sed
+      fi
       export CC=clang
       export CXX=clang++
     '';

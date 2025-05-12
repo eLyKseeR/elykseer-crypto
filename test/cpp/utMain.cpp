@@ -34,3 +34,7 @@
 // Boost test includes
 
 #include "boost/test/unit_test.hpp"
+
+import lxr_global;
+
+static bool _initialized = lxr::Global::initialize();
