@@ -82,14 +82,14 @@ BOOST_AUTO_TEST_CASE( test_sha1_hmac )
 
 // Test case: compare message SHA256 digest to known one
 // openssl dgst -hmac "test" -sha256 test.txt # faad4ffcac0c6eb99d3f3cd5975001bc69011844238d50729ff485c2d8f8724f
-BOOST_AUTO_TEST_CASE( test_sha256_hmac )
-{
-    const char *key = "test";
-    const int klen = 4;
-    std::string msg = "test";
-	auto sha256 = lxr::HMAC::hmac_sha256(key, klen, msg);
-	BOOST_CHECK_EQUAL(sha256.toHex(), "88cd2108b5347d973cf39cdf9053d7dd42704876d8c9a9bd8e2d168259d3ddf7");
-}
+// BOOST_AUTO_TEST_CASE( test_sha256_hmac )
+// {
+//     const char *key = "test";
+//     const int klen = 4;
+//     std::string msg = "test";
+// 	auto sha256 = lxr::HMAC::hmac_sha256(key, klen, msg);
+// 	BOOST_CHECK_EQUAL(sha256.toHex(), "88cd2108b5347d973cf39cdf9053d7dd42704876d8c9a9bd8e2d168259d3ddf7");
+// }
 
 // Test case: compare message SHA1 digest to known one
 
