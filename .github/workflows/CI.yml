@@ -78,6 +78,14 @@ jobs:
       #run: ctest -C $BUILD_TYPE
       run: ./test/cpp/utelykseer-crypto --report_level=detailed
 
+    - name: Build and test with Crypto++
+      shell: bash
+      working-directory: ${{github.workspace}}/build
+      run: |
+        cmake --fresh -GNinja -DUSE_OPENSSL=OFF -DUSE_CRYPTOPP=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE ..
+        cmake --build . --config $BUILD_TYPE
+        ./test/cpp/utelykseer-crypto --report_level=detailed
+
     - name: Packaging
       shell: bash
       working-directory: ${{github.workspace}}/build
