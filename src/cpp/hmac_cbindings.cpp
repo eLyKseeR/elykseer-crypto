@@ -50,6 +50,7 @@ CKey128* hmac_Md5(int klen, const char k[], int mlen, const char * m)
     return r;
 }
 
+#if CRYPTOLIB == OPENSSL
 extern "C" EXPORT
 CKey256* hmac_Sha256(int klen, const char k[], int mlen, const char * m)
 {
@@ -57,6 +58,7 @@ CKey256* hmac_Sha256(int klen, const char k[], int mlen, const char * m)
     CKey256 * r = new CKey256; r->ptr = new lxr::Key256(h);
     return r;
 }
+#endif
 
 extern "C" EXPORT
 CKey160* hmac_Sha1(int klen, const char k[], int mlen, const char * m)

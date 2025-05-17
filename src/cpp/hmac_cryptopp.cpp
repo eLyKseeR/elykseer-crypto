@@ -59,6 +59,7 @@ Key128 HMAC::hmac_md5(const char k[], int klen, const char *buffer, int blen)
     return k128;
 }
 
+/* currently disabled
 Key256 HMAC::hmac_sha256(const char k[], int klen, std::string const & msg)
 {
     return HMAC::hmac_sha256(k, klen, msg.c_str(), msg.size());
@@ -75,6 +76,7 @@ Key256 HMAC::hmac_sha256(const char k[], int klen, const char *buffer, int blen)
     k256.fromBytes(digest);
     return k256;
 }
+*/
 
 Key160 HMAC::hmac_sha1(const char k[], int klen, std::string const & msg)
 {

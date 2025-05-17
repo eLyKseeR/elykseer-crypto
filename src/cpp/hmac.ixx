@@ -39,8 +39,10 @@ class HMAC
     public:
         static Key128 hmac_md5(const char k[], int klen, std::string const & m);
         static Key128 hmac_md5(const char k[], int klen, const char *m, int mlen);
+#if CRYPTOLIB == OPENSSL
         static Key256 hmac_sha256(const char k[], int klen, std::string const & m);
         static Key256 hmac_sha256(const char k[], int klen, const char *m, int mlen);
+#endif
         static Key160 hmac_sha1(const char k[], int klen, std::string const & m);
         static Key160 hmac_sha1(const char k[], int klen, const char *m, int mlen);
     protected:
@@ -58,7 +60,9 @@ class HMAC
 extern "C" {
 export CKey128* hmac_Md5(int klen, const char k[], int mlen, const char *m);
 
+#if CRYPTOLIB == OPENSSL
 export CKey256* hmac_Sha256(int klen, const char k[], int mlen, const char *m);
+#endif
 
 export CKey160* hmac_Sha1(int klen, const char k[], int mlen, const char *m);
 }
