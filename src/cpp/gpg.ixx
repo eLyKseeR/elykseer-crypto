@@ -39,6 +39,7 @@ class Gpg
         bool has_public_key(std::string const &) const;
         // can decrypt for address?
         bool has_private_key(std::string const &) const;
+        bool set_sender(std::string const &);
         std::optional<std::string> encrypt_to_key(std::string const & fpr);
         std::optional<std::string> encrypt_to_key(std::string const & fpr, std::string const & msg);
         std::ostream & ostream();

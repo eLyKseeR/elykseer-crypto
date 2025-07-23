@@ -40,6 +40,7 @@ struct Gpg::pimpl {
     bool has_key(std::string const &fpr, bool private_key = false);
     bool has_public_key(std::string const &fpr) { return has_key(fpr, false); };
     bool has_private_key(std::string const &fpr) { return has_key(fpr, true); };
+    bool set_sender(std::string const &addr);
     std::optional<std::string> encrypt_to_key(std::string const & fpr, std::string const & );
     std::optional<std::string> encrypt_to_key(std::string const & fpr);
     std::ostream& ostream() { oss.reset(new std::ostringstream()); return *oss; }
@@ -133,6 +134,11 @@ bool Gpg::pimpl::has_key(std::string const &addr, bool private_key) {
     }
 
     return true;
+}
+
+bool Gpg::pimpl::set_sender(std::string const & addr) {
+    int res = gpgme_set_sender(ctx, addr.c_str());
+    return res == 0;
 }
 
 std::optional<std::string> Gpg::pimpl::encrypt_to_key(std::string const & addr) {
@@ -256,6 +262,10 @@ bool Gpg::has_public_key(std::string const & addr) const
 bool Gpg::has_private_key(std::string const & addr) const
 {
     return _pimpl->has_private_key(addr);
+}
+
+bool Gpg::set_sender(std::string const & addr) {
+    return _pimpl->set_sender(addr);
 }
 
 std::optional<std::string> Gpg::encrypt_to_key(std::string const & addr, std::string const & msg)
