@@ -1,5 +1,7 @@
 # elykseer-crypto
 
+![test badge](/badges/workflows/CI-nix.yaml/badge.svg?branch=main)
+
 ![test badge](https://code.sbclab.net/eLyKseeR/elykseer-crypto.git/badges/workflows/CI-nix.yaml/badge.svg?branch=main)
 
 base library that provides cryptographic functions to _elykseer_ implementations
@@ -49,7 +51,7 @@ cmake --fresh -DCMAKE_TOOLCHAIN_FILE=../support/Toolchain_Darwin_to_Windows.cmak
 
 # copyright
 
-Copyright 2019-2025 by Alexander Diemand
+Copyright 2019-2026 by Alexander Diemand
 
 # license
 
