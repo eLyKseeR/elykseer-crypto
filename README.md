@@ -1,7 +1,8 @@
 # elykseer-crypto
-base library that provides cryptographic functions to _elykseer_ implementations
 
-[![Compilation and verification by unit tests](https://github.com/eLyKseeR/elykseer-crypto/actions/workflows/CI.yml/badge.svg)](https://github.com/eLyKseeR/elykseer-crypto/actions/workflows/CI.yml)
+![test badge](https://code.sbclab.net/eLyKseeR/elykseer-crypto.git/badges/workflows/CI-nix.yaml/badge.svg?branch=main)
+
+base library that provides cryptographic functions to _elykseer_ implementations
 
 Mirrors: [Github](https://github.com/eLyKseeR/elykseer-crypto) [Gitlab](https://gitlab.com/elykseer/elykseer-crypto) [Codeberg](https://codeberg.org/elykseer/elykseer-crypto)
 
@@ -54,4 +55,3 @@ Copyright 2019-2025 by Alexander Diemand
 
 This work is licensed under the 
 [GNU General Public License v3](https://www.gnu.org/licenses/gpl.html)
-

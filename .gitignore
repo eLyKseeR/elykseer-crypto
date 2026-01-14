@@ -68,3 +68,5 @@ ext/zlib-1.3
 .cache
 build/compile_commands.json
 dist
+**/*.local
+src/cpp/compile_commands.json

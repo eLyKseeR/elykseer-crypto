@@ -1,29 +1,36 @@
-name: Gitea Actions Demo
-run-name: ${{ gitea.actor }} is testing out Gitea Actions 🚀
+name: Forgejo CI Testing
 on: [push]
 
 jobs:
-  Explore-Gitea-Actions:
-    runs-on: nixos-latest
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    container:
+      image: code.sbclab.net/elykseer/nixos:1.0.0
+      options: >-
+        --privileged
+        --security-opt seccomp=unconfined
+      credentials:
+        username: ci_elykseer
+        password: ${{ secrets.PAT }}
+      env:
+        DOCKER_TLS_CERTDIR: ""
+
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ gitea.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by Gitea!"
-      - run: echo "🔎 The name of your branch is ${{ gitea.ref }} and your repository is ${{ gitea.repository }}."
+      - name: intro
+        run: |
+          echo "🎉 The job was automatically triggered by a ${{ forgejo.event_name }} event.";
+          echo "🐧 This job is now running on a ${{ runner.os }} server hosted by forgejo!";
+          echo "🔎 The name of your branch is ${{ forgejo.ref }} and your repository is ${{ forgejo.repository }}.";
       - name: install node
         run: nix-env -iA nixpkgs.nodejs_20
       - name: Check out repository code
-        #uses: actions/checkout@v4
-        uses: https://gitea.com/ScMi1/checkout@v1.4
+        uses: https://data.forgejo.org/actions/checkout@v4
         with:
           submodules: false
+          # token: ${{ secrets.PAT }}
       - run: |
           git submodule update --init
-      - run: echo "💡 The ${{ gitea.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          printenv | sort
-          ls ${{ gitea.workspace }}
       - name: compute dependencies cache hash
         id: cache_hash
         shell: bash
