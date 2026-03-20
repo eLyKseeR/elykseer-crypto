@@ -76,6 +76,9 @@ class AesEncrypt : public Aes
 #include "lxr-cbindings.hpp"
 
 extern "C" {
+
+export long cpp_process_aes256(int direction, CKey128 *iv, CKey256 *k, void *buf, int blen, int dlen);
+
 export struct CAes {
    void *ptr;
    unsigned int totproc;

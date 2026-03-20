@@ -37,7 +37,7 @@ let encrypt () =
   read_file "./test.txt" |> function
   | Error code -> Printf.printf "Error: %d\n" code |> ignore
   | Ok (cnt,buf) ->
-      let (cnt',buf') = Aes256.encrypt iv k cnt buf in
+      let (cnt',buf') = Aes256.encrypt iv k (Cstdio.File.Buffer.size buf) buf cnt in
       write_file cnt' buf' "./test.crypt" |> ignore
 
 let decrypt () =
