@@ -75,5 +75,5 @@ export bool bytes_Key160(CKey160*, unsigned char buffer[], int buflen);
 
 export bool tohex_Key160(CKey160*, unsigned char buffer[], int buflen);
 
-export CKey160* fromhex_Key160(std::string const &);
+export CKey160* fromhex_Key160(const char *hex);
 }

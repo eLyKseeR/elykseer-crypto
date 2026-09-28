@@ -22,8 +22,10 @@ module;
 export module lxr_crypto;
 
 export import lxr_aes;
+export import lxr_aes_gcm;
 export import lxr_md5;
 export import lxr_key;
+export import lxr_key96;
 export import lxr_key128;
 export import lxr_key160;
 export import lxr_key256;

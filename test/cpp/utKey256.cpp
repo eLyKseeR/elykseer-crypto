@@ -97,11 +97,24 @@ BOOST_AUTO_TEST_CASE( c_fromhex_regenerates_key )
 	unsigned char buf[64];
     BOOST_CHECK(tohex_Key256(k1, buf, 64));
     std::string h1{(const char*)buf, 64};
-    CKey256 *k2 = fromhex_Key256(h1);
+    CKey256 *k2 = fromhex_Key256(h1.c_str());
     BOOST_CHECK(tohex_Key256(k2, buf, 64));
     std::string h2{(const char*)buf, 64};
     BOOST_CHECK_EQUAL(h1, h2);
     release_Key256(k1); release_Key256(k2);
+}
+
+// Test case in C: hex string of wrong length is rejected
+BOOST_AUTO_TEST_CASE( c_fromhex_wrong_length )
+{
+    BOOST_CHECK(fromhex_Key256("") == nullptr);
+    BOOST_CHECK(fromhex_Key256("00") == nullptr);
+    BOOST_CHECK(fromhex_Key256(std::string(64-1, '0').c_str()) == nullptr);
+    BOOST_CHECK(fromhex_Key256(std::string(64+1, '0').c_str()) == nullptr);
+    BOOST_CHECK(fromhex_Key256(nullptr) == nullptr);
+    CKey256 *k = fromhex_Key256(std::string(64, '0').c_str());
+    BOOST_REQUIRE(k != nullptr);
+    release_Key256(k);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

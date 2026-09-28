@@ -73,5 +73,5 @@ export bool bytes_Key256(CKey256*, unsigned char buffer[], int buflen);
 
 export bool tohex_Key256(CKey256*, unsigned char buffer[], int buflen);
 
-export CKey256* fromhex_Key256(std::string const &);
+export CKey256* fromhex_Key256(const char *hex);
 }

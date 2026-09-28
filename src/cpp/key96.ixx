@@ -25,28 +25,28 @@ module;
 import lxr_key;
 
 
-export module lxr_key128;
+export module lxr_key96;
 
 
 export namespace lxr {
 
-class Key128 : public Key
+class Key96 : public Key
 {
     public:
-        Key128(bool noinit = false);
-        virtual ~Key128();
-        Key128(Key128 const &);
-        Key128 & operator=(Key128 const &);
-        static Key128 keyFromHex(std::string const &);
+        Key96(bool noinit = false);
+        virtual ~Key96();
+        Key96(Key96 const &);
+        Key96 & operator=(Key96 const &);
+        static Key96 keyFromHex(std::string const &);
         virtual unsigned char const* bytes() const override;
-        virtual int length() const override { return 128; };
-        virtual bool operator==(Key128 const &) const final;
-        virtual bool operator!=(Key128 const &) const final;
+        virtual int length() const override { return 96; };
+        virtual bool operator==(Key96 const &) const final;
+        virtual bool operator!=(Key96 const &) const final;
         virtual void fromHex(std::string const &) override;
         virtual void fromBytes(unsigned char const*) override;
     protected:
         virtual void map(std::function<void(const int, const unsigned char)>) const override;
-        void zip(Key128 const &, std::function<void(const unsigned char, const unsigned char)>) const;
+        void zip(Key96 const &, std::function<void(const unsigned char, const unsigned char)>) const;
         virtual void transform(std::function<unsigned char(const int, const unsigned char)>) override;
     private:
         struct pimpl;
@@ -58,22 +58,22 @@ class Key128 : public Key
 // C binding interface
 #include "lxr-cbindings.hpp"
 
-// #define CKey128 lxr::Key128
+// #define CKey96 lxr::Key96
 
 extern "C" {
-export struct CKey128 {
-   lxr::Key128 * ptr;
+export struct CKey96 {
+   lxr::Key96 * ptr;
 };
 
-export CKey128* mk_Key128();
+export CKey96* mk_Key96();
 
-export void release_Key128(CKey128*);
+export void release_Key96(CKey96*);
 
-export int len_Key128(CKey128*);
+export int len_Key96(CKey96*);
 
-export bool bytes_Key128(CKey128*, unsigned char buffer[], int buflen);
+export bool bytes_Key96(CKey96*, unsigned char buffer[], int buflen);
 
-export bool tohex_Key128(CKey128*, unsigned char buffer[], int buflen);
+export bool tohex_Key96(CKey96*, unsigned char buffer[], int buflen);
 
-export CKey128* fromhex_Key128(const char *hex);
+export CKey96* fromhex_Key96(const char *hex);
 }

@@ -68,9 +68,10 @@ bool tohex_Key160(CKey160 * k, unsigned char buffer[], int buflen)
 }
 
 extern "C" EXPORT
-CKey160* fromhex_Key160(std::string const & s)
-{ auto k = new lxr::Key160(true);
-  k->fromHex(s);
+CKey160* fromhex_Key160(const char * hex)
+{ if (!hex || strlen(hex) != 160 * 2 / 8) { return nullptr; }
+  auto k = new lxr::Key160(true);
+  k->fromHex(std::string(hex));
   CKey160 * r = new CKey160;
   r->ptr = k;
   return r;

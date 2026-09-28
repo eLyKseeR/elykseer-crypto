@@ -25,33 +25,33 @@ module;
 #include "lxr-cbindings.hpp"
 
 
-module lxr_key256;
+module lxr_key96;
 
 
 extern "C" EXPORT
-CKey256* mk_Key256()
-{ auto k = new lxr::Key256;
-  CKey256 * r = new CKey256;
+CKey96* mk_Key96()
+{ auto k = new lxr::Key96;
+  CKey96 * r = new CKey96;
   r->ptr = k;
   return r;
 }
 
 extern "C" EXPORT
-void release_Key256(CKey256 * k)
+void release_Key96(CKey96 * k)
 { if (k) {
     if (k->ptr) {
-        delete (lxr::Key256*)k->ptr;
+        delete k->ptr;
     }
     delete k;
   }
 }
 
 extern "C" EXPORT
-int len_Key256(CKey256 * k)
-{ return ((lxr::Key256*)k->ptr)->length(); }
+int len_Key96(CKey96 * k)
+{ return k->ptr->length(); }
 
 extern "C" EXPORT
-bool bytes_Key256(CKey256 * k, unsigned char buffer[], int buflen)
+bool bytes_Key96(CKey96 * k, unsigned char buffer[], int buflen)
 { const int len = k->ptr->length() / 8;
   if (buflen < len) { return false; }
   memcpy(buffer, k->ptr->bytes(), len);
@@ -59,7 +59,7 @@ bool bytes_Key256(CKey256 * k, unsigned char buffer[], int buflen)
 }
 
 extern "C" EXPORT
-bool tohex_Key256(CKey256 * k, unsigned char buffer[], int buflen)
+bool tohex_Key96(CKey96 * k, unsigned char buffer[], int buflen)
 { const int len = k->ptr->length() * 2 / 8;
   if (buflen < len) { return false; }
   const auto shex = k->ptr->toHex();
@@ -68,11 +68,11 @@ bool tohex_Key256(CKey256 * k, unsigned char buffer[], int buflen)
 }
 
 extern "C" EXPORT
-CKey256* fromhex_Key256(const char * hex)
-{ if (!hex || strlen(hex) != 256 * 2 / 8) { return nullptr; }
-  auto k = new lxr::Key256(true);
+CKey96* fromhex_Key96(const char * hex)
+{ if (!hex || strlen(hex) != 96 * 2 / 8) { return nullptr; }
+  auto k = new lxr::Key96(true);
   k->fromHex(std::string(hex));
-  CKey256 * r = new CKey256;
+  CKey96 * r = new CKey96;
   r->ptr = k;
   return r;
 }

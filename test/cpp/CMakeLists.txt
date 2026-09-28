@@ -20,7 +20,9 @@ include_directories(../src)
 set(TEST_PRIVATE_SRCS
       utMain.cpp
       utAes.cpp
+      utAesGcm.cpp
       utHMAC.cpp
+      utKey96.cpp
       utKey128.cpp
       utKey256.cpp
       utKey160.cpp

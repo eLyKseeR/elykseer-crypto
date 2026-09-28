@@ -18,7 +18,6 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <cstdlib>
 #include <memory>
 #include <string>
 #include <cstring>
@@ -88,7 +87,7 @@ void release_AesEncrypt(CAesEncrypt *cl)
 {
   if (cl) {
     if (cl->ptr) {
-        free(cl->ptr);
+        delete (lxr::AesEncrypt*)(cl->ptr);
     }
     delete cl;
   }
