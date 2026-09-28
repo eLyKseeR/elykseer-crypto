@@ -24,6 +24,8 @@
 #include <iostream>
 
 #include <algorithm>
+#include <map>
+#include <vector>
 
 #include "boost/test/unit_test.hpp"
 
@@ -60,6 +62,39 @@ BOOST_AUTO_TEST_CASE( permutation_is_complete )
             BOOST_REQUIRE_EQUAL(vs[i], i + 1);
         }
     }
+}
+
+// Test case: complete permutation for every length n=1..64
+BOOST_AUTO_TEST_CASE( permutation_all_lengths )
+{
+    for (int n=1; n<=64; n++) {
+        for (int k=0; k<50; k++) {
+            auto vs = lxr::RandList::Make(1, n);
+            BOOST_REQUIRE_EQUAL(vs.size(), n);
+            std::sort(vs.begin(), vs.end());
+            for (int i=0; i<n; i++) {
+                BOOST_REQUIRE_EQUAL(vs[i], i + 1);
+            }
+        }
+    }
+}
+
+// Test case: all 24 permutations of 4 elements are about equally likely
+BOOST_AUTO_TEST_CASE( permutation_is_uniform )
+{
+    constexpr int rounds = 240000;
+    std::map<std::vector<int>, int> counts;
+    for (int k=0; k<rounds; k++) {
+        ++counts[lxr::RandList::Make(1, 4)];
+    }
+    BOOST_REQUIRE_EQUAL(counts.size(), 24);
+    // chi-square with 23 degrees of freedom; p=0.0001 critical value is ~54
+    const double expected = rounds / 24.0;
+    double chi2 = 0.0;
+    for (auto const & [perm, c] : counts) {
+        chi2 += (c - expected) * (c - expected) / expected;
+    }
+    BOOST_CHECK_LT(chi2, 54.0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
