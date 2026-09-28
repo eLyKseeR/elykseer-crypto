@@ -71,7 +71,7 @@ value cpp_mk_key128(value unit)
 } // extern C
 
 /*
- *   cpp_mk_key128 : unit -> ptr
+ *   cpp_from_hex_key128 : string -> ptr
  */
 extern "C" {
 value cpp_from_hex_key128(value vs)
@@ -79,6 +79,7 @@ value cpp_from_hex_key128(value vs)
     CAMLparam1(vs);
     CAMLlocal1(res);
     auto p = fromhex_Key128(String_val(vs));
+    if (!p) { caml_failwith("fromhex_Key128: invalid hex length"); }
     res = caml_alloc_custom(&cpp_ptr_ops,
                             sizeof(theClass*), 1, 1000);
     CPP_PTR(res) = p;
