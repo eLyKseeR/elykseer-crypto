@@ -18,6 +18,7 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstddef>
 #include <memory>
 #include <stdint.h>
 
@@ -27,9 +28,13 @@ export module lxr_random;
 
 export namespace lxr {
 
+// random numbers drawn from the system CSPRNG (OpenSSL RAND_bytes or Crypto++ OS RNG)
 class Random
 {
     public:
+        // fill buffer with cryptographically secure random bytes; throws on failure
+        static void fill(unsigned char *buf, std::size_t len);
+
         // access the random number generator
         static Random& rng();
 

@@ -52,13 +52,9 @@ std::vector<int> mklist(int lo0, int hi0)
 
 std::vector<int> permutation(std::vector<int> vs)
 {
-    const int n = vs.size();
-    for (int i=0; i<n; i++) {
-        uint32_t r = Random::rng().random(n);
-        if (i == r || r < 0 || r >= n) {
-            r = n - i;
-        }
-        // swap i with r positions
+    // Fisher-Yates: swap each position with a uniformly chosen one in [0,i]
+    for (int i = (int)vs.size() - 1; i > 0; i--) {
+        const uint32_t r = Random::rng().random(i + 1);
         auto t = vs[i];
         vs[i] = vs[r];
         vs[r] = t;

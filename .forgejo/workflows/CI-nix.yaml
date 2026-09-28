@@ -6,7 +6,7 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     container:
-      image: code.sbclab.net/elykseer/nixos:1.0.0
+      image: code.sbclab.net/elykseer/elykseer-crypto-ci:1.0.0
       options: >-
         --privileged
         --security-opt seccomp=unconfined
@@ -22,32 +22,43 @@ jobs:
           echo "🎉 The job was automatically triggered by a ${{ forgejo.event_name }} event.";
           echo "🐧 This job is now running on a ${{ runner.os }} server hosted by forgejo!";
           echo "🔎 The name of your branch is ${{ forgejo.ref }} and your repository is ${{ forgejo.repository }}.";
-      - name: install node
-        run: nix-env -iA nixpkgs.nodejs_20
       - name: Check out repository code
         uses: https://data.forgejo.org/actions/checkout@v4
         with:
           submodules: false
           # token: ${{ secrets.PAT }}
-      - run: |
-          git submodule update --init
-      - name: compute dependencies cache hash
-        id: cache_hash
+      - name: use prebuilt dependencies from the CI image
+        id: prebuilt
         shell: bash
         run: |
-          HASH=$(sha256sum <(git submodule | cut -d ' ' -f 2) | cut -d ' ' -f 1)
+          HASH=$(ci/ext-hash.sh)
           echo "hash=$HASH" >> $GITHUB_OUTPUT
-          echo "output: hash=$HASH"
+          if [ -d /opt/elykseer/ext/Linux_x86_64 ] && [ "$(cat /opt/elykseer/ext.hash 2>/dev/null)" = "$HASH" ]; then
+            ln -sfn /opt/elykseer/ext/Linux_x86_64 ext/Linux_x86_64
+            echo "hit=true" >> $GITHUB_OUTPUT
+            echo "using prebuilt dependencies ($HASH)"
+          else
+            echo "hit=false" >> $GITHUB_OUTPUT
+            echo "CI image does not match ext/ ($HASH), building dependencies"
+          fi
+      - name: fetch submodules
+        run: |
+          if [ "${{ steps.prebuilt.outputs.hit }}" = "true" ]; then
+            git submodule update --init ext/sizebounded
+          else
+            git submodule update --init
+          fi
       - name: cache dependencies
-        id: caching
+        if: steps.prebuilt.outputs.hit != 'true'
         uses: actions/cache@v4
         with:
-          key: ${{ steps.cache_hash.outputs.hash }}
+          key: ${{ steps.prebuilt.outputs.hash }}
           path: |
             ext/Linux_*
             ext/Darwin_*
             ext/xWindows_*
       - name: compile dependencies
+        if: steps.prebuilt.outputs.hit != 'true'
         run: |
           nix-shell --run "make -C ext"
       - name: build project with OpenSSL
@@ -70,5 +81,5 @@ jobs:
           ninja clean
           cmake --fresh -G Ninja -DUSE_CRYPTOPP=ON -DCMAKE_BUILD_TYPE=Debug ..
           ninja
-          ./test/cpp/utelykseer-crypto --report_level=detailed || echo "some error occured"
+          ./test/cpp/utelykseer-crypto --report_level=detailed
       - run: echo "🍏 This job's status is ${{ job.status }}."

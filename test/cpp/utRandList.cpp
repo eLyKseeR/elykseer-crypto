@@ -23,6 +23,8 @@
 
 #include <iostream>
 
+#include <algorithm>
+
 #include "boost/test/unit_test.hpp"
 
 import lxr_randlist;
@@ -46,6 +48,18 @@ BOOST_AUTO_TEST_CASE( list_integers )
     }
 	BOOST_CHECK_EQUAL(vs.size(), 100);
 	BOOST_CHECK_EQUAL(sum, 50*101);  // (1 + 100) + (2 + 99) + (3 + 98) ..
+}
+
+// Test case: every permutation is a complete, in-bounds shuffle
+BOOST_AUTO_TEST_CASE( permutation_is_complete )
+{
+    for (int k=0; k<2000; k++) {
+        auto vs = lxr::RandList::Make(1, 100);
+        std::sort(vs.begin(), vs.end());
+        for (int i=0; i<100; i++) {
+            BOOST_REQUIRE_EQUAL(vs[i], i + 1);
+        }
+    }
 }
 
 BOOST_AUTO_TEST_SUITE_END()

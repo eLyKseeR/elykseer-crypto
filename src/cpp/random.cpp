@@ -18,10 +18,20 @@ module;
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <cstddef>
+#include <limits>
 #include <memory>
 #include <random>
-#include <mutex>
+#include <stdexcept>
 #include <stdint.h>
+
+#if CRYPTOLIB == OPENSSL
+#include "openssl/rand.h"
+#endif
+
+#if CRYPTOLIB == CRYPTOPP
+#include "cryptopp/osrng.h"
+#endif
 
 
 module lxr_random;
@@ -30,13 +40,37 @@ module lxr_random;
 namespace lxr {
 
 
-struct Random::pimpl {
-    pimpl() {
-        std::random_device rng_dev;
-        rng_gen.reset(new std::mt19937(rng_dev()));
+void Random::fill(unsigned char *buf, std::size_t len)
+{
+#if CRYPTOLIB == OPENSSL
+    while (len > 0) {
+        const int n = len > (std::size_t)std::numeric_limits<int>::max()
+                    ? std::numeric_limits<int>::max() : (int)len;
+        if (RAND_bytes(buf, n) != 1) {
+            throw std::runtime_error("RAND_bytes failed");
+        }
+        buf += n; len -= n;
     }
-    std::unique_ptr<std::mt19937> rng_gen{};
-    std::mutex rng_mutex;
+#elif CRYPTOLIB == CRYPTOPP
+    CryptoPP::OS_GenerateRandomBlock(false, buf, len);
+#else
+#error "no crypto library selected for random number generation"
+#endif
+}
+
+// UniformRandomBitGenerator on top of the system CSPRNG
+struct csprng32 {
+    using result_type = uint32_t;
+    static constexpr result_type min() { return 0; }
+    static constexpr result_type max() { return std::numeric_limits<result_type>::max(); }
+    result_type operator()() {
+        result_type r;
+        Random::fill(reinterpret_cast<unsigned char*>(&r), sizeof(r));
+        return r;
+    }
+};
+
+struct Random::pimpl {
 };
 
 Random::Random()
@@ -57,14 +91,13 @@ Random& Random::rng() {
 
 uint32_t Random::random() const
 {
-    std::lock_guard<std::mutex> lock(_pimpl->rng_mutex);
-    return std::uniform_int_distribution<uint32_t>(0)(*_pimpl->rng_gen);
+    return csprng32{}();
 }
 
 uint32_t Random::random(uint32_t max) const
 {
-    std::lock_guard<std::mutex> lock(_pimpl->rng_mutex);
-    return std::uniform_int_distribution<uint32_t>(0, max - 1)(*_pimpl->rng_gen);
+    csprng32 gen;
+    return std::uniform_int_distribution<uint32_t>(0, max - 1)(gen);
 }
 
 } // namespace

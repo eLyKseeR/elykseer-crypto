@@ -106,14 +106,12 @@ void Key::fromBytes(unsigned char const *buf)
 
 void Key::randomize()
 {
-    uint32_t r = 0;
-    transform([&r](const int i, const unsigned char c) -> unsigned char {
-        if (i % 4 == 0) {
-            r = Random::rng().random(); }
-        unsigned char c2 = r & 0xff;
-        r = (r >> 8);
-        return c2;
-    });
+    const int len = length() / 8;
+    unsigned char buf[512/8]; // max alloc: 512 bit keys
+    assert(len <= (int)sizeof(buf));
+    Random::fill(buf, len);
+    fromBytes(buf);
+    memset(buf, 0, sizeof(buf));
 }
 
 std::ostream & operator<<(std::ostream & os, Key const & k)

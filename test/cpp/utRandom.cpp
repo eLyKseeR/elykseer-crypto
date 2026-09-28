@@ -22,6 +22,8 @@
 #endif
 
 #include <iostream>
+#include <set>
+#include <string>
 
 #include "boost/test/unit_test.hpp"
 
@@ -61,6 +63,18 @@ BOOST_AUTO_TEST_CASE( test_for_interval )
     //for (int i=0; i<201; i++) {
     //    std::clog << i << " " << f[i] << std::endl;
     //}
+}
+
+// Test case: fill produces distinct buffers
+BOOST_AUTO_TEST_CASE( test_fill_distinct )
+{
+    std::set<std::string> seen;
+    for (int i=0; i<1000; i++) {
+        unsigned char buf[32];
+        lxr::Random::fill(buf, sizeof(buf));
+        seen.insert(std::string((const char*)buf, sizeof(buf)));
+    }
+    BOOST_CHECK_EQUAL(seen.size(), 1000);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

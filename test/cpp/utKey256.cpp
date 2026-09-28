@@ -22,6 +22,8 @@
 #endif
 
 #include <iostream>
+#include <set>
+#include <string>
 
 #include "boost/test/unit_test.hpp"
 
@@ -39,6 +41,16 @@ BOOST_AUTO_TEST_CASE( new_key_is_random )
         lxr::Key256 k2;
         BOOST_CHECK_NE(k1, k2);
     }
+}
+
+// Test case: many new keys are pairwise distinct
+BOOST_AUTO_TEST_CASE( many_keys_are_distinct )
+{
+    std::set<std::string> seen;
+    for (int i=0; i<10000; i++) {
+        seen.insert(lxr::Key256().toHex());
+    }
+    BOOST_CHECK_EQUAL(seen.size(), 10000);
 }
 
 // Test case: key length is 256 bits
