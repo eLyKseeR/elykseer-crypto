@@ -6,7 +6,7 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     container:
-      image: code.sbclab.net/elykseer/elykseer-crypto-ci:1.0.0
+      image: code.sbclab.net/elykseer/elykseer-crypto-ci:1.0.1
       options: >-
         --privileged
         --security-opt seccomp=unconfined
