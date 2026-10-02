@@ -13,7 +13,7 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 
 TAG=${1:-code.sbclab.net/elykseer/elykseer-crypto-ci:1.0.0}
-PLATFORM=${PLATFORM:-linux/amd64}
+PLATFORM=${PLATFORM:-linux/amd64,linux/arm64}
 
 # the prebuilt deps only cover what ext/Makefile builds
 EXT_REVS=$(git ls-tree HEAD ext/ | awk '$2 == "commit" && $4 != "ext/sizebounded" { printf "%s=%s ", $4, $3 }')

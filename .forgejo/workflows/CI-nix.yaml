@@ -33,8 +33,9 @@ jobs:
         run: |
           HASH=$(ci/ext-hash.sh)
           echo "hash=$HASH" >> $GITHUB_OUTPUT
-          if [ -d /opt/elykseer/ext/Linux_x86_64 ] && [ "$(cat /opt/elykseer/ext.hash 2>/dev/null)" = "$HASH" ]; then
-            ln -sfn /opt/elykseer/ext/Linux_x86_64 ext/Linux_x86_64
+          EXT_TARGET="$(uname -s)_$(uname -m)"
+          if [ -d /opt/elykseer/ext/$EXT_TARGET ] && [ "$(cat /opt/elykseer/ext.hash 2>/dev/null)" = "$HASH" ]; then
+            ln -sfn /opt/elykseer/ext/$EXT_TARGET ext/$EXT_TARGET
             echo "hit=true" >> $GITHUB_OUTPUT
             echo "using prebuilt dependencies ($HASH)"
           else

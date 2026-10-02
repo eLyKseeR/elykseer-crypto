@@ -7,7 +7,7 @@
 #   - nodejs (needed by actions/checkout and actions/cache;
 #     nodejs_20 is marked insecure (EOL) in nixos-25.05, 22 runs node20 actions)
 #   - the external dependencies (ext/Makefile: libgpg-error, libassuan,
-#     gpgme, cryptopp, openssl) prebuilt into /opt/elykseer/ext/Linux_x86_64
+#     gpgme, cryptopp, openssl) prebuilt into /opt/elykseer/ext/Linux_<uname -m> (e.g. Linux_x86_64, Linux_aarch64)
 #
 # build with ci/build-ci-image.sh (it computes EXT_REVS and EXT_HASH)
 
@@ -56,7 +56,10 @@ RUN set -eux; \
     done
 
 # build them exactly like CI does, then drop the sources
-RUN nix-shell /opt/elykseer/shell.nix --run 'make -C ext' \
-    && ls ext/Linux_x86_64/lib/libcrypto.a ext/Linux_x86_64/lib/libgpgme.a ext/Linux_x86_64/lib/libcryptopp.a \
-    && find ext -mindepth 1 -maxdepth 1 ! -name Linux_x86_64 -exec rm -rf {} + \
-    && echo "${EXT_HASH}" > /opt/elykseer/ext.hash
+# (ext/Makefile installs into ext/$(uname -s)_$(uname -m), which matches CMake's EXT_PATH)
+RUN set -eux; \
+    target="$(uname -s)_$(uname -m)"; \
+    nix-shell /opt/elykseer/shell.nix --run 'make -C ext'; \
+    ls "ext/$target/lib/libcrypto.a" "ext/$target/lib/libgpgme.a" "ext/$target/lib/libcryptopp.a"; \
+    find ext -mindepth 1 -maxdepth 1 ! -name "$target" -exec rm -rf {} +; \
+    echo "${EXT_HASH}" > /opt/elykseer/ext.hash
